@@ -21,14 +21,16 @@ export class Folder extends Component {
 
   onContextMenu = (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    this.props.onFolderContextMenu(this.props.folder.id, e.pageX, e.pageY);
   }
   
   render() {
     return (
       <div style={{ marginLeft: 20 }} className="folder" onDragStart={this.onDragStart} onDragOver={this.onDragOver} onDrop={this.onDrop} draggable="true" onContextMenu={this.onContextMenu}>
         {this.props.folder.name}
-        {this.props.folder.folders.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props.items} drop={this.props.drop} />)}
-        {this.props.folder.items.map(x => <FolderItem key={x} item={this.props.items[x]} />)}
+        {this.props.folder.folders.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props.items} drop={this.props.drop} onFolderContextMenu={this.props.onFolderContextMenu} onItemContextMenu={this.props.onItemContextMenu} />)}
+        {this.props.folder.items.map(x => <FolderItem key={x} item={this.props.items[x]} onItemContextMenu={this.props.onItemContextMenu} />)}
       </div>
     )
   }

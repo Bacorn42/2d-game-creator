@@ -1,22 +1,22 @@
 import { createStore } from 'redux';
 
-import dndFolderReducer from './reducers/dndFolderReducer';
+import dndFolderReducer from './reducers/folderReducer';
 
 const initialState = {
   graphics: {
-    
+    count: 0
   },
   audio: {
-    
+    count: 0
   },
   functions: {
-
+    count: 0
   },
   objects: {
-
+    count: 0
   },
   scenes: {
-
+    count: 0
   },
   folders: {
     folder_graphics: {
@@ -54,6 +54,7 @@ const initialState = {
       folders: [],
       items: []
     },
+    count: 0
   },
   folderRoot: ['folder_graphics', 'folder_audio', 'folder_functions', 'folder_objects', 'folder_scenes']
 };

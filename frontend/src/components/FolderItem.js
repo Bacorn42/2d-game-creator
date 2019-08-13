@@ -6,9 +6,15 @@ export class FolderItem extends Component {
     e.dataTransfer.setData("Text", this.props.item.id);
   }
 
+  onContextMenu = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onItemContextMenu(this.props.item.id, e.pageX, e.pageY);
+  }
+
   render() {
     return (
-      <div style={{ marginLeft: 20 }} className="folder-item" onDragStart={this.onDragStart} draggable="true">
+      <div style={{ marginLeft: 20 }} className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu}>
         {this.props.item.name}
       </div>
     )
