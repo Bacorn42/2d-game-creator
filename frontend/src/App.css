@@ -1,3 +1,52 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
 .app {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.flex-container {
+  display: flex;
+  height: 100%;
+}
+
+.toolbar {
+  background: #dfd;
+  border-bottom: 1px solid;
+  padding: 4px;
+}
+
+.folder-view {
+  flex: 1;
+  background: #fdd;
+  border-right: 1px solid black;
+  margin-left: -20px;
+  padding: 4px;
+}
+
+.main-view {
+  flex: 3;
+  background: #ddf;
+}
+
+.folder {
+  padding: 2px;
+  border: 1px solid blue;
+}
+
+.folder-item {
+  padding: 2px;
+  border: 1px solid green;
+}
+
+.folder::before {
+  content: '\1f4c1';
+}
+
+.folder-item::before {
+  content: '\1f3b2';
 }

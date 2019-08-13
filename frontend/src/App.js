@@ -1,10 +1,17 @@
 import React from 'react';
 import './App.css';
+import FolderView from './components/FolderView';
+import MainView from './components/MainView';
+import Toolbar from './components/Toolbar';
 
 function App() {
   return (
     <div className="app">
-      <h1>Hello world.</h1>
+      <Toolbar />
+      <div className="flex-container">
+       <FolderView />
+        <MainView />
+      </div>
     </div>
   );
 }
