@@ -1,4 +1,7 @@
-const dndFolderReducer = function(state, action) {
+import { getRoot, childOf, makeItem } from '../utils/folderReducerUtils';
+import folderReducerInitialState from '../initialStates/folderReducerInitialState';
+
+const folderReducer = function(state = folderReducerInitialState, action) {
   switch(action.type) {
     case 'DND_MOVE_ITEM':
       return moveItem(state, action);
@@ -81,23 +84,6 @@ const moveFolder = function(state, action) {
   return state;
 }
 
-const getRoot = function(state, folder) {
-  if(folder.parent === null) {
-    return folder.id.split('_')[1];
-  }
-  return getRoot(state, state.folders[folder.parent]);
-}
-
-const childOf = function(state, to, from) {
-  while(to.parent !== null) {
-    if(to.parent === from.id) {
-      return true;
-    }
-    to = state.folders[to.parent];
-  }
-  return false;
-}
-
 const createFolder = function(state, action) {
   const newId = 'folder_' + state.folders.count;
   return {
@@ -152,11 +138,7 @@ const createItem = function(state, action) {
     ...state,
     [type]: {
       ...state[type],
-      [newId]: {
-        id: newId,
-        name: newId,
-        parent: action.id
-      },
+      [newId]: makeItem(type, newId, action.id),
       count: state[type].count + 1
     },
     folders: {
@@ -186,4 +168,4 @@ const deleteItem = function(state, action) {
   return newState;
 }
 
-export default dndFolderReducer;
+export default folderReducer;

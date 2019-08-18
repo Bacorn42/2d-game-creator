@@ -1,13 +1,59 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import WindowGraphics from './WindowGraphics';
+import { closeWindow, moveWindow } from '../actions/windowActions';
 
 export class MainView extends Component {
+  getWindow = (window) => {
+    const type = window.split('_')[0];
+    switch(type) {
+      case 'graphics':
+        return <WindowGraphics key={window} item={this.props.graphics[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} />
+      default:
+        return '';
+    }
+  }
+
+  onDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { id, offsetX, offsetY } = JSON.parse(e.dataTransfer.getData('Text'));
+    this.props.moveWindow(id, e.pageX - offsetX, e.pageY - offsetY);
+  }
+
+  onDragOver = (e) => {
+    e.preventDefault();
+  }
+
   render() {
     return (
-      <div className="main-view">
-        Main
+      <div className="main-view" onDrop={this.onDrop} onDragOver={this.onDragOver}>
+        {Object.keys(this.props.windows).map(x => this.getWindow(x))}
       </div>
     )
   }
 }
 
-export default MainView
+const mapStateToProps = (state) => {
+  return {
+    graphics: state.folderReducer.graphics,
+    audio: state.folderReducer.audio,
+    functions: state.folderReducer.functions,
+    objects: state.folderReducer.objects,
+    scenes: state.folderReducer.scenes,
+    windows: state.windowReducer.windows
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    closeWindow: (id) => {
+      dispatch(closeWindow(id));
+    },
+    moveWindow: (id, x, y) => {
+      dispatch(moveWindow(id, x, y));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainView);

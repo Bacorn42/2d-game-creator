@@ -4,6 +4,7 @@ import Folder from './Folder';
 import { moveItem, moveFolder, createFolder, deleteFolder, createItem, deleteItem } from '../actions/folderActions';
 import FolderContextMenu from './FolderContextMenu';
 import ItemContextMenu from './ItemContextMenu';
+import { openWindow } from '../actions/windowActions';
 
 export class FolderView extends Component {
   constructor(props) {
@@ -32,8 +33,8 @@ export class FolderView extends Component {
       itemMenu: {
         items : [
          {
-           label: 'Edit Item',
-           callback: () => console.log('Edit item ' + this.state.itemMenu.id)
+           label: 'Open Item',
+           callback: () => this.props.openWindow(this.state.itemMenu.id)
          },
          {
            label: 'Delete Item',
@@ -103,7 +104,7 @@ export class FolderView extends Component {
   render() {
     return (
       <div className="folder-view" onClick={this.onClick}>
-        {this.props.folderRoot.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props[x.split('_')[1]]} drop={this.drop} onFolderContextMenu={this.onFolderContextMenu} onItemContextMenu={this.onItemContextMenu} />)}
+        {this.props.folderRoot.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props[x.split('_')[1]]} drop={this.drop} onFolderContextMenu={this.onFolderContextMenu} onItemContextMenu={this.onItemContextMenu} open={this.props.openWindow} />)}
         { this.state.folderMenu.visible && <FolderContextMenu folderMenu={this.state.folderMenu.items} x={this.state.folderMenu.x} y={this.state.folderMenu.y} /> }
         { this.state.itemMenu.visible && <ItemContextMenu itemMenu={this.state.itemMenu.items} x={this.state.itemMenu.x} y={this.state.itemMenu.y} /> }
       </div>
@@ -113,13 +114,13 @@ export class FolderView extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    graphics: state.graphics,
-    audio: state.audio,
-    functions: state.functions,
-    objects: state.objects,
-    scenes: state.scenes,
-    folders: state.folders,
-    folderRoot: state.folderRoot
+    graphics: state.folderReducer.graphics,
+    audio: state.folderReducer.audio,
+    functions: state.folderReducer.functions,
+    objects: state.folderReducer.objects,
+    scenes: state.folderReducer.scenes,
+    folders: state.folderReducer.folders,
+    folderRoot: state.folderReducer.folderRoot
   }
 }
 
@@ -142,6 +143,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteItem: (id) => {
       dispatch(deleteItem(id));
+    },
+    openWindow: (id) => {
+      dispatch(openWindow(id));
     }
   };
 }

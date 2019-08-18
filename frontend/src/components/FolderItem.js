@@ -12,9 +12,13 @@ export class FolderItem extends Component {
     this.props.onItemContextMenu(this.props.item.id, e.pageX, e.pageY);
   }
 
+  onDoubleClick = (e) => {
+    this.props.open(this.props.item.id);
+  }
+
   render() {
     return (
-      <div style={{ marginLeft: 20 }} className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu}>
+      <div style={{ marginLeft: 20 }} className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu} onDoubleClick={this.onDoubleClick}>
         {this.props.item.name}
       </div>
     )

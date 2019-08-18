@@ -27,6 +27,7 @@ body {
   border-right: 1px solid black;
   margin-left: -20px;
   padding: 4px;
+  z-index: 1;
 }
 
 .main-view {
@@ -36,12 +37,12 @@ body {
 
 .folder {
   padding: 2px;
-  border: 1px solid blue;
+  padding-bottom: 0;
+  border-left: 1px solid gray;
 }
 
 .folder-item {
   padding: 2px;
-  border: 1px solid green;
 }
 
 .folder::before {
@@ -66,4 +67,39 @@ body {
 .folder-context-menu-item:hover, .item-context-menu-item:hover {
   background: #eee;
   cursor: pointer;
+}
+
+.window {
+  display: inline-block;
+}
+
+.window-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: blue;
+  border-radius: 8px 8px 0 0;
+  color: white;
+  padding: 6px;
+  height: 20px;
+}
+
+.window-bar-close {
+  background: #d60;
+  text-align: center;
+  font-size: 16px;
+  width: 16px;
+  border: 1px solid #820;
+}
+
+.window-bar-close:hover {
+  cursor: pointer;
+}
+
+.window-content {
+  padding: 4px;
+  background: #ddd;
+  border: 2px solid blue;
+  border-top: 0;
 }
