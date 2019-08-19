@@ -22,6 +22,7 @@ export const makeItem = function(type, id, parent) {
         id,
         name: id,
         parent,
+        filename: '',
         animations: [],
       };
     case 'audio':
@@ -48,6 +49,19 @@ export const makeItem = function(type, id, parent) {
         name: id,
         parent
       };
+    case 'animations':
+      return {
+        id,
+        name: id,
+        parent,
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+        tileWidth: 0,
+        tileHeight: 0,
+        every: 1
+      }
     default:
       return {};
   }

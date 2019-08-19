@@ -52,7 +52,10 @@ const folderReducerInitialState = {
     },
     count: 5
   },
-  folderRoot: ['folder_graphics', 'folder_audio', 'folder_functions', 'folder_objects', 'folder_scenes']
+  folderRoot: ['folder_graphics', 'folder_audio', 'folder_functions', 'folder_objects', 'folder_scenes'],
+  animations: {
+    count: 0
+  }
 };
 
 export default folderReducerInitialState;

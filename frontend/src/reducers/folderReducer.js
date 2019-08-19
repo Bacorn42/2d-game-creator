@@ -15,6 +15,10 @@ const folderReducer = function(state = folderReducerInitialState, action) {
       return createItem(state, action);
     case 'DELETE_ITEM':
       return deleteItem(state, action);
+    case 'MODIFY_ITEM':
+      return modifyItem(state, action);
+    case 'CREATE_ANIMATION':
+      return createAnimation(state, action);
     default:
       return state;
     }
@@ -166,6 +170,36 @@ const deleteItem = function(state, action) {
   };
   delete newState[type][action.id];
   return newState;
+}
+
+const modifyItem = function(state, action) {
+  const type = action.item.id.split('_')[0];
+  return {
+    ...state,
+    [type]: {
+      ...state[type],
+      [action.item.id]: action.item
+    }
+  };
+}
+
+const createAnimation = function(state, action) {
+  const newId = "animations_" + state.animations.count;
+  return {
+    ...state,
+    graphics: {
+      ...state.graphics,
+      [action.id]: {
+        ...state.graphics[action.id],
+        animations: [...state.graphics[action.id].animations, newId]
+      }
+    },
+    animations: {
+      ...state.animations,
+      [newId]: makeItem('animations', newId, action.id),
+      count: state.animations.count + 1
+    }
+  };
 }
 
 export default folderReducer;

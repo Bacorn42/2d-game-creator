@@ -4,6 +4,8 @@ export const CREATE_FOLDER = 'CREATE_FOLDER';
 export const DELETE_FOLDER = 'DELETE_FOLDER';
 export const CREATE_ITEM = 'CREATE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
+export const MODIFY_ITEM = 'MODIFY_ITEM';
+export const CREATE_ANIMATION = 'CREATE_ANIMATION';
 
 export function moveItem(id, to) {
   return {
@@ -47,4 +49,18 @@ export function deleteItem(id) {
     type: DELETE_ITEM,
     id
   }
+}
+
+export function modifyItem(item) {
+  return {
+    type: MODIFY_ITEM,
+    item
+  };
+}
+
+export function createAnimation(id) {
+  return {
+    type: CREATE_ANIMATION,
+    id
+  };
 }

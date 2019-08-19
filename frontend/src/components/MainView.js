@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WindowGraphics from './WindowGraphics';
 import { closeWindow, moveWindow } from '../actions/windowActions';
+import { modifyItem, createAnimation } from '../actions/folderActions';
 
 export class MainView extends Component {
   getWindow = (window) => {
     const type = window.split('_')[0];
     switch(type) {
       case 'graphics':
-        return <WindowGraphics key={window} item={this.props.graphics[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} />
+        return <WindowGraphics key={window} item={this.props.graphics[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} animations={this.props.animations} modifyItem={this.props.modifyItem} createAnimation={this.props.createAnimation} />
       default:
         return '';
     }
@@ -41,6 +42,7 @@ const mapStateToProps = (state) => {
     functions: state.folderReducer.functions,
     objects: state.folderReducer.objects,
     scenes: state.folderReducer.scenes,
+    animations: state.folderReducer.animations,
     windows: state.windowReducer.windows
   }
 }
@@ -52,6 +54,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     moveWindow: (id, x, y) => {
       dispatch(moveWindow(id, x, y));
+    },
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+    createAnimation: (id) => {
+      dispatch(createAnimation(id));
     }
   };
 }
