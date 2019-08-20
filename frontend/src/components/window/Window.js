@@ -16,6 +16,7 @@ export class Window extends Component {
         <WindowBar item={item} x={x} y={y} closeWindow={closeWindow} />
         <div className="window-content">
           Name: <input type="text" value={item.name} onChange={this.onNameChange} ></input>
+          <hr />
           {this.props.children}
         </div>
       </div>

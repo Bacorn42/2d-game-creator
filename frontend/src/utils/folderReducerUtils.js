@@ -29,7 +29,8 @@ export const makeItem = function(type, id, parent) {
       return {
         id,
         name: id,
-        parent
+        parent,
+        filename: ''
       };
     case 'functions':
       return {

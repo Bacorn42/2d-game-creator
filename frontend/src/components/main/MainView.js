@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import WindowGraphics from '../window/WindowGraphics';
 import { closeWindow, moveWindow } from '../../actions/windowActions';
 import { modifyItem, createAnimation, deleteAnimation } from '../../actions/folderActions';
+import WindowAudio from '../window/WindowAudio';
 
 export class MainView extends Component {
   getWindow = (window) => {
@@ -10,6 +11,8 @@ export class MainView extends Component {
     switch(type) {
       case 'graphics':
         return <WindowGraphics key={window} item={this.props.graphics[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} animations={this.props.animations} modifyItem={this.props.modifyItem} createAnimation={this.props.createAnimation} deleteAnimation={this.props.deleteAnimation} />
+      case 'audio':
+        return <WindowAudio key={window} item={this.props.audio[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} modifyItem={this.props.modifyItem} />
       default:
         return '';
     }

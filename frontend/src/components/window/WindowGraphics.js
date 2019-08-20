@@ -83,7 +83,6 @@ export class WindowGraphics extends Component {
     const { item, x, y, closeWindow, modifyItem } = this.props;
     return (
       <Window item={item} x={x} y={y} closeWindow={closeWindow} modifyItem={modifyItem} >
-        <hr />
         {item.filename ? this.fileAvailable() : this.fileNotAvailable()}
       </Window>
     )
