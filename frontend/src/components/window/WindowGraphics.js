@@ -85,7 +85,7 @@ export class WindowGraphics extends Component {
       <Window item={item} x={x} y={y} closeWindow={closeWindow} modifyItem={modifyItem} >
         {item.filename ? this.fileAvailable() : this.fileNotAvailable()}
       </Window>
-    )
+    );
   }
 }
 
