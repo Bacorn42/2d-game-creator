@@ -11,13 +11,6 @@ export class WindowGraphics extends Component {
     };
   }
 
-  onNameChange = (e) => {
-    this.props.modifyItem({
-      ...this.props.item,
-      name: e.target.value
-    });
-  }
-
   onUploadGraphic = (e) => {
     const filename = e.target.value.split('\\');
     this.props.modifyItem({
@@ -87,10 +80,9 @@ export class WindowGraphics extends Component {
   }
 
   render() {
-    const { item, x, y, closeWindow } = this.props;
+    const { item, x, y, closeWindow, modifyItem } = this.props;
     return (
-      <Window item={item} x={x} y={y} closeWindow={closeWindow} >
-        Name: <input type="text" value={item.name} onChange={this.onNameChange} ></input>
+      <Window item={item} x={x} y={y} closeWindow={closeWindow} modifyItem={modifyItem} >
         <hr />
         {item.filename ? this.fileAvailable() : this.fileNotAvailable()}
       </Window>

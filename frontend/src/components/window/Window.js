@@ -2,11 +2,20 @@ import React, { Component } from 'react';
 import WindowBar from './WindowBar';
 
 export class Window extends Component {
+  onNameChange = (e) => {
+    this.props.modifyItem({
+      ...this.props.item,
+      name: e.target.value
+    });
+  }
+
   render() {
+    const { item, x, y, closeWindow } = this.props;
     return (
-      <div className="window" style={{ position: 'absolute', left: this.props.x, top: this.props.y }}>
-        <WindowBar item={this.props.item} x={this.props.x} y={this.props.y} closeWindow={this.props.closeWindow} />
+      <div className="window" style={{ left: x, top: y }}>
+        <WindowBar item={item} x={x} y={y} closeWindow={closeWindow} />
         <div className="window-content">
+          Name: <input type="text" value={item.name} onChange={this.onNameChange} ></input>
           {this.props.children}
         </div>
       </div>

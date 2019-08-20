@@ -71,6 +71,7 @@ body {
 
 .window {
   display: inline-block;
+  position: absolute;
 }
 
 .window-bar {
