@@ -19,6 +19,8 @@ const folderReducer = function(state = folderReducerInitialState, action) {
       return modifyItem(state, action);
     case 'CREATE_ANIMATION':
       return createAnimation(state, action);
+    case 'DELETE_ANIMATION':
+      return deleteAnimation(state, action);
     default:
       return state;
     }
@@ -200,6 +202,25 @@ const createAnimation = function(state, action) {
       count: state.animations.count + 1
     }
   };
+}
+
+const deleteAnimation = function(state, action) {
+  const animation = state.animations[action.id];
+  const newState = {
+    ...state,
+    graphics: {
+      ...state.graphics,
+      [animation.parent]: {
+        ...state.graphics[animation.parent],
+        animations: state.graphics[animation.parent].animations.filter(x => x !== action.id)
+      }
+    },
+    animations: {
+      ...state.animations,
+    }
+  };
+  delete newState.animations.id;
+  return newState;
 }
 
 export default folderReducer;

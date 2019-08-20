@@ -6,6 +6,7 @@ export const CREATE_ITEM = 'CREATE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const MODIFY_ITEM = 'MODIFY_ITEM';
 export const CREATE_ANIMATION = 'CREATE_ANIMATION';
+export const DELETE_ANIMATION = 'DELETE_ANIMATION';
 
 export function moveItem(id, to) {
   return {
@@ -61,6 +62,13 @@ export function modifyItem(item) {
 export function createAnimation(id) {
   return {
     type: CREATE_ANIMATION,
+    id
+  };
+}
+
+export function deleteAnimation(id) {
+  return {
+    type: DELETE_ANIMATION,
     id
   };
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Folder from './Folder';
-import { moveItem, moveFolder, createFolder, deleteFolder, createItem, deleteItem } from '../actions/folderActions';
-import FolderContextMenu from './FolderContextMenu';
-import ItemContextMenu from './ItemContextMenu';
-import { openWindow } from '../actions/windowActions';
+import Folder from '../folder/Folder';
+import { moveItem, moveFolder, createFolder, deleteFolder, createItem, deleteItem } from '../../actions/folderActions';
+import FolderContextMenu from '../folder/FolderContextMenu';
+import ItemContextMenu from '../folder/ItemContextMenu';
+import { openWindow } from '../../actions/windowActions';
 
 export class FolderView extends Component {
   constructor(props) {

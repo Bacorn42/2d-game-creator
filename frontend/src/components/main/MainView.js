@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import WindowGraphics from './WindowGraphics';
-import { closeWindow, moveWindow } from '../actions/windowActions';
-import { modifyItem, createAnimation } from '../actions/folderActions';
+import WindowGraphics from '../window/WindowGraphics';
+import { closeWindow, moveWindow } from '../../actions/windowActions';
+import { modifyItem, createAnimation, deleteAnimation } from '../../actions/folderActions';
 
 export class MainView extends Component {
   getWindow = (window) => {
     const type = window.split('_')[0];
     switch(type) {
       case 'graphics':
-        return <WindowGraphics key={window} item={this.props.graphics[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} animations={this.props.animations} modifyItem={this.props.modifyItem} createAnimation={this.props.createAnimation} />
+        return <WindowGraphics key={window} item={this.props.graphics[window]} x={this.props.windows[window].x} y={this.props.windows[window].y} closeWindow={this.props.closeWindow} animations={this.props.animations} modifyItem={this.props.modifyItem} createAnimation={this.props.createAnimation} deleteAnimation={this.props.deleteAnimation} />
       default:
         return '';
     }
@@ -60,6 +60,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     createAnimation: (id) => {
       dispatch(createAnimation(id));
+    },
+    deleteAnimation: (id) => {
+      dispatch(deleteAnimation(id));
     }
   };
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import FolderView from './components/FolderView';
-import MainView from './components/MainView';
-import Toolbar from './components/Toolbar';
+import FolderView from './components/main/FolderView';
+import MainView from './components/main/MainView';
+import Toolbar from './components/main/Toolbar';
 
 function App() {
   return (
