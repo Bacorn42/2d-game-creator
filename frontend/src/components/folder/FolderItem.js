@@ -19,7 +19,7 @@ export class FolderItem extends Component {
 
   render() {
     return (
-      <div style={{ marginLeft: 20 }} className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu} onDoubleClick={this.onDoubleClick}>
+      <div className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu} onDoubleClick={this.onDoubleClick}>
         {this.props.item.name}
       </div>
     );

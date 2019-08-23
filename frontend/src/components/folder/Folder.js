@@ -27,11 +27,12 @@ export class Folder extends Component {
   }
   
   render() {
+    const { folder, folders, items, drop, onFolderContextMenu, onItemContextMenu, open } = this.props;
     return (
-      <div style={{ marginLeft: 20 }} className="folder" onDragStart={this.onDragStart} onDragOver={this.onDragOver} onDrop={this.onDrop} draggable="true" onContextMenu={this.onContextMenu}>
-        {this.props.folder.name}
-        {this.props.folder.folders.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props.items} drop={this.props.drop} onFolderContextMenu={this.props.onFolderContextMenu} onItemContextMenu={this.props.onItemContextMenu} open={this.props.open} />)}
-        {this.props.folder.items.map(x => <FolderItem key={x} item={this.props.items[x]} onItemContextMenu={this.props.onItemContextMenu} open={this.props.open} />)}
+      <div className="folder" onDragStart={this.onDragStart} onDragOver={this.onDragOver} onDrop={this.onDrop} draggable="true" onContextMenu={this.onContextMenu}>
+        {folder.name}
+        {folder.folders.map(x => <Folder key={x} folders={folders} folder={folders[x]} items={items} drop={drop} onFolderContextMenu={onFolderContextMenu} onItemContextMenu={onItemContextMenu} open={open} />)}
+        {folder.items.map(x => <FolderItem key={x} item={items[x]} onItemContextMenu={onItemContextMenu} open={open} />)}
       </div>
     );
   }
