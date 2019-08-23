@@ -1,6 +1,7 @@
 export const OPEN_WINDOW = 'OPEN_WINDOW';
 export const CLOSE_WINDOW = 'CLOSE_WINDOW';
 export const MOVE_WINDOW = 'MOVE_WINDOW';
+export const FOCUS_WINDOW = 'FOCUS_WINDOW';
 
 export function openWindow(id) {
   return {
@@ -22,5 +23,12 @@ export function moveWindow(id, x, y) {
     id,
     x,
     y
+  };
+}
+
+export function focusWindow(id) {
+  return {
+    type: FOCUS_WINDOW,
+    id
   };
 }

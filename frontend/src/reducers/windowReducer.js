@@ -8,6 +8,8 @@ const windowReducer = function(state = windowReducerInitialState, action) {
       return closeWindow(state, action);
     case 'MOVE_WINDOW':
       return moveWindow(state, action);
+    case 'FOCUS_WINDOW':
+      return focusWindow(state, action);
     default:
       return state;
   }
@@ -22,10 +24,11 @@ const openWindow = function(state, action) {
     windows: {
       ...state.windows,
       [action.id]: {
-       x: 500 + 20 * state.count,
+       x: 50 + 20 * state.count,
        y: 50 + 20 * state.count
       }
     },
+    windows_order: [...state.windows_order, action.id],
     count: (state.count + 1) % 10
   }
 }
@@ -35,7 +38,8 @@ const closeWindow = function(state, action) {
     ...state, 
     windows: { 
       ...state.windows 
-    } 
+    },
+    windows_order: [...state.windows_order.filter(x => x !== action.id)]
   };
   delete newState.windows[action.id];
   return newState;
@@ -50,7 +54,15 @@ const moveWindow = function(state, action) {
         x: action.x,
         y: action.y
       }
-    }
+    },
+    windows_order: [...state.windows_order.filter(x => x !== action.id), action.id]
+  };
+}
+
+const focusWindow = function(state, action) {
+  return {
+    ...state,
+    windows_order: [...state.windows_order.filter(x => x !== action.id), action.id]
   };
 }
 

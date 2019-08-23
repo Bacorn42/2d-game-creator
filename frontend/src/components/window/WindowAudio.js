@@ -32,9 +32,9 @@ export class WindowAudio extends Component {
   }
 
   render() {
-    const { item, x, y, closeWindow, modifyItem } = this.props;
+    const { item, x, y, closeWindow, focusWindow, modifyItem } = this.props;
     return (
-      <Window item={item} x={x} y={y} closeWindow={closeWindow} modifyItem={modifyItem} >
+      <Window item={item} x={x} y={y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} >
         {item.filename ? this.fileAvailable() : this.fileNotAvailable()}
       </Window>
     );
@@ -46,6 +46,7 @@ WindowAudio.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   closeWindow: PropTypes.func.isRequired,
+  focusWindow: PropTypes.func.isRequired,
   modifyItem: PropTypes.func.isRequired
 }
 

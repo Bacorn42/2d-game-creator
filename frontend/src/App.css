@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 .app {
@@ -33,6 +34,7 @@ body {
 .main-view {
   flex: 3;
   background: #ddf;
+  position: relative;
 }
 
 .folder {
@@ -58,6 +60,7 @@ body {
 .folder-context-menu, .item-context-menu {
   background: #ccc;
   width: 120px;
+  position: absolute;
 }
 
 .folder-context-menu-item, .item-context-menu-item {
@@ -76,6 +79,13 @@ body {
   position: absolute;
 }
 
+.window-maximized {
+  left: 0 !important;
+  top: 0 !important;
+  height: calc(100% - 20px - 2 * 6px); /* Taking into account window bar */  
+  width: 100%;
+}
+
 .window-bar {
   display: flex;
   flex-direction: row;
@@ -88,16 +98,37 @@ body {
   height: 20px;
 }
 
+.window-bar-icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.window-bar-maximize {
+  background: #66f;
+  text-align: center;
+  font-size: 16px;
+  width: 24px;
+  border: 1px solid #33f;
+}
+
 .window-bar-close {
   background: #d60;
   text-align: center;
   font-size: 16px;
-  width: 16px;
+  width: 24px;
   border: 1px solid #820;
+}
+
+.window-bar-maximize:hover {
+  cursor: pointer;
+  background: #88f;
+  border-color: #55f;
 }
 
 .window-bar-close:hover {
   cursor: pointer;
+  background: #d90;
+  border-color: #840;
 }
 
 .window-content {
@@ -105,6 +136,9 @@ body {
   background: #ddd;
   border: 2px solid blue;
   border-top: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .animation-selection {

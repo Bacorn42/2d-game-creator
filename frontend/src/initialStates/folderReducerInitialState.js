@@ -50,7 +50,7 @@ const folderReducerInitialState = {
       folders: [],
       items: []
     },
-    count: 5
+    count: 0
   },
   folderRoot: ['folder_graphics', 'folder_audio', 'folder_functions', 'folder_objects', 'folder_scenes'],
   animations: {

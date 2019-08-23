@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 import WindowGraphics from '../window/WindowGraphics';
 import WindowAudio from '../window/WindowAudio';
 import WindowFunctions from '../window/WindowFunctions';
-import { closeWindow, moveWindow } from '../../actions/windowActions';
+import { closeWindow, moveWindow, focusWindow } from '../../actions/windowActions';
 import { modifyItem, createAnimation, deleteAnimation } from '../../actions/folderActions';
 
 export class MainView extends Component {
   getWindow = (window) => {
-    const { graphics, audio, functions, animations, windows, closeWindow, modifyItem, createAnimation, deleteAnimation } = this.props;
+    const { graphics, audio, functions, animations, windows, closeWindow, focusWindow, modifyItem, createAnimation, deleteAnimation } = this.props;
     const type = window.split('_')[0];
     switch(type) {
       case 'graphics':
-        return <WindowGraphics key={window} item={graphics[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} animations={animations} modifyItem={modifyItem} createAnimation={createAnimation} deleteAnimation={deleteAnimation} />
+        return <WindowGraphics key={window} item={graphics[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} animations={animations} modifyItem={modifyItem} createAnimation={createAnimation} deleteAnimation={deleteAnimation} />
       case 'audio':
-        return <WindowAudio key={window} item={audio[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} modifyItem={modifyItem} />
+        return <WindowAudio key={window} item={audio[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} />
       case 'functions':
-        return <WindowFunctions key={window} item={functions[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} modifyItem={modifyItem} />
+        return <WindowFunctions key={window} item={functions[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} />
       default:
         return '';
     }
@@ -36,7 +36,7 @@ export class MainView extends Component {
   render() {
     return (
       <div className="main-view" onDrop={this.onDrop} onDragOver={this.onDragOver}>
-        {Object.keys(this.props.windows).map(x => this.getWindow(x))}
+        {this.props.windows_order.map(x => this.getWindow(x))}
       </div>
     )
   }
@@ -50,7 +50,8 @@ const mapStateToProps = (state) => {
     objects: state.folderReducer.objects,
     scenes: state.folderReducer.scenes,
     animations: state.folderReducer.animations,
-    windows: state.windowReducer.windows
+    windows: state.windowReducer.windows,
+    windows_order: state.windowReducer.windows_order
   }
 }
 
@@ -70,6 +71,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteAnimation: (id) => {
       dispatch(deleteAnimation(id));
+    },
+    focusWindow: (id) => {
+      dispatch(focusWindow(id));
     }
   };
 }

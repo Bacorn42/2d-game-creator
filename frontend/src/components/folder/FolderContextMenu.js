@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export function FolderContextMenu({ folderMenu, x, y }) {
   return (
-    <div className="folder-context-menu" style={{ position: 'absolute', left: x, top: y }}>
+    <div className="folder-context-menu" style={{ left: x, top: y }}>
       {folderMenu.map(menuItem => <div key={menuItem.label} className="folder-context-menu-item" onClick={menuItem.callback}>{menuItem.label}</div>)}
     </div>
   );
