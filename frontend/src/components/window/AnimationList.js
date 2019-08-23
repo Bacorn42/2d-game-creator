@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function AnimationList(props) {
   const { item, animations, openAnimation } = props;
@@ -13,5 +14,11 @@ function AnimationList(props) {
     </div>
   );
 }
+
+AnimationList.propTypes = {
+  item: PropTypes.object.isRequired,
+  animations: PropTypes.object.isRequired,
+  openAnimation: PropTypes.func.isRequired
+};
 
 export default AnimationList;

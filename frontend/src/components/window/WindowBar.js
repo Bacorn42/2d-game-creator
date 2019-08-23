@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class WindowBar extends Component {
   onDragStart = (e) => {
@@ -20,8 +21,15 @@ export class WindowBar extends Component {
         <div>{this.props.item.name}</div>
         <div className="window-bar-close" onClick={this.onClick}>&times;</div>
       </div>
-    )
+    );
   }
 }
 
-export default WindowBar
+WindowBar.propTypes = {
+  item: PropTypes.object.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  closeWindow: PropTypes.func.isRequired
+}
+
+export default WindowBar;

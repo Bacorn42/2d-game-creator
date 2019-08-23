@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import FolderItem from './FolderItem';
 
 export class Folder extends Component {
@@ -32,8 +33,18 @@ export class Folder extends Component {
         {this.props.folder.folders.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props.items} drop={this.props.drop} onFolderContextMenu={this.props.onFolderContextMenu} onItemContextMenu={this.props.onItemContextMenu} open={this.props.open} />)}
         {this.props.folder.items.map(x => <FolderItem key={x} item={this.props.items[x]} onItemContextMenu={this.props.onItemContextMenu} open={this.props.open} />)}
       </div>
-    )
+    );
   }
 }
+
+Folder.propTypes = {
+  folders: PropTypes.object.isRequired,
+  folder: PropTypes.object.isRequired,
+  items: PropTypes.object.isRequired,
+  drop: PropTypes.func.isRequired,
+  onFolderContextMenu: PropTypes.func.isRequired,
+  onItemContextMenu: PropTypes.func.isRequired,
+  open: PropTypes.func.isRequired
+};
 
 export default Folder;

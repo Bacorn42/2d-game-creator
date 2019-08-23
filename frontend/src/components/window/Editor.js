@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class Editor extends Component {
   onInput = (e) => {
@@ -22,8 +23,13 @@ export class Editor extends Component {
           <pre className="editor-result editor-style">{item.code} </pre>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Editor
+Editor.propTypes = {
+  item: PropTypes.object.isRequired,
+  modifyItem: PropTypes.func.isRequired
+}
+
+export default Editor;

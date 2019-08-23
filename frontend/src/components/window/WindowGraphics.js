@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Window from './Window';
 import AnimationDisplay from './AnimationDisplay';
 import AnimationList from './AnimationList';
@@ -89,4 +90,15 @@ export class WindowGraphics extends Component {
   }
 }
 
-export default WindowGraphics
+WindowGraphics.propTypes = {
+  item: PropTypes.object.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  closeWindow: PropTypes.func.isRequired,
+  animations: PropTypes.object.isRequired,
+  modifyItem: PropTypes.func.isRequired,
+  createAnimation: PropTypes.func.isRequired,
+  deleteAnimation: PropTypes.func.isRequired
+}
+
+export default WindowGraphics;

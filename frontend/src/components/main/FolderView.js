@@ -102,13 +102,15 @@ export class FolderView extends Component {
   }
 
   render() {
+    const { folders, folderRoot, openWindow } = this.props;
+    const { itemMenu, folderMenu } = this.state;
     return (
       <div className="folder-view" onClick={this.onClick}>
-        {this.props.folderRoot.map(x => <Folder key={x} folders={this.props.folders} folder={this.props.folders[x]} items={this.props[x.split('_')[1]]} drop={this.drop} onFolderContextMenu={this.onFolderContextMenu} onItemContextMenu={this.onItemContextMenu} open={this.props.openWindow} />)}
-        { this.state.folderMenu.visible && <FolderContextMenu folderMenu={this.state.folderMenu.items} x={this.state.folderMenu.x} y={this.state.folderMenu.y} /> }
-        { this.state.itemMenu.visible && <ItemContextMenu itemMenu={this.state.itemMenu.items} x={this.state.itemMenu.x} y={this.state.itemMenu.y} /> }
+        {folderRoot.map(x => <Folder key={x} folders={folders} folder={folders[x]} items={this.props[x.split('_')[1]]} drop={this.drop} onFolderContextMenu={this.onFolderContextMenu} onItemContextMenu={this.onItemContextMenu} open={openWindow} />)}
+        { folderMenu.visible && <FolderContextMenu folderMenu={folderMenu.items} x={folderMenu.x} y={folderMenu.y} /> }
+        { itemMenu.visible && <ItemContextMenu itemMenu={itemMenu.items} x={itemMenu.x} y={itemMenu.y} /> }
       </div>
-    )
+    );
   }
 }
 

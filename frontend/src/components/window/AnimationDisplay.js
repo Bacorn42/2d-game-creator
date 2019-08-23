@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class AnimationDisplay extends Component {
   onNameChange = (e) => {
@@ -57,6 +58,13 @@ export class AnimationDisplay extends Component {
     });
   }
 
+  getCounterColor = (frames) => {
+    if(frames - Math.floor(frames) !== 0 || frames <= 0) {
+      return 'red';
+    }
+    return 'black';
+  }
+
   render() {
     const frames = (this.props.animation.width * this.props.animation.height)/(this.props.animation.tileWidth * this.props.animation.tileHeight);
     return (
@@ -71,10 +79,15 @@ export class AnimationDisplay extends Component {
          <div className="animation-label">Tile Height <input type="text" value={this.props.animation.tileHeight} onChange={this.changeTileHeight}></input></div>
          <div className="animation-label">Update every <input type="text" value={this.props.animation.every} onChange={this.changeEvery}></input></div>
          <hr />
-         <div style={{ color: ((frames - Math.floor(frames) !== 0) || frames <= 0) ? 'red' : 'black' }}> Number of frames: {frames} </div>
+         <div style={{ color: this.getCounterColor(frames) }}> Number of frames: {frames} </div>
       </div>
-    )
+    );
   }
+}
+
+AnimationDisplay.propTypes = {
+  animation: PropTypes.object.isRequired,
+  modifyItem: PropTypes.func.isRequired
 }
 
 export default AnimationDisplay;

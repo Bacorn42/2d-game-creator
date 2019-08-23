@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import WindowBar from './WindowBar';
 
 export class Window extends Component {
@@ -20,8 +21,17 @@ export class Window extends Component {
           {this.props.children}
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Window
+Window.propTypes = {
+  item: PropTypes.object.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  closeWindow: PropTypes.func.isRequired,
+  modifyItem: PropTypes.func.isRequired
+}
+
+
+export default Window;

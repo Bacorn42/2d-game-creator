@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class FolderItem extends Component {
   onDragStart = (e) => {
@@ -21,8 +22,14 @@ export class FolderItem extends Component {
       <div style={{ marginLeft: 20 }} className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu} onDoubleClick={this.onDoubleClick}>
         {this.props.item.name}
       </div>
-    )
+    );
   }
 }
+
+FolderItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  onItemContextMenu: PropTypes.func.isRequired,
+  open: PropTypes.func.isRequired
+};
 
 export default FolderItem

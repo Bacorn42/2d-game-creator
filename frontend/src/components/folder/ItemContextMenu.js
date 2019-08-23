@@ -1,13 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export class ItemContextMenu extends Component {
-  render() {
-    return (
-      <div className="item-context-menu" style={{ position: 'absolute', left: this.props.x, top: this.props.y }}>
-        {this.props.itemMenu.map(x => <div key={x.label} className="item-context-menu-item" onClick={x.callback}>{x.label}</div>)}
-      </div>
-    )
-  }
+export function ItemContextMenu({ itemMenu, x, y }) {
+  return (
+    <div className="item-context-menu" style={{ position: 'absolute', left: x, top: y }}>
+      {itemMenu.map(menuItem => <div key={menuItem.label} className="item-context-menu-item" onClick={menuItem.callback}>{menuItem.label}</div>)}
+    </div>
+  );
 }
 
-export default ItemContextMenu
+ItemContextMenu.propTypes = {
+  itemMenu: PropTypes.array.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired
+};
+
+export default ItemContextMenu;

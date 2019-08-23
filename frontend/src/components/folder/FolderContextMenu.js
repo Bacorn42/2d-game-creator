@@ -1,13 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export class FolderContextMenu extends Component {
-  render() {
-    return (
-      <div className="folder-context-menu" style={{ position: 'absolute', left: this.props.x, top: this.props.y }}>
-        {this.props.folderMenu.map(x => <div key={x.label} className="folder-context-menu-item" onClick={x.callback}>{x.label}</div>)}
-      </div>
-    )
-  }
+export function FolderContextMenu({ folderMenu, x, y }) {
+  return (
+    <div className="folder-context-menu" style={{ position: 'absolute', left: x, top: y }}>
+      {folderMenu.map(menuItem => <div key={menuItem.label} className="folder-context-menu-item" onClick={menuItem.callback}>{menuItem.label}</div>)}
+    </div>
+  );
 }
 
-export default FolderContextMenu
+FolderContextMenu.propTypes = {
+  folderMenu: PropTypes.array.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired
+};
+
+export default FolderContextMenu;
