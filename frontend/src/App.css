@@ -181,17 +181,40 @@ body {
   width: 600px;
   height: 400px;
   overflow: auto;
+  background: #333;
+  box-sizing: border-box;
+}
+
+.window-maximized .editor-content {
+  width: 100%;
+  min-height: 100%;
 }
 
 .editor-container {
   position: relative;
-  background: #333;
-  color: white;
   box-sizing: border-box;
-  font-family: 'Courier New', Courier, monospace;
   padding: 0;
-  overflow: hidden;
-  min-height: 100%;
+  overflow: visible;
+  min-height: calc(100% - 17px); /* I don't even know anymore... */
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  line-height: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+}
+
+.editor-line-numbers {
+  width: 60px;
+  border-right: 1px solid gray;
+  box-sizing: border-box;
+  padding: 8px;
+  color: lightgray;
+  text-align: right;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: #333;
 }
 
 .editor-style {
@@ -202,25 +225,33 @@ body {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
-  white-space: pre-wrap;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  padding: 8px;
+  /*overflow: auto;*/
 }
 
 .editor-textarea {
   position: absolute;
-  width: 100%;
+  width: calc(100% - 60px - 17px);
   height: 100%;
   resize: none;
   top: 0;
-  left: 0;
-  outline: 0;
+  left: 60px;
+  outline: none;
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0);
+  line-height: inherit;
   overflow: hidden;
 }
 
 .editor-result {
   font-family: inherit;
   font-size: inherit;
+  width: calc(100% - 60px - 2 * 8px - 1px);
+}
+
+.function-panel {
+  display: flex;
+  height: calc(100% - 4px - 19px - 18px); /* Taking into account the top */  
 }

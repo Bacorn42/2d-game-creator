@@ -8,7 +8,9 @@ export class WindowFunctions extends Component {
     const { item, x, y, closeWindow, focusWindow, modifyItem } = this.props;
     return (
       <Window item={item} x={x} y={y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} >
-        <Editor item={item} modifyItem={modifyItem} />
+        <div className="function-panel">
+          <Editor item={item} modifyItem={modifyItem} />
+        </div>
       </Window>
     );
   }

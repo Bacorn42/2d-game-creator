@@ -1,0 +1,19 @@
+.COMMENT, .BLOCK_COMMENT {
+  color: #0c0;
+}
+
+.STRING {
+  color: #d60;
+}
+
+.NUMBER {
+  color: #f3f;
+}
+
+.IDENTIFIER {
+  color: #4df;
+}
+
+.AND, .OR, .NOT, .BANG, .IF, .ELSE, .TRUE, .FALSE, .VAR, .FOR, .WHILE, .NULL, .THIS, .OTHER, .BREAK, .CONTINUE {
+  color: #09f;
+}
