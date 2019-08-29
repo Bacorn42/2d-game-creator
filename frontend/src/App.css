@@ -74,6 +74,10 @@ body {
   cursor: pointer;
 }
 
+.list-display {
+  margin-top: 8px;
+}
+
 .window {
   display: inline-block;
   position: absolute;
@@ -154,10 +158,6 @@ body {
 
 .animation-manager {
   padding: 0 4px;
-}
-
-.animation-list {
-  margin-top: 8px;
 }
 
 .animation-display {
@@ -253,5 +253,17 @@ body {
 
 .function-panel {
   display: flex;
+  flex-direction: row;
   height: calc(100% - 4px - 19px - 18px); /* Taking into account the top */  
+}
+
+.function-args {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
+  min-width: 100px;
+}
+
+.function-args select {
+  margin-bottom: 10px;
 }

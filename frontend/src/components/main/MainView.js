@@ -7,6 +7,18 @@ import { closeWindow, moveWindow, focusWindow } from '../../actions/windowAction
 import { modifyItem, createAnimation, deleteAnimation } from '../../actions/folderActions';
 
 export class MainView extends Component {
+  getNames = () => {
+    const { graphics, audio, functions, objects, scenes, animations } = this.props;
+    return [
+      ...Object.keys(graphics).map(x => graphics[x].name),
+      ...Object.keys(audio).map(x => audio[x].name),
+      ...Object.keys(functions).map(x => functions[x].name),
+      ...Object.keys(objects).map(x => objects[x].name),
+      ...Object.keys(scenes).map(x => scenes[x].name),
+      ...Object.keys(animations).map(x => animations[x].name),
+    ]
+  }
+
   getWindow = (window) => {
     const { graphics, audio, functions, animations, windows, closeWindow, focusWindow, modifyItem, createAnimation, deleteAnimation } = this.props;
     const type = window.split('_')[0];
@@ -16,7 +28,7 @@ export class MainView extends Component {
       case 'audio':
         return <WindowAudio key={window} item={audio[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} />
       case 'functions':
-        return <WindowFunctions key={window} item={functions[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} />
+        return <WindowFunctions key={window} item={functions[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} names={this.getNames()} />
       default:
         return '';
     }

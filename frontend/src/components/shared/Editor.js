@@ -13,22 +13,23 @@ export class Editor extends Component {
   }
 
   onInput = (e) => {
-    this.props.modifyItem({
-      ...this.props.item,
+    const { item, modifyItem, args, names } = this.props;
+    modifyItem({
+      ...item,
       code: e.target.value
     });
     this.setState({
       ...this.state,
-      tokens: tokenize(document.getElementById(this.props.item.id).value)
+      tokens: tokenize(document.getElementById(item.id).value, args, names)
     });
   }
 
   componentDidMount() {
-    const { item } = this.props;
+    const { item, args, names } = this.props;
     document.getElementById(item.id).value = item.code;
     this.setState({
       ...this.state,
-      tokens: tokenize(item.code)
+      tokens: tokenize(item.code, args, names)
     });
   }
 
@@ -59,7 +60,7 @@ export class Editor extends Component {
           </div>
           <textarea id={item.id} className="editor-textarea editor-style" onInput={this.onInput} spellCheck={false} wrap={'off'} style={{ left: 60 + this.state.scrollAmount }} />
           <pre id={item.id + '_pre'} className="editor-result editor-style">
-            {this.state.tokens.map((x, i) => <span key={i} className={x.type}>{x.value}</span>)} 
+            {this.state.tokens.map((x, i) => <span key={i} className={x.type + ' ' + x.secondaryType}>{x.value}</span>)} 
           </pre>
         </div>
       </div>
@@ -69,7 +70,9 @@ export class Editor extends Component {
 
 Editor.propTypes = {
   item: PropTypes.object.isRequired,
-  modifyItem: PropTypes.func.isRequired
+  modifyItem: PropTypes.func.isRequired,
+  args: PropTypes.array.isRequired,
+  names: PropTypes.array.isRequired
 }
 
 export default Editor;

@@ -37,7 +37,8 @@ export const makeItem = function(type, id, parent) {
         id,
         name: id,
         parent,
-        code: ''
+        code: '',
+        args: []
       };
     case 'objects':
       return {

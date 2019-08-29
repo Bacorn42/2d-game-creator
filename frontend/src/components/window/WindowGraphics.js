@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Window from './Window';
 import AnimationDisplay from './AnimationDisplay';
-import AnimationList from './AnimationList';
+import ListDisplay from '../shared/ListDisplay';
 
 export class WindowGraphics extends Component {
   constructor(props) {
@@ -39,6 +39,36 @@ export class WindowGraphics extends Component {
     });
   }
 
+  moveAnimationUp = (e) => {
+    const { item, modifyItem } = this.props;
+    const index = item.animations.indexOf(this.state.selected);
+    const newAnimations = [...item.animations];
+    if(index > 0) {
+      [newAnimations[index - 1], newAnimations[index]] = [newAnimations[index], newAnimations[index - 1]];
+    }
+    modifyItem({
+      ...item,
+      animations: newAnimations
+    });
+  }
+
+  moveAnimationDown = (e) => {
+    const { item, modifyItem } = this.props;
+    const index = item.animations.indexOf(this.state.selected);
+    const newAnimations = [...item.animations];
+    if(index < item.animations.length - 1) {
+      [newAnimations[index], newAnimations[index + 1]] = [newAnimations[index + 1], newAnimations[index]];
+    }
+    modifyItem({
+      ...item,
+      animations: newAnimations
+    });
+  }
+
+  getAnimationName = (id) => {
+    return this.props.animations[id].name;
+  }
+
   getSelectedAnimation = () => {
     if(this.state.selected === '') {
       return null;
@@ -53,10 +83,7 @@ export class WindowGraphics extends Component {
       <div>
         <div className="animation-panel">
           <div className="animation-manager">
-            Animations<br />
-            <button onClick={this.createAnimation}>+</button>
-            <button onClick={this.deleteAnimation}>-</button>
-            <AnimationList item={item} animations={animations} openAnimation={this.openAnimation} />
+            <ListDisplay name={'Animations'} container={item.animations} getName={this.getAnimationName} onChange={this.openAnimation} onButtonPlus={this.createAnimation} onButtonMinus={this.deleteAnimation} onButtonUp={this.moveAnimationUp} onButtonDown={this.moveAnimationDown} />
           </div>
           <div className="animation-display">
             {this.state.selected && <AnimationDisplay animation={animations[this.state.selected]} modifyItem={modifyItem} />}

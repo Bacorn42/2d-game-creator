@@ -3,7 +3,7 @@
 }
 
 .STRING {
-  color: #d60;
+  color: #f80;
 }
 
 .NUMBER {
@@ -16,4 +16,16 @@
 
 .AND, .OR, .NOT, .BANG, .IF, .ELSE, .TRUE, .FALSE, .VAR, .FOR, .WHILE, .NULL, .THIS, .OTHER, .BREAK, .CONTINUE {
   color: #09f;
+}
+
+.ARG {
+  color: #0aa;
+}
+
+.APP_DEFINED {
+  color: #d66;
+}
+
+.USER_DEFINED {
+  color: #990;
 }

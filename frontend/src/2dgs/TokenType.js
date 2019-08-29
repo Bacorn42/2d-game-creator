@@ -60,7 +60,12 @@ const TokenType = {
   CONTINUE: 'CONTINUE',
 
   UNKNOWN: 'UNKNOWN',
-  EOF: 'EOF'
+  EOF: 'EOF',
+
+  ARG: 'ARG',
+  USER_DEFINED: 'USER_DEFINED',
+  APP_DEFINED: 'APP_DEFINED',
+  NONE: 'NONE'
 };
 
 export default TokenType;

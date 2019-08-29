@@ -1,7 +1,7 @@
 import Tokenizer from './Tokenizer';
 
-const tokenize = (str) => {
-  const tokenizer = new Tokenizer(str);
+const tokenize = (str, args, names) => {
+  const tokenizer = new Tokenizer(str, args, names);
   return tokenizer.tokenize();
 }
 

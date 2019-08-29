@@ -1,20 +1,25 @@
 import Token from './Token';
 import TokenType from './TokenType';
+import appDefined from './appDefined';
 
 class Tokenizer {
-  constructor(str) {
+  constructor(str, args, names) {
     this.tokens = [];
     this.start = 0;
     this.current = 0;
     this.line = 1;
     this.str = str;
+    this.args = args;
+    this.names = names;
   }
 
   tokenize = () => {
     while(!this.isEnd()) {
       this.start = this.current;
       const type = this.getNextToken();
-      this.tokens.push(new Token(type, this.str.substr(this.start, this.current - this.start), this.line));
+      const substr = this.str.substr(this.start, this.current - this.start);
+      const secondaryType = this.getSecondaryType(type, substr);
+      this.tokens.push(new Token(type, substr, this.line, secondaryType));
     }
     this.tokens.push(new Token(TokenType.EOF, '', this.line));
     return this.tokens;
@@ -215,6 +220,21 @@ class Tokenizer {
 
   isEnd = () => {
     return this.current >= this.str.length;
+  }
+
+  getSecondaryType = (type, substr) => {
+    if(type === TokenType.IDENTIFIER) {
+      if(this.args.includes(substr)) {
+        return TokenType.ARG;
+      }
+      if(appDefined.includes(substr)) {
+        return TokenType.APP_DEFINED;
+      }
+      if(this.names.includes(substr)) {
+        return TokenType.USER_DEFINED;
+      }
+    }
+    return TokenType.NONE;
   }
 }
 
