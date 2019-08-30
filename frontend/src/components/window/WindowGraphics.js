@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Window from './Window';
 import AnimationDisplay from './AnimationDisplay';
 import ListDisplay from '../shared/ListDisplay';
+import './WindowGraphics.css';
 
 export class WindowGraphics extends Component {
   constructor(props) {

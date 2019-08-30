@@ -5,6 +5,7 @@ import { moveItem, moveFolder, createFolder, deleteFolder, createItem, deleteIte
 import FolderContextMenu from '../folder/FolderContextMenu';
 import ItemContextMenu from '../folder/ItemContextMenu';
 import { openWindow } from '../../actions/windowActions';
+import './FolderView.css';
 
 export class FolderView extends Component {
   constructor(props) {

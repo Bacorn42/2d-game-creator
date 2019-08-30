@@ -1,0 +1,14 @@
+.toolbar {
+  background: #dfd;
+  border-bottom: 1px solid;
+  padding: 4px;
+}
+
+.toolbar-icon {
+  padding: 2px 4px;
+}
+
+.toolbar-icon:hover {
+  color: #999;
+  cursor: pointer;
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createItem } from '../../actions/folderActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './Toolbar.css';
 
 export class Toolbar extends Component {
   render() {

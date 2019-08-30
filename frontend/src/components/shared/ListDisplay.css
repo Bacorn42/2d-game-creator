@@ -1,0 +1,14 @@
+.list-display {
+  margin-top: 8px;
+}
+
+.list-display-buttons button {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.list-display-buttons button:hover {
+  color: #999;
+  cursor: pointer;
+}

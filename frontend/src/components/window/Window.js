@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import WindowBar from './WindowBar';
+import './Window.css';
 
 export class Window extends Component {
   constructor(props) {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Window from './Window';
 import Editor from '../shared/Editor';
 import ListDisplay from '../shared/ListDisplay';
+import './WindowFunctions.css';
 
 export class WindowFunctions extends Component {
   constructor(props) {

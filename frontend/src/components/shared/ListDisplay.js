@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import './ListDisplay.css';
 
 function ListDisplay(props) {
   const { name, container, getName, onChange, onButtonPlus, onButtonMinus, onButtonUp, onButtonDown } = props;

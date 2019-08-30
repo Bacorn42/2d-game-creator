@@ -1,0 +1,26 @@
+.window-maximized .editor-content {
+  width: 100%;
+  min-height: 100%;
+}
+
+.function-panel {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 4px - 19px - 18px); /* Taking into account the top */  
+}
+
+.function-args {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
+  min-width: 100px;
+}
+
+.function-args select {
+  margin-bottom: 10px;
+}
+
+.function-args input {
+  box-sizing: border-box;
+  max-width: 100px;
+}

@@ -1,0 +1,31 @@
+.animation-selection {
+  position: absolute;
+  border: 1px solid black;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.animation-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.animation-manager {
+  padding: 0 4px;
+}
+
+.animation-display {
+  border-left: 1px solid gray;
+  padding: 0 4px;
+  width: 220px;
+}
+
+.animation-label {
+  text-align: right;
+  padding: 1px;
+  margin-right: 40px;
+}
+
+.animation-label input {
+  width: 60px;
+  margin-left: 10px;
+}

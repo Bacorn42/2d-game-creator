@@ -1,0 +1,67 @@
+.window {
+  display: inline-block;
+  position: absolute;
+}
+
+.window-maximized {
+  left: 0 !important;
+  top: 0 !important;
+  height: calc(100% - 20px - 2 * 6px); /* Taking into account window bar */  
+  width: 100%;
+}
+
+.window-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: blue;
+  border-radius: 8px 8px 0 0;
+  color: white;
+  padding: 6px;
+  height: 20px;
+}
+
+.window-bar-title {
+  display: flex;
+  flex-direction: row;
+}
+
+.window-bar-title-icon {
+  margin-right: 4px;
+}
+
+.window-bar-icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.window-bar-maximize {
+  color: #77f;
+  padding: 2px;
+}
+
+.window-bar-close {
+  color: #b60;
+  padding: 2px;
+}
+
+.window-bar-maximize:hover {
+  cursor: pointer;
+  color: #bbf;
+}
+
+.window-bar-close:hover {
+  cursor: pointer;
+  color: #f70;
+}
+
+.window-content {
+  padding: 4px;
+  background: #ddd;
+  border: 2px solid blue;
+  border-top: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}

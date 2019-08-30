@@ -1,3 +1,72 @@
+.editor-content {
+  width: 600px;
+  height: 400px;
+  overflow: auto;
+  background: #333;
+  box-sizing: border-box;
+}
+
+.editor-container {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  overflow: visible;
+  min-height: calc(100% - 17px); /* I don't even know anymore... */
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  line-height: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+}
+
+.editor-line-numbers {
+  width: 60px;
+  border-right: 1px solid gray;
+  box-sizing: border-box;
+  padding: 8px;
+  color: lightgray;
+  text-align: right;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: #333;
+}
+
+.editor-style {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  padding: 8px;
+  /*overflow: auto;*/
+}
+
+.editor-textarea {
+  position: absolute;
+  width: calc(100% - 60px - 17px);
+  height: 100%;
+  resize: none;
+  top: 0;
+  left: 60px;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0);
+  line-height: inherit;
+  overflow: hidden;
+}
+
+.editor-result {
+  font-family: inherit;
+  font-size: inherit;
+  width: calc(100% - 60px - 2 * 8px - 1px);
+}
+
 .COMMENT, .BLOCK_COMMENT {
   color: #0c0;
 }
