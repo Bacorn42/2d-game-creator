@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FolderItem from './FolderItem';
 
 export class Folder extends Component {
@@ -30,6 +31,7 @@ export class Folder extends Component {
     const { folder, folders, items, drop, onFolderContextMenu, onItemContextMenu, open } = this.props;
     return (
       <div className="folder" onDragStart={this.onDragStart} onDragOver={this.onDragOver} onDrop={this.onDrop} draggable="true" onContextMenu={this.onContextMenu}>
+        <FontAwesomeIcon icon="folder" className="folder-icon" />
         {folder.name}
         {folder.folders.map(x => <Folder key={x} folders={folders} folder={folders[x]} items={items} drop={drop} onFolderContextMenu={onFolderContextMenu} onItemContextMenu={onItemContextMenu} open={open} />)}
         {folder.items.map(x => <FolderItem key={x} item={items[x]} onItemContextMenu={onItemContextMenu} open={open} />)}

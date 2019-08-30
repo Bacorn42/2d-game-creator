@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import getIcon from '../../utils/getIcon';
 
 export class FolderItem extends Component {
   onDragStart = (e) => {
@@ -20,6 +22,7 @@ export class FolderItem extends Component {
   render() {
     return (
       <div className="folder-item" onDragStart={this.onDragStart} draggable="true" onContextMenu={this.onContextMenu} onDoubleClick={this.onDoubleClick}>
+        <FontAwesomeIcon icon={getIcon(this.props.item.id)} className="folder-item-icon" />
         {this.props.item.name}
       </div>
     );

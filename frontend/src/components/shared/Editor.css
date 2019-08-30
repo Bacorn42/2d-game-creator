@@ -14,7 +14,7 @@
   color: #4df;
 }
 
-.AND, .OR, .NOT, .BANG, .IF, .ELSE, .TRUE, .FALSE, .VAR, .FOR, .WHILE, .NULL, .THIS, .OTHER, .BREAK, .CONTINUE {
+.AND, .OR, .NOT, .BANG, .IF, .ELSE, .TRUE, .FALSE, .VAR, .FOR, .WHILE, .NULL, .THIS, .OTHER, .BREAK, .CONTINUE, .RETURN {
   color: #09f;
 }
 

@@ -42,6 +42,9 @@ export class WindowGraphics extends Component {
   moveAnimationUp = (e) => {
     const { item, modifyItem } = this.props;
     const index = item.animations.indexOf(this.state.selected);
+    if(index === -1) {
+      return;
+    }
     const newAnimations = [...item.animations];
     if(index > 0) {
       [newAnimations[index - 1], newAnimations[index]] = [newAnimations[index], newAnimations[index - 1]];
@@ -55,6 +58,9 @@ export class WindowGraphics extends Component {
   moveAnimationDown = (e) => {
     const { item, modifyItem } = this.props;
     const index = item.animations.indexOf(this.state.selected);
+    if(index === -1) {
+      return;
+    }
     const newAnimations = [...item.animations];
     if(index < item.animations.length - 1) {
       [newAnimations[index], newAnimations[index + 1]] = [newAnimations[index + 1], newAnimations[index]];

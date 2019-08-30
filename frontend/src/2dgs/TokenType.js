@@ -58,6 +58,7 @@ const TokenType = {
   OTHER: 'OTHER',
   BREAK: 'BREAK',
   CONTINUE: 'CONTINUE',
+  RETURN: 'RETURN',
 
   UNKNOWN: 'UNKNOWN',
   EOF: 'EOF',

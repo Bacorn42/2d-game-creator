@@ -43,6 +43,9 @@ export class WindowFunctions extends Component {
   moveArgUp = (e) => {
     const { item, modifyItem } = this.props;
     const index = item.args.indexOf(this.state.selected);
+    if(index === -1) {
+      return;
+    }
     const newArgs = [...item.args];
     if(index > 0) {
       [newArgs[index - 1], newArgs[index]] = [newArgs[index], newArgs[index - 1]];
@@ -56,6 +59,9 @@ export class WindowFunctions extends Component {
   moveArgDown = (e) => {
     const { item, modifyItem } = this.props;
     const index = item.args.indexOf(this.state.selected);
+    if(index === -1) {
+      return;
+    }
     const newArgs = [...item.args];
     if(index < item.args.length - 1) {
       [newArgs[index], newArgs[index + 1]] = [newArgs[index + 1], newArgs[index]];

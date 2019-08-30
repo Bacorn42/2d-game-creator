@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function ListDisplay(props) {
   const { name, container, getName, onChange, onButtonPlus, onButtonMinus, onButtonUp, onButtonDown } = props;
   return (
     <div>
       <div>{name}</div>
-      <button onClick={onButtonPlus}>+</button>
-      <button onClick={onButtonMinus}>-</button>
-      <button onClick={onButtonUp}>↑</button>
-      <button onClick={onButtonDown}>↓</button>
+      <div className="list-display-buttons">
+        <button onClick={onButtonPlus}><FontAwesomeIcon icon="plus" className="list-display-icon" /></button>
+        <button onClick={onButtonMinus}><FontAwesomeIcon icon="minus" className="list-display-icon" /></button>
+        <button onClick={onButtonUp}><FontAwesomeIcon icon="angle-up" className="list-display-icon" /></button>
+        <button onClick={onButtonDown}><FontAwesomeIcon icon="angle-down" className="list-display-icon" /></button>
+      </div>
       <div className="list-display">
         {container.length === 0 ? <div>None</div> :
         <select multiple={true} onChange={onChange} size={Math.min(container.length, 10)}>

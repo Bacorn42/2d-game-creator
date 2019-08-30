@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import getIcon from '../../utils/getIcon';
 
 export class WindowBar extends Component {
   onDragStart = (e) => {
@@ -21,12 +23,16 @@ export class WindowBar extends Component {
   }
 
   render() {
+    const maximizeIcon = this.props.maximized ? 'window-restore' : 'window-maximize';
     return (
       <div className="window-bar" draggable="true" onDragStart={this.onDragStart}>
-        <div>{this.props.item.name}</div>
+        <div className="window-bar-title">
+          <FontAwesomeIcon icon={getIcon(this.props.item.id)} className="window-bar-title-icon" />
+          <div>{this.props.item.name}</div>
+        </div>
         <div className="window-bar-icons">
-          <div className="window-bar-maximize" onClick={this.props.changeMaximize}>{ this.props.maximized ? '↙' : '↗'}</div>
-          <div className="window-bar-close" onClick={this.onClick}>&times;</div>
+          <FontAwesomeIcon icon={ maximizeIcon } size="lg" className="window-bar-maximize" onClick={this.props.changeMaximize} />
+          <FontAwesomeIcon icon="window-close" size="lg" className="window-bar-close" onClick={this.onClick} />
         </div>
       </div>
     );

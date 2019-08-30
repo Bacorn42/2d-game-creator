@@ -170,6 +170,7 @@ class Tokenizer {
       case 'other': return TokenType.OTHER;
       case 'break': return TokenType.BREAK;
       case 'continue': return TokenType.CONTINUE;
+      case 'return': return TokenType.RETURN;
       default: return TokenType.IDENTIFIER;
     }
   }
