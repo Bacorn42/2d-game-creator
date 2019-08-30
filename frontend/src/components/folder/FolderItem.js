@@ -16,6 +16,7 @@ export class FolderItem extends Component {
   }
 
   onDoubleClick = (e) => {
+    e.stopPropagation();
     this.props.open(this.props.item.id);
   }
 

@@ -15,44 +15,49 @@ const folderReducerInitialState = {
     count: 0
   },
   folders: {
-    folder_graphics: {
-      id: 'folder_graphics',
+    folders_graphics: {
+      id: 'folders_graphics',
       name: 'Graphics',
       parent: null,
       folders: [],
-      items: []
+      items: [],
+      expanded: false
     },
-    folder_audio: {
-      id: 'folder_audio',
+    folders_audio: {
+      id: 'folders_audio',
       name: 'Audio',
       parent: null,
       folders: [],
-      items: []
+      items: [],
+      expanded: false
     },
-    folder_functions: {
-      id: 'folder_functions',
+    folders_functions: {
+      id: 'folders_functions',
       name: 'Functions',
       parent: null,
       folders: [],
-      items: []
+      items: [],
+      expanded: false
     },
-    folder_objects: {
-      id: 'folder_objects',
+    folders_objects: {
+      id: 'folders_objects',
       name: 'Objects',
       parent: null,
       folders: [],
-      items: []
+      items: [],
+      expanded: false
     },
-    folder_scenes: {
-      id: 'folder_scenes',
+    folders_scenes: {
+      id: 'folders_scenes',
       name: 'Scenes',
       parent: null,
       folders: [],
-      items: []
+      items: [],
+      expanded: false
     },
     count: 0
   },
-  folderRoot: ['folder_graphics', 'folder_audio', 'folder_functions', 'folder_objects', 'folder_scenes'],
+  folderRoot: ['folders_graphics', 'folders_audio', 'folders_functions', 'folders_objects', 'folders_scenes'],
   animations: {
     count: 0
   }

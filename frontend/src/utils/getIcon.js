@@ -6,6 +6,7 @@ const getIcon = (id) => {
     case 'functions': return 'file-code';
     case 'objects': return 'cube';
     case 'scenes': return 'tv';
+    case 'folders': return 'folder';
     default: return '';
   }
 }

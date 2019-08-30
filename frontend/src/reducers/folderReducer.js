@@ -91,7 +91,7 @@ const moveFolder = function(state, action) {
 }
 
 const createFolder = function(state, action) {
-  const newId = 'folder_' + state.folders.count;
+  const newId = 'folders_' + state.folders.count;
   return {
     ...state,
     folders: {
@@ -101,11 +101,13 @@ const createFolder = function(state, action) {
         name: newId,
         parent: action.id,
         folders: [],
-        items: []
+        items: [],
+        expanded: false
       },
       [action.id]: {
         ...state.folders[action.id],
-        folders: [...state.folders[action.id].folders, newId]
+        folders: [...state.folders[action.id].folders, newId],
+        expanded: true
       },
       count: state.folders.count + 1
     }
@@ -151,7 +153,8 @@ const createItem = function(state, action) {
       ...state.folders,
       [action.id]: {
         ...state.folders[action.id],
-        items: [...state.folders[action.id].items, newId]
+        items: [...state.folders[action.id].items, newId],
+        expanded: true
       }
     }
   };

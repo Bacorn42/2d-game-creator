@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Folder from '../folder/Folder';
-import { moveItem, moveFolder, createFolder, deleteFolder, createItem, deleteItem } from '../../actions/folderActions';
+import { moveItem, moveFolder, createFolder, deleteFolder, createItem, deleteItem, modifyItem } from '../../actions/folderActions';
 import FolderContextMenu from '../folder/FolderContextMenu';
 import ItemContextMenu from '../folder/ItemContextMenu';
 import { openWindow } from '../../actions/windowActions';
@@ -19,6 +19,14 @@ export class FolderView extends Component {
           {
             label: 'Create Item',
             callback: () => this.props.createItem(this.state.folderMenu.id)
+          },
+          {
+            label: 'Rename Folder',
+            callback: () => { 
+              if(!this.props.folderRoot.includes(this.state.folderMenu.id)) {
+                this.props.openWindow(this.state.folderMenu.id)
+              }
+            }
           },
           {
             label: 'Delete Folder',
@@ -102,11 +110,11 @@ export class FolderView extends Component {
   }
 
   render() {
-    const { folders, folderRoot, openWindow } = this.props;
+    const { folders, folderRoot, openWindow, modifyItem } = this.props;
     const { itemMenu, folderMenu } = this.state;
     return (
       <div className="folder-view" onClick={this.onClick}>
-        {folderRoot.map(x => <Folder key={x} folders={folders} folder={folders[x]} items={this.props[x.split('_')[1]]} drop={this.drop} onFolderContextMenu={this.onFolderContextMenu} onItemContextMenu={this.onItemContextMenu} open={openWindow} />)}
+        {folderRoot.map(x => <Folder key={x} folders={folders} folder={folders[x]} folderRoot={folderRoot} items={this.props[x.split('_')[1]]} drop={this.drop} onFolderContextMenu={this.onFolderContextMenu} onItemContextMenu={this.onItemContextMenu} open={openWindow} modifyItem={modifyItem} />)}
         { folderMenu.visible && <FolderContextMenu folderMenu={folderMenu.items} x={folderMenu.x} y={folderMenu.y} /> }
         { itemMenu.visible && <ItemContextMenu itemMenu={itemMenu.items} x={itemMenu.x} y={itemMenu.y} /> }
       </div>
@@ -148,6 +156,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     openWindow: (id) => {
       dispatch(openWindow(id));
+    },
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
     }
   };
 }

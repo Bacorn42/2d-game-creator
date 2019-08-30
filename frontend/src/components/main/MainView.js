@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import WindowGraphics from '../window/WindowGraphics';
 import WindowAudio from '../window/WindowAudio';
 import WindowFunctions from '../window/WindowFunctions';
+import WindowFolders from '../window/WindowFolders';
 import { closeWindow, moveWindow, focusWindow } from '../../actions/windowActions';
 import { modifyItem, createAnimation, deleteAnimation } from '../../actions/folderActions';
 
@@ -20,7 +21,7 @@ export class MainView extends Component {
   }
 
   getWindow = (window) => {
-    const { graphics, audio, functions, animations, windows, closeWindow, focusWindow, modifyItem, createAnimation, deleteAnimation } = this.props;
+    const { graphics, audio, functions, folders, animations, windows, closeWindow, focusWindow, modifyItem, createAnimation, deleteAnimation } = this.props;
     const type = window.split('_')[0];
     switch(type) {
       case 'graphics':
@@ -29,6 +30,8 @@ export class MainView extends Component {
         return <WindowAudio key={window} item={audio[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} />
       case 'functions':
         return <WindowFunctions key={window} item={functions[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} names={this.getNames()} />
+      case 'folders':
+          return <WindowFolders key={window} item={folders[window]} x={windows[window].x} y={windows[window].y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} />
       default:
         return '';
     }
@@ -61,6 +64,7 @@ const mapStateToProps = (state) => {
     functions: state.folderReducer.functions,
     objects: state.folderReducer.objects,
     scenes: state.folderReducer.scenes,
+    folders: state.folderReducer.folders,
     animations: state.folderReducer.animations,
     windows: state.windowReducer.windows,
     windows_order: state.windowReducer.windows_order

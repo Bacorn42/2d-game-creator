@@ -63,6 +63,14 @@ body {
   color: #cc4;
 }
 
+.folder-expansion-icon {
+  margin-right: 4px;
+}
+
+.folder-expansion-icon:hover {
+  color: #999;
+}
+
 .folder-item-icon {
   margin-right: 4px;
 }
