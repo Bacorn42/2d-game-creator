@@ -130,3 +130,18 @@ test("Cannot move item to different root", () => {
   fireEvent.click(expansionIcon);
   expect(within(folder).queryByText("graphics_0")).toBeNull();
 });
+
+test("Cannot move folder to its child", () => {
+  const { getByText } = render(<FolderView />);
+  fireEvent.contextMenu(getByText("Graphics"));
+  fireEvent.click(getByText("Create Folder"));
+  fireEvent.contextMenu(getByText("folders_0"));
+  fireEvent.click(getByText("Create Folder"));
+  within(getByText("folders_0")).getByText("folders_1");
+
+  const dropEvent = createEvent.drop(getByText("folders_1"));
+  Object.assign(dropEvent, { dataTransfer: { getData: () => "folders_0" } });
+
+  fireEvent(getByText("folders_1"), dropEvent);
+  within(getByText("folders_0")).getByText("folders_1");
+});
