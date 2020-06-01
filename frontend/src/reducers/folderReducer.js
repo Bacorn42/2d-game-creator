@@ -47,7 +47,7 @@ const moveItem = function (state, action) {
         [item.parent]: {
           ...state.folders[item.parent],
           items: state.folders[item.parent].items.filter(
-            (x) => x !== action.id
+            (x) => x !== action.id,
           ),
         },
         [action.to]: {
@@ -70,7 +70,7 @@ const moveFolder = function (state, action) {
   }
   if (
     getRoot(state, state.folders[action.id]) ===
-    getRoot(state, state.folders[action.to])
+      getRoot(state, state.folders[action.to])
   ) {
     if (!childOf(state, state.folders[action.to], state.folders[action.id])) {
       const from = state.folders[action.id];
@@ -89,7 +89,7 @@ const moveFolder = function (state, action) {
           [from.parent]: {
             ...state.folders[from.parent],
             folders: state.folders[from.parent].folders.filter(
-              (x) => x !== action.id
+              (x) => x !== action.id,
             ),
           },
         },
@@ -225,7 +225,7 @@ const deleteAnimation = function (state, action) {
       [animation.parent]: {
         ...state.graphics[animation.parent],
         animations: state.graphics[animation.parent].animations.filter(
-          (x) => x !== action.id
+          (x) => x !== action.id,
         ),
       },
     },
@@ -233,7 +233,7 @@ const deleteAnimation = function (state, action) {
       ...state.animations,
     },
   };
-  delete newState.animations.id;
+  delete newState.animations[action.id];
   return newState;
 };
 
