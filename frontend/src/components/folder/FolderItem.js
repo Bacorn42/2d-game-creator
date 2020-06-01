@@ -1,52 +1,66 @@
-import React, { Component } from "react";
+import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import getIcon from "../../utils/getIcon";
+import { openWindow } from "../../actions/windowActions";
 
-export class FolderItem extends Component {
-  onDragStart = (e) => {
+export function FolderItem({ id, item, onItemContextMenu, openWindow }) {
+  const onDragStart = (e) => {
     e.stopPropagation();
-    e.dataTransfer.setData("Text", this.props.item.id);
+    e.dataTransfer.setData("Text", item.id);
   };
 
-  onContextMenu = (e) => {
+  const onContextMenu = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onItemContextMenu(
-      this.props.item.id,
+    onItemContextMenu(
+      item.id,
       e.pageX || 0,
-      e.pageY || 0
+      e.pageY || 0,
     );
   };
 
-  onDoubleClick = (e) => {
+  const onDoubleClick = (e) => {
     e.stopPropagation();
-    this.props.open(this.props.item.id);
+    openWindow(item.id);
   };
 
-  render() {
-    return (
-      <div
-        className="folder-item"
-        onDragStart={this.onDragStart}
-        draggable="true"
-        onContextMenu={this.onContextMenu}
-        onDoubleClick={this.onDoubleClick}
-      >
-        <FontAwesomeIcon
-          icon={getIcon(this.props.item.id)}
-          className="folder-item-icon"
-        />
-        {this.props.item.name}
-      </div>
-    );
-  }
+  return (
+    <div
+      className="folder-item"
+      onDragStart={onDragStart}
+      draggable="true"
+      onContextMenu={onContextMenu}
+      onDoubleClick={onDoubleClick}
+    >
+      <FontAwesomeIcon
+        icon={getIcon(item.id)}
+        className="folder-item-icon"
+      />
+      {item.name}
+    </div>
+  );
 }
 
-FolderItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  onItemContextMenu: PropTypes.func.isRequired,
-  open: PropTypes.func.isRequired,
+const mapStateToProps = (state, ownProps) => {
+  const itemType = ownProps.id.split("_")[0];
+  return {
+    item: state.folderReducer[itemType][ownProps.id],
+  };
 };
 
-export default FolderItem;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openWindow: (id) => {
+      dispatch(openWindow(id));
+    },
+  };
+};
+
+FolderItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  onItemContextMenu: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FolderItem);

@@ -1,127 +1,135 @@
-import React, { Component } from "react";
+import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FolderItem from "./FolderItem";
+import { modifyItem } from "../../actions/folderActions";
+import { openWindow } from "../../actions/windowActions";
 
-export class Folder extends Component {
-  onDragStart = (e) => {
+export function Folder(
+  {
+    folder,
+    isRenameable,
+    drop,
+    onFolderContextMenu,
+    onItemContextMenu,
+    modifyItem,
+    openWindow,
+  },
+) {
+  const onDragStart = (e) => {
     e.stopPropagation();
-    e.dataTransfer.setData("Text", this.props.folder.id);
+    e.dataTransfer.setData("Text", folder.id);
   };
 
-  onDragOver = (e) => {
+  const onDragOver = (e) => {
     e.preventDefault();
   };
 
-  onDrop = (e) => {
+  const onDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     const id = e.dataTransfer.getData("Text");
 
-    this.props.drop(id, this.props.folder.id);
+    drop(id, folder.id);
   };
 
-  onContextMenu = (e) => {
+  const onContextMenu = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onFolderContextMenu(
-      this.props.folder.id,
+    onFolderContextMenu(
+      folder.id,
       e.pageX || 0,
-      e.pageY || 0
+      e.pageY || 0,
     );
   };
 
-  onDoubleClick = (e) => {
+  const onDoubleClick = (e) => {
     e.stopPropagation();
-    if (!this.props.folderRoot.includes(this.props.folder.id)) {
-      this.props.open(this.props.folder.id);
+    if (isRenameable) {
+      openWindow(folder.id);
     }
   };
 
-  changeExpansion = (e) => {
-    const { modifyItem, folder } = this.props;
+  const changeExpansion = (e) => {
     modifyItem({
       ...folder,
       expanded: !folder.expanded,
     });
   };
 
-  expanded = () => {
-    const {
-      folder,
-      folders,
-      folderRoot,
-      items,
-      drop,
-      onFolderContextMenu,
-      onItemContextMenu,
-      open,
-      modifyItem,
-    } = this.props;
+  const expanded = () => {
     return (
       <div>
         {folder.folders.map((x) => (
-          <Folder
+          <ConnectedFolder
             key={x}
-            folders={folders}
-            folder={folders[x]}
-            folderRoot={folderRoot}
-            items={items}
+            id={x}
+            isRenameable={true}
             drop={drop}
             onFolderContextMenu={onFolderContextMenu}
             onItemContextMenu={onItemContextMenu}
-            open={open}
-            modifyItem={modifyItem}
           />
         ))}
         {folder.items.map((x) => (
           <FolderItem
             key={x}
-            item={items[x]}
+            id={x}
             onItemContextMenu={onItemContextMenu}
-            open={open}
           />
         ))}
       </div>
     );
   };
 
-  render() {
-    const { folder } = this.props;
-    const folderExpansion = folder.expanded ? "angle-down" : "angle-right";
-    return (
-      <div
-        className="folder"
-        onDragStart={this.onDragStart}
-        onDragOver={this.onDragOver}
-        onDrop={this.onDrop}
-        draggable="true"
-        onContextMenu={this.onContextMenu}
-        onDoubleClick={this.onDoubleClick}
-      >
-        <FontAwesomeIcon
-          icon={folderExpansion}
-          className="folder-expansion-icon"
-          onClick={this.changeExpansion}
-        />
-        <FontAwesomeIcon icon="folder" className="folder-icon" />
-        {folder.name}
-        {folder.expanded && this.expanded()}
-      </div>
-    );
-  }
+  const folderExpansion = folder.expanded ? "angle-down" : "angle-right";
+  return (
+    <div
+      className="folder"
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      draggable="true"
+      onContextMenu={onContextMenu}
+      onDoubleClick={onDoubleClick}
+    >
+      <FontAwesomeIcon
+        icon={folderExpansion}
+        className="folder-expansion-icon"
+        onClick={changeExpansion}
+      />
+      <FontAwesomeIcon icon="folder" className="folder-icon" />
+      {folder.name}
+      {folder.expanded && expanded()}
+    </div>
+  );
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    folder: state.folderReducer.folders[ownProps.id],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openWindow: (id) => {
+      dispatch(openWindow(id));
+    },
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+  };
+};
+
 Folder.propTypes = {
-  folders: PropTypes.object.isRequired,
-  folder: PropTypes.object.isRequired,
-  folderRoot: PropTypes.array.isRequired,
-  items: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  isRenameable: PropTypes.bool.isRequired,
   drop: PropTypes.func.isRequired,
   onFolderContextMenu: PropTypes.func.isRequired,
   onItemContextMenu: PropTypes.func.isRequired,
-  open: PropTypes.func.isRequired,
-  modifyItem: PropTypes.func.isRequired,
 };
 
-export default Folder;
+const ConnectedFolder = connect(mapStateToProps, mapDispatchToProps)(Folder);
+
+export default ConnectedFolder;
