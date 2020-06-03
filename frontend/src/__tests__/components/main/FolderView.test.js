@@ -27,22 +27,6 @@ test("Creating new item", () => {
   getByText("graphics_0");
 });
 
-test("Expansion works", () => {
-  const { getByText, queryByText } = render(<FolderView />);
-  fireEvent.contextMenu(getByText("Graphics"));
-  fireEvent.click(getByText("Create Item"));
-
-  const folder = getByText("Graphics");
-  const expansionIcon = folder.getElementsByClassName(
-    "folder-expansion-icon"
-  )[0];
-
-  fireEvent.click(expansionIcon);
-  expect(queryByText("graphics_0")).toBeNull();
-  fireEvent.click(expansionIcon);
-  getByText("graphics_0");
-});
-
 test("Deleting item", () => {
   const { getByText, queryByText } = render(<FolderView />);
   fireEvent.contextMenu(getByText("Graphics"));

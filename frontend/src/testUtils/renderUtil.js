@@ -9,9 +9,14 @@ function render(
   ui,
   {
     store = createStore(combineReducers({ folderReducer, windowReducer })),
+    actions = [],
     ...renderOptions
   } = {}
 ) {
+  for (const action of actions) {
+    store.dispatch(action);
+  }
+
   function Wrapper({ children }) {
     return <Provider store={store}>{children}</Provider>;
   }
