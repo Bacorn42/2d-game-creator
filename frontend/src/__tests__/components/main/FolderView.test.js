@@ -5,7 +5,7 @@ import {
   fireEvent,
   createEvent,
   within,
-} from "../../../testUtils/folderRenderUtil";
+} from "../../../testUtils/renderUtil";
 import "@testing-library/jest-dom/extend-expect";
 import FolderView from "../../../components/main/FolderView";
 import { library } from "@fortawesome/fontawesome-svg-core";

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  render,
-  cleanup,
-  fireEvent,
-} from "../../../testUtils/folderRenderUtil";
+import { render, cleanup, fireEvent } from "../../../testUtils/renderUtil";
 import "@testing-library/jest-dom/extend-expect";
 import Toolbar from "../../../components/main/Toolbar";
 import FolderView from "../../../components/main/FolderView";
