@@ -1,53 +1,60 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Window from './Window';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Window from "./Window";
+import { modifyItem } from "../../actions/folderActions";
 
-export class WindowAudio extends Component {
-  onUploadAudio = (e) => {
-    const filename = e.target.value.split('\\');
-    this.props.modifyItem({
-      ...this.props.item,
-      filename: filename[filename.length - 1]
+export function WindowAudio({ id, item, modifyItem }) {
+  const onUploadAudio = (e) => {
+    const filename = e.target.value.split("\\");
+    modifyItem({
+      ...item,
+      filename: filename[filename.length - 1],
     });
-  }
+  };
 
-  fileAvailable = () => {
+  const fileAvailable = () => {
     return (
       <div>
-        <div>
-          Your currently used audio:
-        </div>
-        <audio controls={true} src={'snd/' + this.props.item.filename} ></audio>
+        <div>Your currently used audio:</div>
+        <audio controls={true} src={"snd/" + item.filename}></audio>
       </div>
-    )
-  }
+    );
+  };
 
-  fileNotAvailable = () => {
+  const fileNotAvailable = () => {
     return (
       <div>
         <div>Please select audio file to be used:</div>
-        <input type="file" onChange={this.onUploadAudio}></input>
+        <input type="file" onChange={onUploadAudio}></input>
       </div>
     );
-  }
+  };
 
-  render() {
-    const { item, x, y, closeWindow, focusWindow, modifyItem } = this.props;
-    return (
-      <Window item={item} x={x} y={y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} >
-        {item.filename ? this.fileAvailable() : this.fileNotAvailable()}
-      </Window>
-    );
-  }
+  return (
+    <Window id={id}>
+      {item.filename ? fileAvailable() : fileNotAvailable()}
+    </Window>
+  );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  const itemType = ownProps.id.split("_")[0];
+  return {
+    item: state.folderReducer[itemType][ownProps.id],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+  };
+};
 
 WindowAudio.propTypes = {
-  item: PropTypes.object.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  closeWindow: PropTypes.func.isRequired,
-  focusWindow: PropTypes.func.isRequired,
-  modifyItem: PropTypes.func.isRequired
-}
+  id: PropTypes.string.isRequired,
+};
 
-export default WindowAudio;
+export default connect(mapStateToProps, mapDispatchToProps)(WindowAudio);

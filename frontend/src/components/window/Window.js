@@ -1,56 +1,78 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import WindowBar from './WindowBar';
-import './Window.css';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import WindowBar from "./WindowBar";
+import { modifyItem } from "../../actions/folderActions";
+import { focusWindow } from "../../actions/windowActions";
+import "./Window.css";
 
-export class Window extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      maximized: false
-    };
-  }
+export function Window({
+  id,
+  item,
+  window,
+  modifyItem,
+  focusWindow,
+  children,
+}) {
+  const [maximized, setMaximized] = useState(false);
 
-  onNameChange = (e) => {
-    this.props.modifyItem({
-      ...this.props.item,
-      name: e.target.value
+  const onNameChange = (e) => {
+    modifyItem({
+      ...item,
+      name: e.target.value,
     });
-  }
+  };
 
-  changeMaximize = (e) => {
-    this.setState({
-      maximized: !this.state.maximized
-    });
-  }
+  const changeMaximize = (e) => {
+    setMaximized(!maximized);
+  };
 
-  onClick = (e) => {
-    this.props.focusWindow(this.props.item.id);
-  }
+  const onClick = (e) => {
+    focusWindow(item.id);
+  };
 
-  render() {
-    const { item, x, y, closeWindow } = this.props;
-    return (
-      <div className={'window ' + (this.state.maximized ? 'window-maximized' : '')} style={{ left: x, top: y }} onClick={this.onClick}>
-        <WindowBar item={item} x={x} y={y} closeWindow={closeWindow} maximized={this.state.maximized} changeMaximize={this.changeMaximize} />
-        <div className="window-content">
-          Name: <input type="text" value={item.name} onChange={this.onNameChange} ></input>
-          <hr />
-          {this.props.children}
-        </div>
+  return (
+    <div
+      className={"window " + (maximized ? "window-maximized" : "")}
+      style={{ left: window.x, top: window.y }}
+      onClick={onClick}
+    >
+      <WindowBar
+        id={id}
+        maximized={maximized}
+        changeMaximize={changeMaximize}
+      />
+      <div className="window-content">
+        Name:{" "}
+        <input type="text" value={item.name} onChange={onNameChange}></input>
+        <hr />
+        {children}
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  const itemType = ownProps.id.split("_")[0];
+  return {
+    item: state.folderReducer[itemType][ownProps.id],
+    window: state.windowReducer.windows[ownProps.id],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+    focusWindow: (id) => {
+      dispatch(focusWindow(id));
+    },
+  };
+};
 
 Window.propTypes = {
-  item: PropTypes.object.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  closeWindow: PropTypes.func.isRequired,
-  focusWindow: PropTypes.func.isRequired,
-  modifyItem: PropTypes.func.isRequired
-}
+  id: PropTypes.string.isRequired,
+};
 
-
-export default Window;
+export default connect(mapStateToProps, mapDispatchToProps)(Window);

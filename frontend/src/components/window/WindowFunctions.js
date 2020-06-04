@@ -1,121 +1,131 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Window from './Window';
-import Editor from '../shared/Editor';
-import ListDisplay from '../shared/ListDisplay';
-import './WindowFunctions.css';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Window from "./Window";
+import Editor from "../shared/Editor";
+import ListDisplay from "../shared/ListDisplay";
+import { modifyItem } from "../../actions/folderActions";
+import "./WindowFunctions.css";
 
-export class WindowFunctions extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: ''
-    };
-  }
+export function WindowFunctions({ id, item, modifyItem }) {
+  const [selected, setSelected] = useState("");
 
-  selectArg = (e) => {
-    this.setState({
-      ...this.state,
-      selected: e.target.value
-    });
-  }
+  const selectArg = (e) => {
+    setSelected(e.target.value);
+  };
 
-  createArg = (e) => {
-    const { item, modifyItem } = this.props;
-    const newArgName = 'arg_' + item.args.length;
+  const createArg = (e) => {
+    const newArgName = "arg_" + item.args.length;
     modifyItem({
       ...item,
-      args: [...item.args, newArgName]
+      args: [...item.args, newArgName],
     });
-  }
+  };
 
-  deleteArg = (e) => {
-    const { item, modifyItem } = this.props;
+  const deleteArg = (e) => {
     modifyItem({
       ...item,
-      args: item.args.filter(x => x !== this.state.selected)
+      args: item.args.filter((x) => x !== selected),
     });
-    this.setState({
-      ...this.state,
-      selected: ''
-    });
-  }
+    setSelected("");
+  };
 
-  moveArgUp = (e) => {
-    const { item, modifyItem } = this.props;
-    const index = item.args.indexOf(this.state.selected);
-    if(index === -1) {
+  const moveArgUp = (e) => {
+    const index = item.args.indexOf(selected);
+    if (index === -1) {
       return;
     }
     const newArgs = [...item.args];
-    if(index > 0) {
-      [newArgs[index - 1], newArgs[index]] = [newArgs[index], newArgs[index - 1]];
+    if (index > 0) {
+      [newArgs[index - 1], newArgs[index]] = [
+        newArgs[index],
+        newArgs[index - 1],
+      ];
     }
     modifyItem({
       ...item,
-      args: newArgs
+      args: newArgs,
     });
-  }
+  };
 
-  moveArgDown = (e) => {
-    const { item, modifyItem } = this.props;
-    const index = item.args.indexOf(this.state.selected);
-    if(index === -1) {
+  const moveArgDown = (e) => {
+    const index = item.args.indexOf(selected);
+    if (index === -1) {
       return;
     }
     const newArgs = [...item.args];
-    if(index < item.args.length - 1) {
-      [newArgs[index], newArgs[index + 1]] = [newArgs[index + 1], newArgs[index]];
+    if (index < item.args.length - 1) {
+      [newArgs[index], newArgs[index + 1]] = [
+        newArgs[index + 1],
+        newArgs[index],
+      ];
     }
     modifyItem({
       ...item,
-      args: newArgs
+      args: newArgs,
     });
-  }
+  };
 
-  onArgNameChange = (e) => {
-    const { item, modifyItem } = this.props;
+  const onArgNameChange = (e) => {
     const newName = e.target.value;
-    const index = item.args.indexOf(this.state.selected);
+    const index = item.args.indexOf(selected);
     const newArgs = [...item.args];
     newArgs[index] = newName;
     modifyItem({
       ...item,
-      args: newArgs
+      args: newArgs,
     });
-    this.setState({
-      ...this.state,
-      selected: newName
-    });
-  }
+    setSelected(newName);
+  };
 
-  render() {
-    const { item, x, y, closeWindow, focusWindow, modifyItem, names } = this.props;
-    return (
-      <Window item={item} x={x} y={y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} >
-        <div className="function-panel">
-          <div className="function-args">
-            <ListDisplay name={'Arguments'} container={item.args} getName={(id) => id} onChange={this.selectArg} onButtonPlus={this.createArg} onButtonMinus={this.deleteArg} onButtonUp={this.moveArgUp} onButtonDown={this.moveArgDown} />
-            {this.state.selected && <div>
+  return (
+    <Window id={id}>
+      <div className="function-panel">
+        <div className="function-args">
+          <ListDisplay
+            name={"Arguments"}
+            container={item.args}
+            getName={(id) => id}
+            onChange={selectArg}
+            onButtonPlus={createArg}
+            onButtonMinus={deleteArg}
+            onButtonUp={moveArgUp}
+            onButtonDown={moveArgDown}
+          />
+          {selected && (
+            <div>
               <div>Name:</div>
-              <input type="text" value={this.state.selected} onChange={this.onArgNameChange}></input>
-            </div>}
-          </div>
-          <Editor item={item} modifyItem={modifyItem} args={item.args} names={names} />
+              <input
+                type="text"
+                value={selected}
+                onChange={onArgNameChange}
+              ></input>
+            </div>
+          )}
         </div>
-      </Window>
-    );
-  }
+        <Editor item={item} modifyItem={modifyItem} args={item.args} />
+      </div>
+    </Window>
+  );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  const itemType = ownProps.id.split("_")[0];
+  return {
+    item: state.folderReducer[itemType][ownProps.id],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+  };
+};
 
 WindowFunctions.propTypes = {
-  item: PropTypes.object.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  closeWindow: PropTypes.func.isRequired,
-  focusWindow: PropTypes.func.isRequired,
-  modifyItem: PropTypes.func.isRequired,
-  names: PropTypes.array.isRequired
-}
+  id: PropTypes.string.isRequired,
+};
 
-export default WindowFunctions;
+export default connect(mapStateToProps, mapDispatchToProps)(WindowFunctions);

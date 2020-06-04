@@ -1,139 +1,180 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Window from './Window';
-import AnimationDisplay from './AnimationDisplay';
-import ListDisplay from '../shared/ListDisplay';
-import './WindowGraphics.css';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Window from "./Window";
+import AnimationDisplay from "./AnimationDisplay";
+import ListDisplay from "../shared/ListDisplay";
+import {
+  modifyItem,
+  createAnimation,
+  deleteAnimation,
+} from "../../actions/folderActions";
+import "./WindowGraphics.css";
 
-export class WindowGraphics extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: ''
-    };
-  }
+export function WindowGraphics({
+  item,
+  animations,
+  modifyItem,
+  createAnimation,
+  deleteAnimation,
+}) {
+  const [selected, setSelected] = useState("");
 
-  onUploadGraphic = (e) => {
-    const filename = e.target.value.split('\\');
-    this.props.modifyItem({
-      ...this.props.item,
-      filename: filename[filename.length - 1]
+  const onUploadGraphic = (e) => {
+    const filename = e.target.value.split("\\");
+    modifyItem({
+      ...item,
+      filename: filename[filename.length - 1],
     });
-  }
+  };
 
-  createAnimation = (e) => {
-    this.props.createAnimation(this.props.item.id);
-  }
+  const createAnimationHandler = (e) => {
+    createAnimation(item.id);
+  };
 
-  deleteAnimation = (e) => {
-    if(this.state.selected !== '') {
-      this.props.deleteAnimation(this.state.selected);
-      this.setState({
-        selected: ''
-      });
+  const deleteAnimationHandler = (e) => {
+    if (selected !== "") {
+      deleteAnimation(selected);
+      setSelected("");
     }
-  }
+  };
 
-  openAnimation = (e) => {
-    this.setState({
-      selected: e.target.value
-    });
-  }
+  const openAnimation = (e) => {
+    setSelected(e.target.value);
+  };
 
-  moveAnimationUp = (e) => {
-    const { item, modifyItem } = this.props;
-    const index = item.animations.indexOf(this.state.selected);
-    if(index === -1) {
+  const moveAnimationUp = (e) => {
+    const index = item.animations.indexOf(selected);
+    if (index === -1) {
       return;
     }
     const newAnimations = [...item.animations];
-    if(index > 0) {
-      [newAnimations[index - 1], newAnimations[index]] = [newAnimations[index], newAnimations[index - 1]];
+    if (index > 0) {
+      [newAnimations[index - 1], newAnimations[index]] = [
+        newAnimations[index],
+        newAnimations[index - 1],
+      ];
     }
     modifyItem({
       ...item,
-      animations: newAnimations
+      animations: newAnimations,
     });
-  }
+  };
 
-  moveAnimationDown = (e) => {
-    const { item, modifyItem } = this.props;
-    const index = item.animations.indexOf(this.state.selected);
-    if(index === -1) {
+  const moveAnimationDown = (e) => {
+    const index = item.animations.indexOf(selected);
+    if (index === -1) {
       return;
     }
     const newAnimations = [...item.animations];
-    if(index < item.animations.length - 1) {
-      [newAnimations[index], newAnimations[index + 1]] = [newAnimations[index + 1], newAnimations[index]];
+    if (index < item.animations.length - 1) {
+      [newAnimations[index], newAnimations[index + 1]] = [
+        newAnimations[index + 1],
+        newAnimations[index],
+      ];
     }
     modifyItem({
       ...item,
-      animations: newAnimations
+      animations: newAnimations,
     });
-  }
+  };
 
-  getAnimationName = (id) => {
-    return this.props.animations[id].name;
-  }
+  const getAnimationName = (id) => {
+    return animations[id].name;
+  };
 
-  getSelectedAnimation = () => {
-    if(this.state.selected === '') {
+  const getSelectedAnimation = () => {
+    if (selected === "") {
       return null;
     }
-    const animation = this.props.animations[this.state.selected];
-    return <div className="animation-selection" style={{ top: animation.top, left: animation.left, width: animation.width, height: animation.height }} ></div>
-  }
+    const animation = animations[selected];
+    return (
+      <div
+        className="animation-selection"
+        style={{
+          top: animation.top,
+          left: animation.left,
+          width: animation.width,
+          height: animation.height,
+        }}
+      ></div>
+    );
+  };
 
-  fileAvailable = () => {
-    const { item, animations, modifyItem } = this.props;
+  const fileAvailable = () => {
     return (
       <div>
         <div className="animation-panel">
           <div className="animation-manager">
-            <ListDisplay name={'Animations'} container={item.animations} getName={this.getAnimationName} onChange={this.openAnimation} onButtonPlus={this.createAnimation} onButtonMinus={this.deleteAnimation} onButtonUp={this.moveAnimationUp} onButtonDown={this.moveAnimationDown} />
+            <ListDisplay
+              name={"Animations"}
+              container={item.animations}
+              getName={getAnimationName}
+              onChange={openAnimation}
+              onButtonPlus={createAnimationHandler}
+              onButtonMinus={deleteAnimationHandler}
+              onButtonUp={moveAnimationUp}
+              onButtonDown={moveAnimationDown}
+            />
           </div>
           <div className="animation-display">
-            {this.state.selected && <AnimationDisplay animation={animations[this.state.selected]} modifyItem={modifyItem} />}
+            {selected && (
+              <AnimationDisplay
+                animation={animations[selected]}
+                modifyItem={modifyItem}
+              />
+            )}
           </div>
         </div>
         <hr />
-        <div style={{ position: 'relative' }}>
-          <img src={'img/' + item.filename} alt={item.name}></img>
-          {this.getSelectedAnimation()}
+        <div style={{ position: "relative" }}>
+          <img src={"img/" + item.filename} alt={item.name}></img>
+          {getSelectedAnimation()}
         </div>
-      </div> 
+      </div>
     );
-  }
+  };
 
-  fileNotAvailable = () => {
+  const fileNotAvailable = () => {
     return (
       <div>
         <div>Please select image file to be used for this graphic:</div>
-        <input type="file" onChange={this.onUploadGraphic}></input>
+        <input type="file" onChange={onUploadGraphic}></input>
       </div>
     );
-  }
+  };
 
-  render() {
-    const { item, x, y, closeWindow, focusWindow, modifyItem } = this.props;
-    return (
-      <Window item={item} x={x} y={y} closeWindow={closeWindow} focusWindow={focusWindow} modifyItem={modifyItem} >
-        {item.filename ? this.fileAvailable() : this.fileNotAvailable()}
-      </Window>
-    );
-  }
+  return (
+    <Window id={item.id}>
+      {item.filename ? fileAvailable() : fileNotAvailable()}
+    </Window>
+  );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  const itemType = ownProps.id.split("_")[0];
+  return {
+    item: state.folderReducer[itemType][ownProps.id],
+    animations: state.folderReducer.animations,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+    createAnimation: (id) => {
+      dispatch(createAnimation(id));
+    },
+    deleteAnimation: (id) => {
+      dispatch(deleteAnimation(id));
+    },
+  };
+};
 
 WindowGraphics.propTypes = {
-  item: PropTypes.object.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  closeWindow: PropTypes.func.isRequired,
-  focusWindow: PropTypes.func.isRequired,
-  animations: PropTypes.object.isRequired,
-  modifyItem: PropTypes.func.isRequired,
-  createAnimation: PropTypes.func.isRequired,
-  deleteAnimation: PropTypes.func.isRequired
-}
+  id: PropTypes.string.isRequired,
+};
 
-export default WindowGraphics;
+export default connect(mapStateToProps, mapDispatchToProps)(WindowGraphics);
