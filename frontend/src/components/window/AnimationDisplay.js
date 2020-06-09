@@ -1,93 +1,152 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { modifyItem } from "../../actions/folderActions";
 
-export class AnimationDisplay extends Component {
-  onNameChange = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      name: e.target.value
+export function AnimationDisplay({ animation, modifyItem }) {
+  const onNameChange = (e) => {
+    modifyItem({
+      ...animation,
+      name: e.target.value,
     });
-  }
+  };
 
-  changeTop = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      top: Number(e.target.value)
+  const changeTop = (e) => {
+    modifyItem({
+      ...animation,
+      top: Number(e.target.value),
     });
-  }
+  };
 
-  changeLeft = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      left: Number(e.target.value)
+  const changeLeft = (e) => {
+    modifyItem({
+      ...animation,
+      left: Number(e.target.value),
     });
-  }
+  };
 
-  changeWidth = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      width: Number(e.target.value)
+  const changeWidth = (e) => {
+    modifyItem({
+      ...animation,
+      width: Number(e.target.value),
     });
-  }
+  };
 
-  changeHeight = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      height: Number(e.target.value)
+  const changeHeight = (e) => {
+    modifyItem({
+      ...animation,
+      height: Number(e.target.value),
     });
-  }
+  };
 
-  changeTileWidth = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      tileWidth: Number(e.target.value)
+  const changeTileWidth = (e) => {
+    modifyItem({
+      ...animation,
+      tileWidth: Number(e.target.value),
     });
-  }
+  };
 
-  changeTileHeight = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      tileHeight: Number(e.target.value)
+  const changeTileHeight = (e) => {
+    modifyItem({
+      ...animation,
+      tileHeight: Number(e.target.value),
     });
-  }
+  };
 
-  changeEvery = (e) => {
-    this.props.modifyItem({
-      ...this.props.animation,
-      every: Number(e.target.value)
+  const changeEvery = (e) => {
+    modifyItem({
+      ...animation,
+      every: Number(e.target.value),
     });
-  }
+  };
 
-  getCounterColor = (frames) => {
-    if(frames - Math.floor(frames) !== 0 || frames <= 0) {
-      return 'red';
+  const getCounterColor = (frames) => {
+    if (frames - Math.floor(frames) !== 0 || frames <= 0) {
+      return "red";
     }
-    return 'black';
-  }
+    return "black";
+  };
 
-  render() {
-    const frames = (this.props.animation.width * this.props.animation.height)/(this.props.animation.tileWidth * this.props.animation.tileHeight);
-    return (
-      <div>
-         Name: <input type="text" value={this.props.animation.name} onChange={this.onNameChange} ></input>
-         <hr />
-         <div className="animation-label">Top <input type="text" value={this.props.animation.top} onChange={this.changeTop}></input></div>
-         <div className="animation-label">Left <input type="text" value={this.props.animation.left} onChange={this.changeLeft}></input></div>
-         <div className="animation-label">Width <input type="text" value={this.props.animation.width} onChange={this.changeWidth}></input></div>
-         <div className="animation-label">Height <input type="text" value={this.props.animation.height} onChange={this.changeHeight}></input></div>
-         <div className="animation-label">Tile Width <input type="text" value={this.props.animation.tileWidth} onChange={this.changeTileWidth}></input></div>
-         <div className="animation-label">Tile Height <input type="text" value={this.props.animation.tileHeight} onChange={this.changeTileHeight}></input></div>
-         <div className="animation-label">Update every <input type="text" value={this.props.animation.every} onChange={this.changeEvery}></input></div>
-         <hr />
-         <div style={{ color: this.getCounterColor(frames) }}> Number of frames: {frames} </div>
+  const frames =
+    (animation.width * animation.height) /
+    (animation.tileWidth * animation.tileHeight);
+  return (
+    <div>
+      Name:
+      <input type="text" value={animation.name} onChange={onNameChange}></input>
+      <hr />
+      <div className="animation-label">
+        Top
+        <input type="text" value={animation.top} onChange={changeTop}></input>
       </div>
-    );
-  }
+      <div className="animation-label">
+        Left
+        <input type="text" value={animation.left} onChange={changeLeft}></input>
+      </div>
+      <div className="animation-label">
+        Width
+        <input
+          type="text"
+          value={animation.width}
+          onChange={changeWidth}
+        ></input>
+      </div>
+      <div className="animation-label">
+        Height
+        <input
+          type="text"
+          value={animation.height}
+          onChange={changeHeight}
+        ></input>
+      </div>
+      <div className="animation-label">
+        Tile Width
+        <input
+          type="text"
+          value={animation.tileWidth}
+          onChange={changeTileWidth}
+        ></input>
+      </div>
+      <div className="animation-label">
+        Tile Height
+        <input
+          type="text"
+          value={animation.tileHeight}
+          onChange={changeTileHeight}
+        ></input>
+      </div>
+      <div className="animation-label">
+        Update every
+        <input
+          type="text"
+          value={animation.every}
+          onChange={changeEvery}
+        ></input>
+      </div>
+      <hr />
+      <div style={{ color: getCounterColor(frames) }}>
+        Number of frames: {frames}
+      </div>
+    </div>
+  );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    animation: state.folderReducer.animations[ownProps.id],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+  };
+};
 
 AnimationDisplay.propTypes = {
-  animation: PropTypes.object.isRequired,
-  modifyItem: PropTypes.func.isRequired
-}
+  id: PropTypes.string.isRequired,
+};
 
-export default AnimationDisplay;
+export default connect(mapStateToProps, mapDispatchToProps)(AnimationDisplay);

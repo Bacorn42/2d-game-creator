@@ -118,12 +118,7 @@ export function WindowGraphics({
             />
           </div>
           <div className="animation-display">
-            {selected && (
-              <AnimationDisplay
-                animation={animations[selected]}
-                modifyItem={modifyItem}
-              />
-            )}
+            {selected && <AnimationDisplay id={selected} />}
           </div>
         </div>
         <hr />
