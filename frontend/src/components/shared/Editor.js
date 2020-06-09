@@ -1,117 +1,94 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import "./Editor.css";
 import tokenize from "../../2dgs/tokenize";
+import { modifyItem } from "../../actions/folderActions";
 
-export class Editor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tokens: [],
-      scrollAmount: 0,
-    };
-  }
+export function Editor({ id, item, modifyItem, items }) {
+  const names = [
+    ...Object.keys(items.graphics).map((x) => items.graphics[x].name),
+    ...Object.keys(items.audio).map((x) => items.audio[x].name),
+    ...Object.keys(items.functions).map((x) => items.functions[x].name),
+    ...Object.keys(items.objects).map((x) => items.objects[x].name),
+    ...Object.keys(items.scenes).map((x) => items.scenes[x].name),
+    ...Object.keys(items.animations).map((x) => items.animations[x].name),
+  ];
 
-  // TEMPORARY
-  getNames = () => {
-    return [];
-    const {
-      graphics,
-      audio,
-      functions,
-      objects,
-      scenes,
-      animations,
-    } = this.props;
-    return [
-      ...Object.keys(graphics).map((x) => graphics[x].name),
-      ...Object.keys(audio).map((x) => audio[x].name),
-      ...Object.keys(functions).map((x) => functions[x].name),
-      ...Object.keys(objects).map((x) => objects[x].name),
-      ...Object.keys(scenes).map((x) => scenes[x].name),
-      ...Object.keys(animations).map((x) => animations[x].name),
-    ];
-  };
+  const [tokens, setTokens] = useState(tokenize(item.code, item.args, names));
+  const [scrollAmount, setScrollAmount] = useState(0);
 
-  onInput = (e) => {
-    const { item, modifyItem, args } = this.props;
+  useEffect(() => {
+    document.getElementById(id).value = item.code;
+  }, [id, item.code]);
+
+  const onInput = (e) => {
     modifyItem({
       ...item,
       code: e.target.value,
     });
-    this.setState({
-      ...this.state,
-      tokens: tokenize(
-        document.getElementById(item.id).value,
-        args,
-        this.getNames()
-      ),
-    });
+    setTokens(tokenize(document.getElementById(id).value, item.args, names));
   };
 
-  componentDidMount() {
-    const { item, args } = this.props;
-    document.getElementById(item.id).value = item.code;
-    this.setState({
-      ...this.state,
-      tokens: tokenize(item.code, args, this.getNames()),
-    });
-  }
-
-  getLineCount = () => {
-    const { tokens } = this.state;
+  const getLineCount = () => {
     if (tokens.length === 0) {
       return 1;
     }
     return tokens[tokens.length - 1].line;
   };
 
-  onScroll = (e) => {
-    this.setState({
-      ...this.state,
-      scrollAmount: e.target.scrollLeft,
-    });
-    document.getElementById(this.props.item.id).scrollLeft =
-      e.target.scrollLeft;
-    document.getElementById(this.props.item.id + "_pre").scrollLeft =
-      e.target.scrollLeft;
+  const onScroll = (e) => {
+    setScrollAmount(e.target.scrollLeft);
+    document.getElementById(id).scrollLeft = e.target.scrollLeft;
+    document.getElementById(id + "_pre").scrollLeft = e.target.scrollLeft;
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <div className="editor-content" onScroll={this.onScroll}>
-        <div className="editor-container">
-          <div className="editor-line-numbers">
-            {[...Array(this.getLineCount())].map((x, i) => (
-              <div key={i}>{i + 1}</div>
-            ))}
-          </div>
-          <textarea
-            id={item.id}
-            className="editor-textarea editor-style"
-            onInput={this.onInput}
-            spellCheck={false}
-            wrap={"off"}
-            style={{ left: 60 + this.state.scrollAmount }}
-          />
-          <pre id={item.id + "_pre"} className="editor-result editor-style">
-            {this.state.tokens.map((x, i) => (
-              <span key={i} className={x.type + " " + x.secondaryType}>
-                {x.value}
-              </span>
-            ))}
-          </pre>
+  return (
+    <div className="editor-content" onScroll={onScroll}>
+      <div className="editor-container">
+        <div className="editor-line-numbers">
+          {[...Array(getLineCount())].map((x, i) => (
+            <div key={i}>{i + 1}</div>
+          ))}
         </div>
+        <textarea
+          id={id}
+          className="editor-textarea editor-style"
+          onInput={onInput}
+          spellCheck={false}
+          wrap={"off"}
+          style={{ left: 60 + scrollAmount }}
+        />
+        <pre id={id + "_pre"} className="editor-result editor-style">
+          {tokens.map((x, i) => (
+            <span key={i} className={x.type + " " + x.secondaryType}>
+              {x.value}
+            </span>
+          ))}
+        </pre>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-Editor.propTypes = {
-  item: PropTypes.object.isRequired,
-  modifyItem: PropTypes.func.isRequired,
-  args: PropTypes.array.isRequired,
+const mapStateToProps = (state, ownProps) => {
+  const itemType = ownProps.id.split("_")[0];
+  return {
+    items: state.folderReducer,
+    item: state.folderReducer[itemType][ownProps.id],
+  };
 };
 
-export default Editor;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyItem: (item) => {
+      dispatch(modifyItem(item));
+    },
+  };
+};
+
+Editor.propTypes = {
+  id: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor);

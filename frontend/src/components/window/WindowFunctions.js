@@ -103,7 +103,7 @@ export function WindowFunctions({ id, item, modifyItem }) {
             </div>
           )}
         </div>
-        <Editor item={item} modifyItem={modifyItem} args={item.args} />
+        <Editor id={id} />
       </div>
     </Window>
   );
