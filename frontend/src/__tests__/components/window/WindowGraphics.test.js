@@ -1,33 +1,27 @@
 import React from "react";
 import { render, cleanup } from "../../../testUtils/renderUtil";
 import "@testing-library/jest-dom/extend-expect";
-import MainView from "../../../components/main/MainView";
+import WindowGraphics from "../../../components/window/WindowGraphics";
 import * as windowActions from "../../../actions/windowActions";
 import * as folderActions from "../../../actions/folderActions";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faFolder,
-  faImage,
   faWindowClose,
   faWindowMaximize,
+  faWindowRestore,
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faFolder, faImage, faWindowClose, faWindowMaximize);
+library.add(faWindowClose, faWindowMaximize, faWindowRestore, faImage);
 
 afterEach(cleanup);
 
-test("Renders multiple windows", () => {
-  const { getByText } = render(<MainView />, {
+test("Renders WindowGraphics", () => {
+  const { getByText } = render(<WindowGraphics id={"graphics_0"} />, {
     actions: [
       folderActions.createItem("folders_graphics"),
-      folderActions.createItem("folders_graphics"),
-      folderActions.createItem("folders_graphics"),
       windowActions.openWindow("graphics_0"),
-      windowActions.openWindow("graphics_1"),
-      windowActions.openWindow("graphics_2"),
     ],
   });
   getByText("graphics_0");
-  getByText("graphics_1");
-  getByText("graphics_2");
 });
