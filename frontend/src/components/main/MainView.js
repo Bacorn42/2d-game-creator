@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import WindowGraphics from "../window/WindowGraphics";
 import WindowAudio from "../window/WindowAudio";
 import WindowFunctions from "../window/WindowFunctions";
+import WindowObjects from "../window/WindowObjects";
 import WindowFolders from "../window/WindowFolders";
 import { moveWindow } from "../../actions/windowActions";
 
@@ -10,6 +11,7 @@ const WindowComponents = {
   graphics: WindowGraphics,
   audio: WindowAudio,
   functions: WindowFunctions,
+  objects: WindowObjects,
   folders: WindowFolders,
 };
 
@@ -17,6 +19,9 @@ export function MainView({ windows_order, moveWindow }) {
   const getWindow = (window) => {
     const type = window.split("_")[0];
     const WindowComponent = WindowComponents[type];
+    if (!WindowComponent) {
+      return null;
+    }
     return <WindowComponent key={window} id={window} />;
   };
 

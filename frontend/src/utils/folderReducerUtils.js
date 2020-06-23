@@ -1,58 +1,59 @@
-export const getRoot = function(state, folder) {
-  if(folder.parent === null) {
-    return folder.id.split('_')[1];
+export const getRoot = function (state, folder) {
+  if (folder.parent === null) {
+    return folder.id.split("_")[1];
   }
   return getRoot(state, state.folders[folder.parent]);
-}
+};
 
-export const childOf = function(state, to, from) {
-  while(to.parent !== null) {
-    if(to.parent === from.id) {
+export const childOf = function (state, to, from) {
+  while (to.parent !== null) {
+    if (to.parent === from.id) {
       return true;
     }
     to = state.folders[to.parent];
   }
   return false;
-}
+};
 
-export const makeItem = function(type, id, parent) {
-  switch(type) {
-    case 'graphics':
+export const makeItem = function (type, id, parent) {
+  switch (type) {
+    case "graphics":
       return {
         id,
         name: id,
         parent,
-        filename: '',
+        filename: "",
         animations: [],
       };
-    case 'audio':
+    case "audio":
       return {
         id,
         name: id,
         parent,
-        filename: ''
+        filename: "",
       };
-    case 'functions':
+    case "functions":
       return {
         id,
         name: id,
         parent,
-        code: '',
-        args: []
+        code: "",
+        args: [],
       };
-    case 'objects':
+    case "objects":
       return {
         id,
         name: id,
-        parent
+        parent,
+        events: [],
       };
-    case 'scenes':
+    case "scenes":
       return {
         id,
         name: id,
-        parent
+        parent,
       };
-    case 'animations':
+    case "animations":
       return {
         id,
         name: id,
@@ -63,9 +64,19 @@ export const makeItem = function(type, id, parent) {
         height: 0,
         tileWidth: 0,
         tileHeight: 0,
-        every: 1
-      }
+        every: 1,
+      };
+    case "events":
+      return {
+        id,
+        name: id
+          .split("_")
+          .filter((_, i) => i > 2)
+          .join(" "),
+        parent,
+        code: "",
+      };
     default:
       return {};
   }
-}
+};

@@ -1,0 +1,12 @@
+.object-panel {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 4px - 19px - 18px); /* Taking into account the top */
+}
+
+.object-events {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
+  min-width: 100px;
+}

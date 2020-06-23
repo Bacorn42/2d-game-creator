@@ -21,6 +21,10 @@ const folderReducer = function (state = folderReducerInitialState, action) {
       return createAnimation(state, action);
     case "DELETE_ANIMATION":
       return deleteAnimation(state, action);
+    case "CREATE_EVENT":
+      return createEvent(state, action);
+    case "DELETE_EVENT":
+      return deleteEvent(state, action);
     default:
       return state;
   }
@@ -47,7 +51,7 @@ const moveItem = function (state, action) {
         [item.parent]: {
           ...state.folders[item.parent],
           items: state.folders[item.parent].items.filter(
-            (x) => x !== action.id,
+            (x) => x !== action.id
           ),
         },
         [action.to]: {
@@ -70,7 +74,7 @@ const moveFolder = function (state, action) {
   }
   if (
     getRoot(state, state.folders[action.id]) ===
-      getRoot(state, state.folders[action.to])
+    getRoot(state, state.folders[action.to])
   ) {
     if (!childOf(state, state.folders[action.to], state.folders[action.id])) {
       const from = state.folders[action.id];
@@ -89,7 +93,7 @@ const moveFolder = function (state, action) {
           [from.parent]: {
             ...state.folders[from.parent],
             folders: state.folders[from.parent].folders.filter(
-              (x) => x !== action.id,
+              (x) => x !== action.id
             ),
           },
         },
@@ -225,15 +229,59 @@ const deleteAnimation = function (state, action) {
       [animation.parent]: {
         ...state.graphics[animation.parent],
         animations: state.graphics[animation.parent].animations.filter(
-          (x) => x !== action.id,
+          (x) => x !== action.id
         ),
       },
     },
-    animations: {
-      ...state.animations,
-    },
   };
   delete newState.animations[action.id];
+  return newState;
+};
+
+const createEvent = function (state, action) {
+  const eventType = action.eventType.replace(/ /g, "_");
+  let newId = "events_" + action.id + "_" + eventType;
+  if (action.eventKey) {
+    newId += "_" + action.eventKey;
+  }
+  if (action.eventTimer) {
+    newId += "_" + action.eventTimer;
+  }
+  if (state.events[newId]) {
+    return { ...state };
+  }
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      [action.id]: {
+        ...state.objects[action.id],
+        events: [...state.objects[action.id].events, newId],
+      },
+    },
+    events: {
+      ...state.events,
+      [newId]: makeItem("events", newId, action.id),
+      count: state.events.count + 1,
+    },
+  };
+};
+
+const deleteEvent = function (state, action) {
+  const event = state.events[action.id];
+  const newState = {
+    ...state,
+    objects: {
+      ...state.objects,
+      [event.parent]: {
+        ...state.objects[event.parent],
+        events: state.objects[event.parent].events.filter(
+          (x) => x !== action.id
+        ),
+      },
+    },
+  };
+  delete newState.events[action.id];
   return newState;
 };
 
