@@ -4,6 +4,7 @@ import WindowGraphics from "../window/WindowGraphics";
 import WindowAudio from "../window/WindowAudio";
 import WindowFunctions from "../window/WindowFunctions";
 import WindowObjects from "../window/WindowObjects";
+import WindowScenes from "../window/WindowScenes";
 import WindowFolders from "../window/WindowFolders";
 import { moveWindow } from "../../actions/windowActions";
 
@@ -12,6 +13,7 @@ const WindowComponents = {
   audio: WindowAudio,
   functions: WindowFunctions,
   objects: WindowObjects,
+  scenes: WindowScenes,
   folders: WindowFolders,
 };
 

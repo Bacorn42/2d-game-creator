@@ -66,16 +66,17 @@ export function Editor({ id, item, modifyItem, names }) {
 const mapStateToProps = (state, ownProps) => {
   const itemType = ownProps.id.split("_")[0];
   const items = state.folderReducer;
+  const names = [
+    ...Object.keys(items.graphics).map((x) => items.graphics[x].name),
+    ...Object.keys(items.audio).map((x) => items.audio[x].name),
+    ...Object.keys(items.functions).map((x) => items.functions[x].name),
+    ...Object.keys(items.objects).map((x) => items.objects[x].name),
+    ...Object.keys(items.scenes).map((x) => items.scenes[x].name),
+    ...Object.keys(items.animations).map((x) => items.animations[x].name),
+  ];
   return {
     item: state.folderReducer[itemType][ownProps.id],
-    names: [
-      ...Object.keys(items.graphics).map((x) => items.graphics[x].name),
-      ...Object.keys(items.audio).map((x) => items.audio[x].name),
-      ...Object.keys(items.functions).map((x) => items.functions[x].name),
-      ...Object.keys(items.objects).map((x) => items.objects[x].name),
-      ...Object.keys(items.scenes).map((x) => items.scenes[x].name),
-      ...Object.keys(items.animations).map((x) => items.animations[x].name),
-    ],
+    names: names.filter(Boolean),
   };
 };
 

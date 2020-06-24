@@ -52,6 +52,9 @@ export const makeItem = function (type, id, parent) {
         id,
         name: id,
         parent,
+        width: "800",
+        height: "640",
+        objects: {},
       };
     case "animations":
       return {
