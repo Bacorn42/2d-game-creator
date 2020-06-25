@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Window from "./Window";
+import WindowScenesObject from "./WindowScenesObject";
 import { modifyItem } from "../../actions/folderActions";
 import "./WindowScenes.css";
 
@@ -66,7 +67,7 @@ export function WindowScenes({ id, item, objectNames, modifyItem }) {
 
   const removeObject = (e) => {
     e.preventDefault();
-    if (e.target.className !== "scene-object") {
+    if (!e.target.className.includes("scene-object")) {
       return;
     }
     const objectX = Number(e.target.style.left.split("px")[0]);
@@ -140,14 +141,12 @@ export function WindowScenes({ id, item, objectNames, modifyItem }) {
               <div key={i} className="scene-grid" style={{ ...x }}></div>
             ))}
             {Object.keys(item.objects).map((x) => (
-              <div
+              <WindowScenesObject
                 key={x}
-                className="scene-object"
-                style={{
-                  left: x.split("_")[0] + "px",
-                  top: x.split("_")[1] + "px",
-                }}
-              ></div>
+                left={x.split("_")[0]}
+                top={x.split("_")[1]}
+                objectId={item.objects[x]}
+              />
             ))}
           </div>
         </div>

@@ -17,6 +17,7 @@ export function WindowObjects({
   id,
   item,
   events,
+  animationNames,
   modifyItem,
   createEvent,
   deleteEvent,
@@ -137,7 +138,14 @@ export function WindowObjects({
       <div className="object-panel">
         <div className="object-controls">
           Animation:
-          <select onChange={setAnimation}></select>
+          <select onChange={setAnimation} defaultValue={item.animation}>
+            <option value={""}></option>
+            {animationNames.map((x) => (
+              <option key={x.id} value={x.id}>
+                {x.name}
+              </option>
+            ))}
+          </select>
           Events:
           <select onChange={setEventType}>
             {eventTypes.map((event) => (
@@ -167,10 +175,10 @@ export function WindowObjects({
 
 const mapStateToProps = (state, ownProps) => {
   const itemType = ownProps.id.split("_")[0];
-  getAnimationNames(state.folderReducer);
   return {
     item: state.folderReducer[itemType][ownProps.id],
     events: state.folderReducer.events,
+    animationNames: getAnimationNames(state.folderReducer),
   };
 };
 

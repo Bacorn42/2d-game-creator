@@ -4,11 +4,10 @@ const getAnimationNames = ({ graphics, animations }) => {
     .map((x) => {
       const animation = animations[x];
       return {
-        [x]: getName(animation.parent, animation.name, graphics),
+        id: x,
+        name: getName(animation.parent, animation.name, graphics),
       };
     });
-
-  console.log(animationNames);
 
   return animationNames;
 };
