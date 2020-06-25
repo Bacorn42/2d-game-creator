@@ -143,10 +143,10 @@ const deleteFolder = function (state, action) {
     },
   };
   for (const item of state.folders[action.id].items) {
-    newState = deleteItem(newState, { type: "DELETE_ITEM", id: item });
+    newState = deleteItem(newState, { id: item });
   }
   for (const folder of state.folders[action.id].folders) {
-    newState = deleteFolder(newState, { type: "DELETE_FOLDER", id: folder });
+    newState = deleteFolder(newState, { id: folder });
   }
   delete newState.folders[action.id];
   return newState;
@@ -175,8 +175,19 @@ const createItem = function (state, action) {
 
 const deleteItem = function (state, action) {
   const type = action.id.split("_")[0];
+  const item = state[type][action.id];
+  if (type === "graphics") {
+    return deleteItemUtil(state, action, item.animations, deleteAnimation);
+  } else if (type === "objects") {
+    return deleteItemUtil(state, action, item.events, deleteEvent);
+  }
+  return deleteItemUtil(state, action);
+};
+
+const deleteItemUtil = function (state, action, toDelete, callback) {
+  const type = action.id.split("_")[0];
   const parent = state[type][action.id].parent;
-  const newState = {
+  let newState = {
     ...state,
     folders: {
       ...state.folders,
@@ -186,6 +197,11 @@ const deleteItem = function (state, action) {
       },
     },
   };
+  if (toDelete) {
+    for (const item of toDelete) {
+      newState = callback(state, { id: item });
+    }
+  }
   delete newState[type][action.id];
   return newState;
 };

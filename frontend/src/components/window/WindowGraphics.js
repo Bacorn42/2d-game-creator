@@ -12,6 +12,7 @@ import {
 import "./WindowGraphics.css";
 
 export function WindowGraphics({
+  id,
   item,
   animations,
   modifyItem,
@@ -140,7 +141,7 @@ export function WindowGraphics({
   };
 
   return (
-    <Window id={item.id}>
+    <Window id={id}>
       {item.filename ? fileAvailable() : fileNotAvailable()}
     </Window>
   );

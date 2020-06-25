@@ -46,6 +46,7 @@ export const makeItem = function (type, id, parent) {
         name: id,
         parent,
         events: [],
+        animation: "",
       };
     case "scenes":
       return {

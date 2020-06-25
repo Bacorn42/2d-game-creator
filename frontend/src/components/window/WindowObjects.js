@@ -10,6 +10,7 @@ import {
   deleteEvent,
 } from "../../actions/folderActions";
 import { eventTypes, eventKeys, eventTimers } from "../../utils/eventOptions";
+import getAnimationNames from "../../utils/getAnimationNames";
 import "./WindowObjects.css";
 
 export function WindowObjects({
@@ -76,6 +77,13 @@ export function WindowObjects({
     });
   };
 
+  const setAnimation = (e) => {
+    modifyItem({
+      ...item,
+      animation: e.target.value,
+    });
+  };
+
   const setEventType = (e) => {
     setSelectedEventType(e.target.value);
   };
@@ -127,7 +135,10 @@ export function WindowObjects({
   return (
     <Window id={id}>
       <div className="object-panel">
-        <div className="object-events">
+        <div className="object-controls">
+          Animation:
+          <select onChange={setAnimation}></select>
+          Events:
           <select onChange={setEventType}>
             {eventTypes.map((event) => (
               <option key={event} value={event}>
@@ -156,6 +167,7 @@ export function WindowObjects({
 
 const mapStateToProps = (state, ownProps) => {
   const itemType = ownProps.id.split("_")[0];
+  getAnimationNames(state.folderReducer);
   return {
     item: state.folderReducer[itemType][ownProps.id],
     events: state.folderReducer.events,

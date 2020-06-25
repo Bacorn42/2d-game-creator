@@ -6,7 +6,7 @@ import WindowFunctions from "../window/WindowFunctions";
 import WindowObjects from "../window/WindowObjects";
 import WindowScenes from "../window/WindowScenes";
 import WindowFolders from "../window/WindowFolders";
-import { moveWindow } from "../../actions/windowActions";
+import { moveWindow, closeWindow } from "../../actions/windowActions";
 
 const WindowComponents = {
   graphics: WindowGraphics,
@@ -17,9 +17,13 @@ const WindowComponents = {
   folders: WindowFolders,
 };
 
-export function MainView({ windows_order, moveWindow }) {
+export function MainView({ items, windows_order, moveWindow }) {
   const getWindow = (window) => {
     const type = window.split("_")[0];
+    if (!items[type][window]) {
+      closeWindow(window);
+      return null;
+    }
     const WindowComponent = WindowComponents[type];
     if (!WindowComponent) {
       return null;
@@ -47,6 +51,7 @@ export function MainView({ windows_order, moveWindow }) {
 
 const mapStateToProps = (state) => {
   return {
+    items: state.folderReducer,
     windows_order: state.windowReducer.windows_order,
   };
 };
@@ -55,6 +60,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     moveWindow: (id, x, y) => {
       dispatch(moveWindow(id, x, y));
+    },
+    closeWindow: (id) => {
+      dispatch(closeWindow(id));
     },
   };
 };
