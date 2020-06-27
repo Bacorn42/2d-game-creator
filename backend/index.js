@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const game = require("./routes/api/game");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 const db = require("./config/mongodb").URI;

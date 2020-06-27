@@ -13,6 +13,7 @@ import {
   faFileCode,
   faCube,
   faTv,
+  faSave,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -23,7 +24,8 @@ library.add(
   faVolumeUp,
   faFileCode,
   faCube,
-  faTv
+  faTv,
+  faSave
 );
 
 afterEach(cleanup);

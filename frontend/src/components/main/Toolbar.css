@@ -2,6 +2,7 @@
   background: #dfd;
   border-bottom: 1px solid;
   padding: 4px;
+  display: flex;
 }
 
 .toolbar-icon {
@@ -11,4 +12,20 @@
 .toolbar-icon:hover {
   color: #999;
   cursor: pointer;
+}
+
+.toolbar-icon-right {
+  margin-left: auto;
+}
+
+.toolbar-save-black {
+  color: black;
+}
+
+.toolbar-save-green {
+  color: green;
+}
+
+.toolbar-save-red {
+  color: red;
 }
