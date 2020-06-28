@@ -1,4 +1,9 @@
-import { getRoot, childOf, makeItem } from "../utils/folderReducerUtils";
+import {
+  getRoot,
+  childOf,
+  getCount,
+  makeItem,
+} from "../utils/folderReducerUtils";
 import folderReducerInitialState from "../initialStates/folderReducerInitialState";
 
 const folderReducer = function (state = folderReducerInitialState, action) {
@@ -25,6 +30,8 @@ const folderReducer = function (state = folderReducerInitialState, action) {
       return createEvent(state, action);
     case "DELETE_EVENT":
       return deleteEvent(state, action);
+    case "LOAD_GAME":
+      return loadGame(state, action);
     default:
       return state;
   }
@@ -179,7 +186,8 @@ const deleteItem = function (state, action) {
   if (type === "graphics") {
     return deleteItemUtil(state, action, item.animations, deleteAnimation);
   } else if (type === "objects") {
-    return deleteItemUtil(state, action, item.events, deleteEvent);
+    const newState = deleteItemUtil(state, action, item.events, deleteEvent);
+    return deleteObjectsFromScene(newState, action.id);
   }
   return deleteItemUtil(state, action);
 };
@@ -199,11 +207,24 @@ const deleteItemUtil = function (state, action, toDelete, callback) {
   };
   if (toDelete) {
     for (const item of toDelete) {
-      newState = callback(state, { id: item });
+      newState = callback(newState, { id: item });
     }
   }
   delete newState[type][action.id];
   return newState;
+};
+
+const deleteObjectsFromScene = (state, id) => {
+  Object.keys(state.scenes).forEach((scene) => {
+    if (scene !== "count") {
+      Object.keys(state.scenes[scene].objects).forEach((obj) => {
+        if (state.scenes[scene].objects[obj] === id) {
+          delete state.scenes[scene].objects[obj];
+        }
+      });
+    }
+  });
+  return state;
 };
 
 const modifyItem = function (state, action) {
@@ -299,6 +320,43 @@ const deleteEvent = function (state, action) {
   };
   delete newState.events[action.id];
   return newState;
+};
+
+const loadGame = (state, action) => {
+  return {
+    ...state,
+    graphics: {
+      ...action.game.graphics,
+      count: getCount(action.game.graphics),
+    },
+    audio: {
+      ...action.game.audio,
+      count: getCount(action.game.audio),
+    },
+    functions: {
+      ...action.game.functions,
+      count: getCount(action.game.functions),
+    },
+    objects: {
+      ...action.game.objects,
+      count: getCount(action.game.objects),
+    },
+    scenes: {
+      ...action.game.scenes,
+      count: getCount(action.game.scenes),
+    },
+    folders: {
+      ...action.game.folders,
+      count: getCount(action.game.folders),
+    },
+    animations: {
+      ...action.game.animations,
+      count: getCount(action.game.animations),
+    },
+    events: {
+      ...action.game.events,
+    },
+  };
 };
 
 export default folderReducer;

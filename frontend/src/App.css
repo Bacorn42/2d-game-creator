@@ -11,6 +11,14 @@ body {
   position: relative;
 }
 
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #ddf;
+}
+
 .flex-container {
   display: flex;
   height: 100%;

@@ -9,6 +9,7 @@ export function Toolbar({ game, createItem }) {
   const [saveColor, setSaveColor] = useState("black");
 
   const saveGame = () => {
+    setSaving(true);
     setSaveColor("black");
     if (!saving) {
       fetch("http://localhost:5000/api/game", {

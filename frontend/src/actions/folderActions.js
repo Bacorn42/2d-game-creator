@@ -9,6 +9,7 @@ export const CREATE_ANIMATION = "CREATE_ANIMATION";
 export const DELETE_ANIMATION = "DELETE_ANIMATION";
 export const CREATE_EVENT = "CREATE_EVENT";
 export const DELETE_EVENT = "DELETE_EVENT";
+export const LOAD_GAME = "LOAD_GAME";
 
 export function moveItem(id, to) {
   return {
@@ -89,5 +90,12 @@ export function deleteEvent(id) {
   return {
     type: DELETE_EVENT,
     id,
+  };
+}
+
+export function loadGame(game) {
+  return {
+    type: LOAD_GAME,
+    game,
   };
 }

@@ -81,7 +81,7 @@ export function WindowGraphics({
   };
 
   const getAnimationName = (id) => {
-    return animations[id].name;
+    return animations[id]?.name;
   };
 
   const getSelectedAnimation = () => {

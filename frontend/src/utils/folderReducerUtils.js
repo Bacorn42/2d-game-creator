@@ -15,6 +15,17 @@ export const childOf = function (state, to, from) {
   return false;
 };
 
+export const getCount = function (items) {
+  let max = -1;
+  Object.keys(items).forEach((key) => {
+    const num = Number(key.split("_")[1]);
+    if (!isNaN(num)) {
+      max = Math.max(max, num);
+    }
+  });
+  return max + 1;
+};
+
 export const makeItem = function (type, id, parent) {
   switch (type) {
     case "graphics":

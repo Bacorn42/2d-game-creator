@@ -6,8 +6,10 @@ import WindowScenesObject from "./WindowScenesObject";
 import { modifyItem } from "../../actions/folderActions";
 import "./WindowScenes.css";
 
-export function WindowScenes({ id, item, objectNames, modifyItem }) {
-  const [selectedObject, setSelectedObject] = useState(objectNames[0]);
+export function WindowScenes({ id, item, objects, objectNames, modifyItem }) {
+  const [selectedObject, setSelectedObject] = useState(
+    objectNames[0] ? objectNames[0][0] : ""
+  );
   const [gridWidth, setGridWidth] = useState(32);
   const [gridHeight, setGridHeight] = useState(32);
 
@@ -42,6 +44,9 @@ export function WindowScenes({ id, item, objectNames, modifyItem }) {
   };
 
   const placeObject = (e) => {
+    if (!objects[selectedObject]) {
+      return;
+    }
     const objectId = getObjectId(e);
     if (!item.objects[objectId]) {
       modifyItem({
@@ -115,8 +120,8 @@ export function WindowScenes({ id, item, objectNames, modifyItem }) {
           Object:
           <select onChange={selectedObjectHandler}>
             {objectNames.map((obj) => (
-              <option key={obj} value={obj}>
-                {obj}
+              <option key={obj[0]} value={obj[0]}>
+                {obj[1]}
               </option>
             ))}
           </select>
@@ -159,11 +164,12 @@ const mapStateToProps = (state, ownProps) => {
   const itemType = ownProps.id.split("_")[0];
   const items = state.folderReducer;
   const objectNames = [
-    ...Object.keys(items.objects).map((x) => items.objects[x].name),
+    ...Object.keys(items.objects).map((x) => [x, items.objects[x].name]),
   ];
   return {
     item: items[itemType][ownProps.id],
-    objectNames: objectNames.filter(Boolean),
+    objects: items.objects,
+    objectNames: objectNames.filter((x) => Boolean(x[1])),
   };
 };
 
