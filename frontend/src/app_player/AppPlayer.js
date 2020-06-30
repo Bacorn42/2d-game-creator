@@ -1,25 +1,23 @@
-import React, { useState } from "react";
-import Interpreter from "../2dgs/Interpreter";
+import React, { useState, useEffect } from "react";
+import GameWindow from "./components/GameWindow";
 
 export function AppPlayer() {
-  const [code, setCode] = useState("");
+  const [game, setGame] = useState(null);
 
-  const handleChange = (e) => {
-    setCode(e.target.value);
-  };
+  useEffect(() => {
+    fetch("http://localhost:5000/api/game", {
+      method: "get",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((game) => {
+        setGame(game);
+        console.log(game);
+      });
+  }, []);
 
-  const handleClick = () => {
-    const interpreter = new Interpreter(code);
-    interpreter.interpret();
-  };
-
-  return (
-    <div>
-      <textarea value={code} onChange={handleChange} />
-      <br />
-      <button onClick={handleClick}>Run</button>
-    </div>
-  );
+  return <div>{game && <GameWindow game={game} />}</div>;
 }
 
 export default AppPlayer;
