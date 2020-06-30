@@ -17,7 +17,10 @@ class Tokenizer {
     while (!this.isEnd()) {
       this.start = this.current;
       const type = this.getNextToken();
-      const substr = this.str.substr(this.start, this.current - this.start);
+      let substr = this.str.substr(this.start, this.current - this.start);
+      if (type === TokenType.NUMBER) {
+        substr = Number(substr);
+      }
       const secondaryType = this.getSecondaryType(type, substr);
       this.tokens.push(new Token(type, substr, this.line, secondaryType));
     }
@@ -51,6 +54,8 @@ class Tokenizer {
         return this.isNextChar("=") ? TokenType.EQUAL_EQUAL : TokenType.EQUAL;
       case "/":
         return this.processSlash();
+      case "%":
+        return TokenType.MODULO;
       case "(":
         return TokenType.LEFT_PAREN;
       case ")":
@@ -59,7 +64,7 @@ class Tokenizer {
         return TokenType.LEFT_BRACE;
       case "}":
         return TokenType.RIGHT_BRACE;
-      case ":":
+      case ";":
         return TokenType.SEMICOLON;
       case ".":
         return TokenType.DOT;
@@ -209,6 +214,8 @@ class Tokenizer {
         return TokenType.CONTINUE;
       case "return":
         return TokenType.RETURN;
+      case "print":
+        return TokenType.PRINT;
       default:
         return TokenType.IDENTIFIER;
     }
