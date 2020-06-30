@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import "./Editor.css";
-import tokenize from "../../2dgs/tokenize";
+import tokenize from "../../../2dgs/tokenize";
 import { modifyItem } from "../../actions/folderActions";
 
 export function Editor({ id, item, modifyItem, names }) {

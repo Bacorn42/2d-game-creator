@@ -1,94 +1,29 @@
-import React, { useState } from "react";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { connect } from "react-redux";
-import { loadGame } from "./actions/folderActions";
-import {
-  faFolder,
-  faFolderOpen,
-  faImage,
-  faVolumeUp,
-  faFileCode,
-  faCube,
-  faTv,
-  faSave,
-  faSpinner,
-  faWindowClose,
-  faWindowMaximize,
-  faWindowRestore,
-  faPlus,
-  faMinus,
-  faAngleUp,
-  faAngleDown,
-  faAngleRight,
-} from "@fortawesome/free-solid-svg-icons";
-import "./App.css";
-import FolderView from "./components/main/FolderView";
-import MainView from "./components/main/MainView";
-import Toolbar from "./components/main/Toolbar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Menu from "./Menu";
+import AppCreator from "./app_creator/AppCreator";
+import AppPlayer from "./app_player/AppPlayer";
+import appCreatorStore from "./app_creator/store";
 
-library.add(
-  faFolder,
-  faFolderOpen,
-  faImage,
-  faVolumeUp,
-  faFileCode,
-  faCube,
-  faTv,
-  faSave,
-  faSpinner,
-  faWindowClose,
-  faWindowMaximize,
-  faWindowRestore,
-  faPlus,
-  faMinus,
-  faAngleUp,
-  faAngleDown,
-  faAngleRight
-);
-
-function App({ loadGame }) {
-  const [loaded, setLoaded] = useState(false);
-
-  fetch("http://localhost:5000/api/game", {
-    method: "get",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((game) => {
-      loadGame(game);
-      setLoaded(true);
-    })
-    .catch((err) => {
-      setLoaded(true);
-    });
-
+export function App() {
   return (
-    <div className="app">
-      {loaded ? (
-        <>
-          <Toolbar />
-          <div className="flex-container">
-            <FolderView />
-            <MainView />
-          </div>
-        </>
-      ) : (
-        <div className="app-loading">
-          <FontAwesomeIcon icon="spinner" size="5x" />
-        </div>
-      )}
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <Menu />
+        </Route>
+        <Route path="/creator">
+          <Provider store={appCreatorStore}>
+            <AppCreator />
+          </Provider>
+        </Route>
+        <Route path="/player">
+          <AppPlayer />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadGame: (game) => {
-      dispatch(loadGame(game));
-    },
-  };
-};
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;
