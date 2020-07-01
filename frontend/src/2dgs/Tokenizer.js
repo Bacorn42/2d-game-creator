@@ -275,7 +275,7 @@ class Tokenizer {
       if (appDefined.includes(substr)) {
         return TokenType.APP_DEFINED;
       }
-      if (this.names.includes(substr)) {
+      if (this.names?.includes(substr)) {
         return TokenType.USER_DEFINED;
       }
     }

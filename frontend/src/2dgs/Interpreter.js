@@ -1,10 +1,8 @@
-import Parser from "./Parser";
 import TokenType from "./TokenType";
 
 class Interpreter {
-  constructor(code) {
-    const parser = new Parser(code);
-    this.statements = parser.parse();
+  constructor(statements) {
+    this.statements = statements;
   }
 
   interpret = () => {
