@@ -32,4 +32,27 @@ Expr.Group = class Group {
   };
 };
 
+Expr.Logical = class Logical {
+  constructor(left, operator, right) {
+    this.left = left;
+    this.operator = operator;
+    this.right = right;
+  }
+
+  evaluate = (evaluator) => {
+    evaluator.evaluateLogical(this);
+  };
+};
+
+Expr.Unary = class Unary {
+  constructor(operator, expr) {
+    this.operator = operator;
+    this.expr = expr;
+  }
+
+  evaluate = (evaluator) => {
+    return evaluator.evaluateUnary(this);
+  };
+};
+
 export default Expr;

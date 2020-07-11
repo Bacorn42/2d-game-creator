@@ -49,12 +49,69 @@ class Parser {
   statement = () => {
     const token = this.getNextToken();
     switch (token.type) {
+      case TokenType.LEFT_BRACE:
+        return this.blockStatement();
+      case TokenType.IF:
+        return this.ifStatement();
+      case TokenType.FOR:
+        return this.forStatement();
       case TokenType.PRINT:
         return this.printStatement();
       default:
         this.current--;
         return this.expressionStatement();
     }
+  };
+
+  blockStatement = () => {
+    const stmts = [];
+
+    while (!this.getToken().type === TokenType.RIGHT_BRACE && !this.isEnd()) {
+      stmts.push(this.statement());
+    }
+
+    this.expect(TokenType.RIGHT_BRACE, "Expected '}'");
+    return new Stmt.Block(stmts);
+  };
+
+  ifStatement = () => {
+    this.expect(TokenType.LEFT_PAREN, "Expected '('");
+    const condition = this.expression();
+    this.expect(TokenType.RIGHT_PAREN, "Expected ')'");
+
+    const thenBranch = this.statement();
+    const elseBranch = this.isNextToken(TokenType.ELSE)
+      ? this.statement()
+      : new Stmt.Empty();
+
+    return new Stmt.If(condition, thenBranch, elseBranch);
+  };
+
+  forStatement = () => {
+    let init = new Stmt.Empty();
+    let condition = null;
+    let post = new Stmt.Empty();
+
+    this.expect(TokenType.LEFT_PAREN, "Expected '('");
+    if (this.getToken().type !== TokenType.SEMICOLON) {
+      init = this.expressionStatement();
+    } else {
+      this.expect(TokenType.SEMICOLON, "Expected ';'");
+    }
+
+    if (this.getToken().type !== TokenType.SEMICOLON) {
+      condition = this.expression();
+    }
+    this.expect(TokenType.SEMICOLON, "Expected ';'");
+
+    if (this.getToken().type !== TokenType.RIGHT_PAREN) {
+      post = new Stmt.Expression(this.expression());
+    }
+    this.expect(TokenType.RIGHT_PAREN, "Expected ')'");
+
+    const body = this.statement();
+
+    return new Stmt.For(init, condition, post, body);
   };
 
   printStatement = () => {
@@ -70,7 +127,62 @@ class Parser {
   };
 
   expression = () => {
-    return this.addition();
+    return this.or();
+  };
+
+  or = () => {
+    let expr = this.comparandison();
+
+    while (this.isNextToken(TokenType.OR, TokenType.PIPE_PIPE)) {
+      const operator = this.getPreviousToken();
+      const right = this.and();
+      expr = new Expr.Logical(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  and = () => {
+    let expr = this.equality();
+
+    while (this.isNextToken(TokenType.AND, TokenType.AMPERSAND_AMPERSAND)) {
+      const operator = this.getPreviousToken();
+      const right = this.equality();
+      expr = new Expr.Logical(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  equality = () => {
+    let expr = this.comparison();
+
+    while (this.isNextToken(TokenType.EQUAL_EQUAL, TokenType.BANG_EQUAL)) {
+      const operator = this.getPreviousToken();
+      const right = this.comparison();
+      expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  comparison = () => {
+    let expr = this.addition();
+
+    while (
+      this.isNextToken(
+        TokenType.LESS,
+        TokenType.LESS_EQUAL,
+        TokenType.GREATER,
+        TokenType.GREATER_EQUAL
+      )
+    ) {
+      const operator = this.getPreviousToken();
+      const right = this.addition();
+      expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
   };
 
   addition = () => {
@@ -86,17 +198,26 @@ class Parser {
   };
 
   multiplication = () => {
-    let expr = this.primary();
+    let expr = this.unary();
 
     while (
       this.isNextToken(TokenType.STAR, TokenType.SLASH, TokenType.MODULO)
     ) {
       const operator = this.getPreviousToken();
-      const right = this.primary();
+      const right = this.unary();
       expr = new Expr.Binary(expr, operator, right);
     }
 
     return expr;
+  };
+
+  unary = () => {
+    if (this.isNextToken(TokenType.BANG, TokenType.NOT, TokenType.MINUS)) {
+      const operator = this.getPreviousToken();
+      const right = this.unary();
+      return new Expr.Unary(operator, right);
+    }
+    return this.primary();
   };
 
   primary = () => {

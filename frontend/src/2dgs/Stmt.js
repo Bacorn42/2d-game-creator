@@ -10,6 +10,41 @@ Stmt.Expression = class Expression {
   };
 };
 
+Stmt.Block = class Block {
+  constructor(stmts) {
+    this.stmts = stmts;
+  }
+
+  execute = (executor) => {
+    executor.executeBlock(this);
+  };
+};
+
+Stmt.If = class If {
+  constructor(condition, thenBranch, elseBranch) {
+    this.condition = condition;
+    this.thenBranch = thenBranch;
+    this.elseBranch = elseBranch;
+  }
+
+  execute = (executor) => {
+    executor.executeIf(this);
+  };
+};
+
+Stmt.For = class For {
+  constructor(init, condition, post, body) {
+    this.init = init;
+    this.condition = condition;
+    this.post = post;
+    this.body = body;
+  }
+
+  execute = (executor) => {
+    executor.executeFor(this);
+  };
+};
+
 Stmt.Print = class Print {
   constructor(expr) {
     this.expr = expr;
@@ -18,6 +53,10 @@ Stmt.Print = class Print {
   execute = (executor) => {
     executor.executePrint(this);
   };
+};
+
+Stmt.Empty = class Empty {
+  execute = (executor) => {};
 };
 
 export default Stmt;
