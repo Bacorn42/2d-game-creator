@@ -45,6 +45,17 @@ Stmt.For = class For {
   };
 };
 
+Stmt.While = class While {
+  constructor(condition, body) {
+    this.condition = condition;
+    this.body = body;
+  }
+
+  execute = (executor) => {
+    executor.executeWhile(this);
+  };
+};
+
 Stmt.Print = class Print {
   constructor(expr) {
     this.expr = expr;

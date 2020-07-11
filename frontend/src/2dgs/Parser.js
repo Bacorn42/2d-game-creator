@@ -55,6 +55,8 @@ class Parser {
         return this.ifStatement();
       case TokenType.FOR:
         return this.forStatement();
+      case TokenType.WHILE:
+        return this.whileStatement();
       case TokenType.PRINT:
         return this.printStatement();
       default:
@@ -114,6 +116,16 @@ class Parser {
     return new Stmt.For(init, condition, post, body);
   };
 
+  whileStatement = () => {
+    this.expect(TokenType.LEFT_PAREN, "Expected '('");
+    const condition = this.expression();
+    this.expect(TokenType.RIGHT_PAREN, "Expected ')'");
+
+    const body = this.statement();
+
+    return new Stmt.While(condition, body);
+  };
+
   printStatement = () => {
     const expr = this.expression();
     this.expect(TokenType.SEMICOLON, "Expected ';'");
@@ -127,11 +139,36 @@ class Parser {
   };
 
   expression = () => {
-    return this.or();
+    return this.assign();
+  };
+
+  assign = () => {
+    let expr = this.or();
+
+    while (
+      this.isNextToken(
+        TokenType.EQUAL,
+        TokenType.PLUS_EQUAL,
+        TokenType.MINUS_EQUAL,
+        TokenType.STAR_EQUAL,
+        TokenType.SLASH_EQUAL
+      )
+    ) {
+      const operator = this.getPreviousToken();
+      const right = this.assign();
+
+      if (expr instanceof Expr.Identifier) {
+        const identifier = expr.identifier;
+        return new Expr.Assign(identifier, operator, right);
+      }
+      throw this.error(this.getToken, "You can onyl assign to a variable");
+    }
+
+    return expr;
   };
 
   or = () => {
-    let expr = this.comparandison();
+    let expr = this.and();
 
     while (this.isNextToken(TokenType.OR, TokenType.PIPE_PIPE)) {
       const operator = this.getPreviousToken();
@@ -217,14 +254,34 @@ class Parser {
       const right = this.unary();
       return new Expr.Unary(operator, right);
     }
-    return this.primary();
+    return this.dot();
+  };
+
+  dot = () => {
+    let expr = this.primary();
+
+    while (this.isNextToken(TokenType.DOT)) {
+      const operator = this.getPreviousToken();
+      const right = this.primary();
+      expr = new Expr.Dot(expr, operator, right);
+    }
+
+    return expr;
   };
 
   primary = () => {
     const token = this.getNextToken();
     switch (token.type) {
+      case TokenType.NULL:
+        return new Expr.Literal(null);
+      case TokenType.TRUE:
+        return new Expr.Literal(true);
+      case TokenType.FALSE:
+        return new Expr.Literal(false);
       case TokenType.NUMBER:
         return new Expr.Literal(token.value);
+      case TokenType.IDENTIFIER:
+        return new Expr.Identifier(token);
       case TokenType.LEFT_PAREN:
         return this.groupExpression();
       default:
@@ -282,7 +339,7 @@ class Parser {
 
   error = (token, message) => {
     throw new Error(
-      "[Line " + token.line + " near '" + token.lexeme + "'] " + message
+      "[Line " + token.line + " near '" + token.value + "'] " + message
     );
   };
 }

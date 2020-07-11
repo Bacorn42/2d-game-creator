@@ -3,6 +3,7 @@ import TokenType from "./TokenType";
 class Interpreter {
   constructor(statements) {
     this.statements = statements;
+    this.variables = {};
   }
 
   interpret = () => {
@@ -38,6 +39,12 @@ class Interpreter {
     while (stmt.condition.evaluate(this)) {
       stmt.body.execute(this);
       stmt.post.execute(this);
+    }
+  };
+
+  executeWhile = (stmt) => {
+    while (stmt.condition.evaluate(this)) {
+      stmt.body.execute(this);
     }
   };
 
@@ -119,6 +126,41 @@ class Interpreter {
       default:
         return null;
     }
+  };
+
+  evaluateDot = (expr) => {
+    return expr.left?.ownVars[expr.right.value];
+  };
+
+  evaluateIdentifier = (expr) => {
+    return this.variables[expr.identifier.value];
+  };
+
+  evaluateAssign = (expr) => {
+    const varName = expr.identifier.value;
+    const value = this.variables[varName];
+    if (value === null && expr.operator.type !== TokenType.EQUAL) {
+      return;
+    }
+
+    const rightValue = expr.right.evaluate(this);
+    switch (expr.operator.type) {
+      case TokenType.EQUAL:
+        return this.applyAssignment(rightValue, varName);
+      case TokenType.PLUS_EQUAL:
+        return this.applyAssignment(value + rightValue, varName);
+      case TokenType.MINUS_EQUAL:
+        return this.applyAssignment(value - rightValue, varName);
+      case TokenType.STAR_EQUAL:
+        return this.applyAssignment(value * rightValue, varName);
+      case TokenType.SLASH_EQUAL:
+        return this.applyAssignment(value / rightValue, varName);
+    }
+  };
+
+  applyAssignment = (newValue, identifierName) => {
+    this.variables[identifierName] = newValue;
+    return newValue;
   };
 }
 

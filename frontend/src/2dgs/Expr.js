@@ -55,4 +55,38 @@ Expr.Unary = class Unary {
   };
 };
 
+Expr.Identifier = class Identifier {
+  constructor(identifier) {
+    this.identifier = identifier;
+  }
+
+  evaluate = (evaluator) => {
+    return evaluator.evaluateIdentifier(this);
+  };
+};
+
+Expr.Assign = class Assign {
+  constructor(identifier, operator, right) {
+    this.identifier = identifier;
+    this.operator = operator;
+    this.right = right;
+  }
+
+  evaluate = (evaluator) => {
+    return evaluator.evaluateAssign(this);
+  };
+};
+
+Expr.Dot = class Dot {
+  constructor(left, operator, right) {
+    this.left = left;
+    this.operator = operator;
+    this.right = right;
+  }
+
+  evaluate = (evaluator) => {
+    return evaluator.evaluateDot(this);
+  };
+};
+
 export default Expr;
