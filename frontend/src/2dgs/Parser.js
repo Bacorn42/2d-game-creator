@@ -58,6 +58,8 @@ class Parser {
         return this.forStatement();
       case TokenType.WHILE:
         return this.whileStatement();
+      case TokenType.RETURN:
+        return this.returnStatement();
       case TokenType.PRINT:
         return this.printStatement();
       default:
@@ -125,6 +127,12 @@ class Parser {
     const body = this.statement();
 
     return new Stmt.While(condition, body);
+  };
+
+  returnStatement = () => {
+    const expr = this.expression();
+    this.expect(TokenType.SEMICOLON, "Expected ';'");
+    return new Stmt.Return(expr);
   };
 
   printStatement = () => {
@@ -302,11 +310,12 @@ class Parser {
     const args = [];
 
     this.expect(TokenType.LEFT_PAREN, "Expected '('");
-    while (!this.isNextToken(TokenType.RIGHT_PAREN)) {
+    while (this.getToken().type !== TokenType.RIGHT_PAREN) {
       const expr = this.expression();
-      args.add(expr);
+      args.push(expr);
       this.consume(TokenType.COMMA);
     }
+    this.expect(TokenType.RIGHT_PAREN, "Expected ')'");
 
     return new Expr.Function(args, token);
   };

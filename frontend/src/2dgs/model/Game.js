@@ -52,13 +52,15 @@ class Game {
 
   isFunction = (name) => {
     return (
-      Object.keys(this.game.functions).findIndex((f) => f.name === name) > -1
+      Object.keys(this.game.functions).findIndex(
+        (f) => this.game.functions[f].name === name
+      ) > -1
     );
   };
 
   callFunction = (name, values) => {
     const func = this.functions.find((f) => f.func.name === name);
-    func.call(values);
+    return func.call(values);
   };
 }
 

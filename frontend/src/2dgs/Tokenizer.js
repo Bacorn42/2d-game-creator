@@ -68,6 +68,8 @@ class Tokenizer {
         return TokenType.SEMICOLON;
       case ".":
         return TokenType.DOT;
+      case ",":
+        return TokenType.COMMA;
       case "|":
         return this.processPipe();
       case "&":

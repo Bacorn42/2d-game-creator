@@ -13,7 +13,7 @@ class GameFunction {
   call = (values) => {
     const interpreter = new Interpreter(this.statements, this.game);
     interpreter.setVariables(this.args, values);
-    interpreter.interpret();
+    return interpreter.interpret();
   };
 }
 

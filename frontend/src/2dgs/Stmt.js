@@ -56,6 +56,28 @@ Stmt.While = class While {
   };
 };
 
+Stmt.Return = class Return {
+  constructor(expr) {
+    this.expr = expr;
+  }
+
+  execute = (executor) => {
+    executor.executeReturn(this);
+  };
+};
+
+Stmt.Break = class Break {
+  execute = (executor) => {
+    executor.executeBreak(this);
+  };
+};
+
+Stmt.Continue = class Continue {
+  execute = (executor) => {
+    executor.executeContinue(this);
+  };
+};
+
 Stmt.Print = class Print {
   constructor(expr) {
     this.expr = expr;

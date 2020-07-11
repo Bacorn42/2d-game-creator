@@ -1,4 +1,7 @@
 import TokenType from "./TokenType";
+import ReturnException from "./exceptions/ReturnException";
+import BreakException from "./exceptions/BreakException";
+import ContinueException from "./exceptions/ContinueException";
 
 class Interpreter {
   constructor(statements, game) {
@@ -18,8 +21,11 @@ class Interpreter {
       for (const statement of this.statements) {
         statement.execute(this);
       }
-    } catch (err) {
-      console.log("Interpreter error: " + err);
+    } catch (exception) {
+      if (exception instanceof ReturnException) {
+        return exception.value;
+      }
+      console.log("Interpreter error: " + exception);
     }
   };
 
@@ -44,8 +50,14 @@ class Interpreter {
   executeFor = (stmt) => {
     stmt.init.execute(this);
     while (stmt.condition.evaluate(this)) {
-      stmt.body.execute(this);
-      stmt.post.execute(this);
+      try {
+        stmt.body.execute(this);
+        stmt.post.execute(this);
+      } catch (exception) {
+        if (exception instanceof BreakException) {
+          break;
+        }
+      }
     }
   };
 
@@ -53,6 +65,19 @@ class Interpreter {
     while (stmt.condition.evaluate(this)) {
       stmt.body.execute(this);
     }
+  };
+
+  executeReturn = (stmt) => {
+    const value = stmt.expr.evaluate(this);
+    throw new ReturnException(value);
+  };
+
+  executeBreak = (stmt) => {
+    throw new BreakException();
+  };
+
+  executeContinue = (stmt) => {
+    throw new ContinueException();
   };
 
   executePrint = (stmt) => {
@@ -162,6 +187,8 @@ class Interpreter {
         return this.applyAssignment(value * rightValue, varName);
       case TokenType.SLASH_EQUAL:
         return this.applyAssignment(value / rightValue, varName);
+      default:
+        return null;
     }
   };
 
@@ -171,8 +198,8 @@ class Interpreter {
   };
 
   evaluateFunction = (expr) => {
-    const values = expr.args.map((arg) => arg.evaluate());
-    this.game.callFunction(expr.token.value, values);
+    const values = expr.args.map((arg) => arg.evaluate(this));
+    return this.game.callFunction(expr.token.value, values);
   };
 }
 
