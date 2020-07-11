@@ -4,6 +4,7 @@ import GameEntity from "./GameEntity";
 
 class Game {
   constructor(game) {
+    this.game = game;
     this.functions = this.createFunctions(game.functions);
     this.objects = this.createObjects(game.objects, game.events);
     this.entities = this.createEntities(game.scenes.scenes_0);
@@ -15,7 +16,7 @@ class Game {
 
   createFunctions = (functions) => {
     return Object.keys(functions).map(
-      (func) => new GameFunction(functions[func])
+      (func) => new GameFunction(functions[func], this)
     );
   };
 
@@ -30,7 +31,7 @@ class Game {
         .forEach(
           (event) => (objEvents[this.getEventName(event)] = events[event])
         );
-      const gameObject = new GameObject(objects[obj], objEvents);
+      const gameObject = new GameObject(objects[obj], objEvents, this);
       gameObjects[obj] = gameObject;
     });
     return gameObjects;
@@ -45,8 +46,19 @@ class Game {
 
   createEntities = (scene) => {
     return Object.keys(scene.objects).map((entity) => {
-      return new GameEntity(entity, this.objects[scene.objects[entity]]);
+      return new GameEntity(entity, this.objects[scene.objects[entity]], this);
     });
+  };
+
+  isFunction = (name) => {
+    return (
+      Object.keys(this.game.functions).findIndex((f) => f.name === name) > -1
+    );
+  };
+
+  callFunction = (name, values) => {
+    const func = this.functions.find((f) => f.func.name === name);
+    func.call(values);
   };
 }
 

@@ -1,10 +1,17 @@
 import TokenType from "./TokenType";
 
 class Interpreter {
-  constructor(statements) {
+  constructor(statements, game) {
     this.statements = statements;
+    this.game = game;
     this.variables = {};
   }
+
+  setVariables = (names, values) => {
+    for (let i = 0; i < names.length; i++) {
+      this.variables[names[i]] = values[i];
+    }
+  };
 
   interpret = () => {
     try {
@@ -161,6 +168,11 @@ class Interpreter {
   applyAssignment = (newValue, identifierName) => {
     this.variables[identifierName] = newValue;
     return newValue;
+  };
+
+  evaluateFunction = (expr) => {
+    const values = expr.args.map((arg) => arg.evaluate());
+    this.game.callFunction(expr.token.value, values);
   };
 }
 

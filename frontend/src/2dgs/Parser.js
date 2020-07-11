@@ -4,7 +4,8 @@ import Stmt from "./Stmt";
 import Expr from "./Expr";
 
 class Parser {
-  constructor(code) {
+  constructor(code, game) {
+    this.game = game;
     const tokens = tokenize(code);
     this.tokens = this.filterTokens(tokens);
     this.current = 0;
@@ -68,7 +69,7 @@ class Parser {
   blockStatement = () => {
     const stmts = [];
 
-    while (!this.getToken().type === TokenType.RIGHT_BRACE && !this.isEnd()) {
+    while (this.getToken().type !== TokenType.RIGHT_BRACE && !this.isEnd()) {
       stmts.push(this.statement());
     }
 
@@ -281,12 +282,33 @@ class Parser {
       case TokenType.NUMBER:
         return new Expr.Literal(token.value);
       case TokenType.IDENTIFIER:
-        return new Expr.Identifier(token);
+        return this.identifier(token);
       case TokenType.LEFT_PAREN:
         return this.groupExpression();
       default:
         throw this.error(token, "Expected expression");
     }
+  };
+
+  identifier = (token) => {
+    if (this.game.isFunction(token.value)) {
+      return this.functionExpression(token);
+    } else {
+      return new Expr.Identifier(token);
+    }
+  };
+
+  functionExpression = (token) => {
+    const args = [];
+
+    this.expect(TokenType.LEFT_PAREN, "Expected '('");
+    while (!this.isNextToken(TokenType.RIGHT_PAREN)) {
+      const expr = this.expression();
+      args.add(expr);
+      this.consume(TokenType.COMMA);
+    }
+
+    return new Expr.Function(args, token);
   };
 
   groupExpression = () => {
@@ -327,6 +349,12 @@ class Parser {
       this.getNextToken();
     } else {
       throw this.error(this.getPreviousToken(), message);
+    }
+  };
+
+  consume = (type) => {
+    if (this.getToken().type === type) {
+      this.getNextToken();
     }
   };
 

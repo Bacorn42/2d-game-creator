@@ -89,4 +89,15 @@ Expr.Dot = class Dot {
   };
 };
 
+Expr.Function = class Function {
+  constructor(args, token) {
+    this.args = args;
+    this.token = token;
+  }
+
+  evaluate = (evaluator) => {
+    return evaluator.evaluateFunction(this);
+  };
+};
+
 export default Expr;

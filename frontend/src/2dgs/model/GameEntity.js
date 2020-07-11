@@ -1,8 +1,9 @@
 import Interpreter from "../Interpreter";
 
 class GameEntity {
-  constructor(coords, object) {
+  constructor(coords, object, game) {
     this.object = object;
+    this.game = game;
     this.eventQueue = ["Construct"];
     this.ownVars = {
       x: coords.split("_")[0],
