@@ -2,11 +2,13 @@ import TokenType from "./TokenType";
 import ReturnException from "./exceptions/ReturnException";
 import BreakException from "./exceptions/BreakException";
 import ContinueException from "./exceptions/ContinueException";
+import Expr from "./Expr";
 
 class Interpreter {
-  constructor(statements, game) {
+  constructor(statements, game, thisObject) {
     this.statements = statements;
     this.game = game;
+    this.thisObject = thisObject;
     this.variables = {};
   }
 
@@ -170,37 +172,61 @@ class Interpreter {
   };
 
   evaluateAssign = (expr) => {
-    const varName = expr.identifier.value;
-    const value = this.variables[varName];
+    const value = this.getAssignValue(expr);
+    const callback = this.getAssignCallback(expr);
     if (value === null && expr.operator.type !== TokenType.EQUAL) {
-      return;
+      throw Error("Variable doesn't exist");
     }
 
     const rightValue = expr.right.evaluate(this);
     switch (expr.operator.type) {
       case TokenType.EQUAL:
-        return this.applyAssignment(rightValue, varName);
+        return this.applyAssignment(rightValue, callback);
       case TokenType.PLUS_EQUAL:
-        return this.applyAssignment(value + rightValue, varName);
+        return this.applyAssignment(value + rightValue, callback);
       case TokenType.MINUS_EQUAL:
-        return this.applyAssignment(value - rightValue, varName);
+        return this.applyAssignment(value - rightValue, callback);
       case TokenType.STAR_EQUAL:
-        return this.applyAssignment(value * rightValue, varName);
+        return this.applyAssignment(value * rightValue, callback);
       case TokenType.SLASH_EQUAL:
-        return this.applyAssignment(value / rightValue, varName);
+        return this.applyAssignment(value / rightValue, callback);
       default:
         return null;
     }
   };
 
-  applyAssignment = (newValue, identifierName) => {
-    this.variables[identifierName] = newValue;
+  getAssignValue = (expr) => {
+    if (expr.left instanceof Expr.Identifier) {
+      return this.variables[expr.left.value];
+    } else if (expr.left instanceof Expr.Dot) {
+      const leftObject = expr.left.left.evaluate(this);
+      return leftObject.ownVars[expr.left.right.identifier.value];
+    }
+  };
+
+  getAssignCallback = (expr) => {
+    if (expr.left instanceof Expr.Identifier) {
+      return (newValue) =>
+        (this.variables[expr.left.identifier.value] = newValue);
+    } else if (expr.left instanceof Expr.Dot) {
+      const leftObject = expr.left.left.evaluate(this);
+      return (newValue) =>
+        (leftObject.ownVars[expr.left.right.identifier.value] = newValue);
+    }
+  };
+
+  applyAssignment = (newValue, callback) => {
+    callback(newValue);
     return newValue;
   };
 
   evaluateFunction = (expr) => {
     const values = expr.args.map((arg) => arg.evaluate(this));
     return this.game.callFunction(expr.token.value, values);
+  };
+
+  evaluateThis = (expr) => {
+    return this.thisObject;
   };
 }
 

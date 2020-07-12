@@ -41,6 +41,7 @@ class Parser {
         statements.push(this.statement());
       } catch (err) {
         console.log("Parsing error: " + err);
+        console.log(err.stack);
       }
     }
 
@@ -166,11 +167,10 @@ class Parser {
       const operator = this.getPreviousToken();
       const right = this.assign();
 
-      if (expr instanceof Expr.Identifier) {
-        const identifier = expr.identifier;
-        return new Expr.Assign(identifier, operator, right);
+      if (expr instanceof Expr.Identifier || expr instanceof Expr.Dot) {
+        return new Expr.Assign(expr, operator, right);
       }
-      throw this.error(this.getToken, "You can onyl assign to a variable");
+      throw this.error(this.getToken, "You can only assign to a variable");
     }
 
     return expr;
@@ -287,6 +287,8 @@ class Parser {
         return new Expr.Literal(true);
       case TokenType.FALSE:
         return new Expr.Literal(false);
+      case TokenType.THIS:
+        return new Expr.This();
       case TokenType.NUMBER:
         return new Expr.Literal(token.value);
       case TokenType.IDENTIFIER:

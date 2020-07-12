@@ -66,8 +66,8 @@ Expr.Identifier = class Identifier {
 };
 
 Expr.Assign = class Assign {
-  constructor(identifier, operator, right) {
-    this.identifier = identifier;
+  constructor(left, operator, right) {
+    this.left = left;
     this.operator = operator;
     this.right = right;
   }
@@ -97,6 +97,12 @@ Expr.Function = class Function {
 
   evaluate = (evaluator) => {
     return evaluator.evaluateFunction(this);
+  };
+};
+
+Expr.This = class This {
+  evaluate = (evaluator) => {
+    return evaluator.evaluateThis(this);
   };
 };
 

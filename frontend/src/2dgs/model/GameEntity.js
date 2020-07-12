@@ -8,8 +8,8 @@ class GameEntity {
     this.id = coords;
     this.eventQueue = ["Construct"];
     this.ownVars = {
-      x: coords.split("_")[0],
-      y: coords.split("_")[1],
+      x: Number(coords.split("_")[0]),
+      y: Number(coords.split("_")[1]),
     };
   }
 
@@ -37,7 +37,8 @@ class GameEntity {
       if (this.object.events[event]) {
         const interpreter = new Interpreter(
           this.object.events[event].statements,
-          this.game
+          this.game,
+          this
         );
         interpreter.interpret();
       }
