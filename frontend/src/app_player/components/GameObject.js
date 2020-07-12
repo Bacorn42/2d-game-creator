@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-export function GameObject({ coords, graphicsFilename, animation, object }) {
+export function GameObject({ object }) {
   const [sprite, setSprite] = useState(0);
+  const animation = object.getAnimation();
 
   const frames =
     (animation.width * animation.height) /
@@ -22,11 +23,11 @@ export function GameObject({ coords, graphicsFilename, animation, object }) {
   return (
     <div
       style={{
-        left: coords.split("_")[0] + "px",
-        top: coords.split("_")[1] + "px",
+        left: object.getX() + "px",
+        top: object.getY() + "px",
         width: animation.tileWidth + "px",
         height: animation.tileHeight + "px",
-        background: "url(img/" + graphicsFilename + ")",
+        background: "url(img/" + object.getFilename() + ")",
         backgroundPosition:
           "top -" + animation.top + "px left -" + getLeftOffset() + "px",
         position: "absolute",
@@ -36,9 +37,6 @@ export function GameObject({ coords, graphicsFilename, animation, object }) {
 }
 
 GameObject.propTypes = {
-  coords: PropTypes.string.isRequired,
-  graphicsFilename: PropTypes.string.isRequired,
-  animation: PropTypes.object.isRequired,
   object: PropTypes.object.isRequired,
 };
 

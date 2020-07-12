@@ -19,6 +19,7 @@ export function AppPlayer() {
         const newGame = new Game(game);
         setGameObj(newGame);
         console.log(newGame);
+        console.log(game);
         interval = setInterval(() => {
           newGame.update();
         }, 1000 / 30);
@@ -27,7 +28,7 @@ export function AppPlayer() {
     return () => clearInterval(interval);
   }, []);
 
-  return <div>{game && <GameWindow game={game} />}</div>;
+  return <div>{gameObj && <GameWindow game={gameObj} />}</div>;
 }
 
 export default AppPlayer;

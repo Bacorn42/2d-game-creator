@@ -5,27 +5,19 @@ import GameObject from "./GameObject";
 export function GameWindow({ game }) {
   return (
     <div
+      tabIndex="1"
+      onKeyDown={(e) => game.pressKey(e.key)}
+      onKeyUp={(e) => game.releaseKey(e.key)}
       style={{
-        width: game.scenes.scenes_0.width + "px",
-        height: game.scenes.scenes_0.height + "px",
+        width: game.width + "px",
+        height: game.height + "px",
         backgroundColor: "#999",
         position: "relative",
       }}
     >
-      {Object.keys(game.scenes.scenes_0.objects).map((obj) => {
-        const object = game.objects[game.scenes.scenes_0.objects[obj]];
-        const animation = game.animations[object.animation];
-        const graphics = game.graphics[animation.parent];
-        return (
-          <GameObject
-            key={obj}
-            coords={obj}
-            graphicsFilename={graphics.filename}
-            animation={animation}
-            object={object}
-          />
-        );
-      })}
+      {game.entities.map((entity) => (
+        <GameObject key={entity.id} object={entity} />
+      ))}
     </div>
   );
 }

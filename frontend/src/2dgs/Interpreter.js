@@ -26,6 +26,7 @@ class Interpreter {
         return exception.value;
       }
       console.log("Interpreter error: " + exception);
+      console.log(exception.stack);
     }
   };
 
@@ -147,14 +148,14 @@ class Interpreter {
   };
 
   evaluateUnary = (expr) => {
-    const right = expr.right.evaluate(this);
+    const expression = expr.expr.evaluate(this);
 
     switch (expr.operator.type) {
       case TokenType.BANG:
       case TokenType.NOT:
-        return !right;
+        return !expression;
       case TokenType.MINUS:
-        return -right;
+        return -expression;
       default:
         return null;
     }
