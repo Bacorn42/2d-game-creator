@@ -63,6 +63,10 @@ Expr.Identifier = class Identifier {
   evaluate = (evaluator) => {
     return evaluator.evaluateIdentifier(this);
   };
+
+  getCallback = (evaluator) => {
+    return evaluator.getIdentifierCallback(this);
+  };
 };
 
 Expr.Assign = class Assign {
@@ -86,6 +90,10 @@ Expr.Dot = class Dot {
 
   evaluate = (evaluator) => {
     return evaluator.evaluateDot(this);
+  };
+
+  getCallback = (evaluator) => {
+    return evaluator.getDotCallback(this);
   };
 };
 
