@@ -85,6 +85,26 @@ class Game {
     this.entities.forEach((entity) => entity.addEvent("Key_Released_" + key));
   };
 
+  clickMouse = (e) => {
+    const coords = this.getMouseCoords(e);
+    this.entities.forEach((entity) => entity.clickMouse(coords));
+  };
+
+  releaseMouse = (e) => {
+    const coords = this.getMouseCoords(e);
+    this.entities.forEach((entity) => entity.releaseMouse(coords));
+  };
+
+  getMouseCoords = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    return {
+      x: mouseX,
+      y: mouseY,
+    };
+  };
+
   createImages = (graphics) => {
     const gameGraphics = {};
     Object.keys(graphics).forEach((graphic) => {

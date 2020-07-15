@@ -74,6 +74,30 @@ class GameEntity {
   addEvent = (event) => {
     this.eventQueue.push(event);
   };
+
+  clickMouse = (coords) => {
+    if (this.inBounds(coords)) {
+      this.addEvent("Mouse_Clicked");
+    }
+  };
+
+  releaseMouse = (coords) => {
+    if (this.inBounds(coords)) {
+      this.addEvent("Mouse_Released");
+    }
+  };
+
+  inBounds = (coords) => {
+    const { x, y } = this.ownVars;
+    const width = this.animation.animation.tileWidth;
+    const height = this.animation.animation.tileHeight;
+    return (
+      coords.x >= x &&
+      coords.x < x + width &&
+      coords.y >= y &&
+      coords.y < y + height
+    );
+  };
 }
 
 export default GameEntity;

@@ -14,6 +14,8 @@ export function GameWindow({ game }) {
       tabIndex="1"
       onKeyDown={(e) => game.pressKey(e.key)}
       onKeyUp={(e) => game.releaseKey(e.key)}
+      onMouseDown={(e) => game.clickMouse(e)}
+      onMouseUp={(e) => game.releaseMouse(e)}
       style={{
         backgroundColor: "#ccc",
         position: "relative",

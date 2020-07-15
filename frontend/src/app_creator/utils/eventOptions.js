@@ -4,7 +4,8 @@ export const eventTypes = [
   "Destruct",
   "Key Pressed",
   "Key Released",
-  "Mouse click",
+  "Mouse Clicked",
+  "Mouse Released",
   "Timer",
 ];
 
