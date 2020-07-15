@@ -1,6 +1,9 @@
-function GameAnimation(animation, filename) {
+function GameAnimation(animation, image) {
   this.animation = animation;
-  this.filename = filename;
+  this.image = image;
+  this.frames =
+    (animation.width * animation.height) /
+    (animation.tileWidth * animation.tileHeight);
 }
 
 export default GameAnimation;

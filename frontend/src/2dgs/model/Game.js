@@ -6,16 +6,58 @@ import GameEntity from "./GameEntity";
 class Game {
   constructor(game) {
     this.game = game;
-    this.animations = this.createAnimations(game.animations, game.graphics);
+    this.images = this.createImages(game.graphics);
+    this.animations = this.createAnimations(game.animations);
     this.functions = this.createFunctions(game.functions);
     this.objects = this.createObjects(game.objects, game.events);
     this.entities = this.createEntities(game.scenes.scenes_0);
     this.width = game.scenes.scenes_0.width;
     this.height = game.scenes.scenes_0.height;
     this.keysPressed = {};
+    this.canvas = null;
+    this.ctx = null;
+    this.requestID = null;
+    this.FPS = 30;
+    this.TIMESTEP = 1000 / this.FPS;
+    this.MAX_UPDATES = 5;
+    this.lastTimestamp = 0;
+    this.delta = 0;
   }
 
-  update = () => {
+  start = (canvas) => {
+    this.canvas = canvas.current;
+    this.ctx = this.canvas.getContext("2d");
+    this.requestId = requestAnimationFrame(this.mainLoop);
+  };
+
+  stop = () => {
+    this.canvas = null;
+    this.ctx = null;
+    cancelAnimationFrame(this.requestId);
+  };
+
+  mainLoop = (timestamp) => {
+    if (timestamp < this.lastTimestamp + this.TIMESTEP) {
+      this.requestId = requestAnimationFrame(this.mainLoop);
+      return;
+    }
+    this.delta += timestamp - this.lastTimestamp;
+    this.lastTimestamp = timestamp;
+
+    let updates = 0;
+    while (this.delta >= this.TIMESTEP) {
+      this.update(this.TIMESTEP);
+      this.delta -= this.TIMESTEP;
+      this.updates++;
+      if (updates > this.MAX_UPDATES) {
+        this.delta = 0;
+      }
+    }
+    this.draw();
+    this.requestId = requestAnimationFrame(this.mainLoop);
+  };
+
+  update = (timestep) => {
     Object.keys(this.keysPressed).forEach((key) => {
       if (this.keysPressed[key]) {
         this.entities.forEach((entity) =>
@@ -23,7 +65,12 @@ class Game {
         );
       }
     });
-    this.entities.forEach((entity) => entity.update());
+    this.entities.forEach((entity) => entity.update(timestep));
+  };
+
+  draw = () => {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.entities.forEach((entity) => entity.draw(this.ctx));
   };
 
   pressKey = (key) => {
@@ -37,11 +84,21 @@ class Game {
     this.entities.forEach((entity) => entity.addEvent("Key_Released_" + key));
   };
 
-  createAnimations = (animations, graphics) => {
+  createImages = (graphics) => {
+    const gameGraphics = {};
+    Object.keys(graphics).forEach((graphic) => {
+      const image = new Image();
+      image.src = "img/" + graphics[graphic].filename;
+      gameGraphics[graphic] = image;
+    });
+    return gameGraphics;
+  };
+
+  createAnimations = (animations) => {
     return Object.keys(animations).map((anim) => {
       const animation = animations[anim];
-      const graphicsFilename = graphics[animation.parent].filename;
-      return new GameAnimation(animation, graphicsFilename);
+      const image = this.images[animation.parent];
+      return new GameAnimation(animation, image);
     });
   };
 

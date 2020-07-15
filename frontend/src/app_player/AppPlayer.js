@@ -3,7 +3,6 @@ import GameWindow from "./components/GameWindow";
 import Game from "../2dgs/model/Game";
 
 export function AppPlayer() {
-  const [game, setGame] = useState(null);
   const [gameObj, setGameObj] = useState(null);
 
   useEffect(() => {
@@ -15,11 +14,8 @@ export function AppPlayer() {
         return response.json();
       })
       .then((game) => {
-        setGame(game);
         const newGame = new Game(game);
         setGameObj(newGame);
-        console.log(newGame);
-        console.log(game);
         interval = setInterval(() => {
           newGame.update();
         }, 1000 / 30);

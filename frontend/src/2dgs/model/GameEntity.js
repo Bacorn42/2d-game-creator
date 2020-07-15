@@ -11,6 +11,8 @@ class GameEntity {
       x: Number(coords.split("_")[0]),
       y: Number(coords.split("_")[1]),
     };
+    this.sprite = 0;
+    this.spriteCount = 0;
   }
 
   getAnimation = () => {
@@ -29,7 +31,8 @@ class GameEntity {
     return this.ownVars.y;
   };
 
-  update = () => {
+  update = (timestep) => {
+    this.updateSprite();
     this.eventQueue.push("Update");
     const size = this.eventQueue.length;
     for (let i = 0; i < size; i++) {
@@ -43,6 +46,29 @@ class GameEntity {
         interpreter.interpret();
       }
     }
+  };
+
+  updateSprite = () => {
+    this.spriteCount++;
+    if (this.spriteCount === this.animation.animation.every) {
+      this.spriteCount = 0;
+      this.sprite = (this.sprite + 1) % this.animation.frames;
+    }
+  };
+
+  draw = (ctx) => {
+    const animation = this.animation.animation;
+    ctx.drawImage(
+      this.animation.image,
+      animation.left + animation.tileWidth * this.sprite,
+      animation.top,
+      animation.tileWidth,
+      animation.tileHeight,
+      this.ownVars.x,
+      this.ownVars.y,
+      animation.tileWidth,
+      animation.tileHeight
+    );
   };
 
   addEvent = (event) => {
