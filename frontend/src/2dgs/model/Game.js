@@ -14,6 +14,7 @@ class Game {
     this.width = game.scenes.scenes_0.width;
     this.height = game.scenes.scenes_0.height;
     this.keysPressed = {};
+    this.ownVars = {};
     this.canvas = null;
     this.ctx = null;
     this.requestID = null;

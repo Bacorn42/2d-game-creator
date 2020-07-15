@@ -58,6 +58,7 @@ const TokenType = {
   NULL: "NULL",
   THIS: "THIS",
   OTHER: "OTHER",
+  GLOBAL: "GLOBAL",
   BREAK: "BREAK",
   CONTINUE: "CONTINUE",
   RETURN: "RETURN",

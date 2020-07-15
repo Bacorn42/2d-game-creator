@@ -221,6 +221,10 @@ class Interpreter {
   evaluateThis = (expr) => {
     return this.thisObject;
   };
+
+  evaluateGlobal = (expr) => {
+    return this.game;
+  };
 }
 
 export default Interpreter;

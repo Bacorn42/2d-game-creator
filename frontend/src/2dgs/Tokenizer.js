@@ -210,6 +210,8 @@ class Tokenizer {
         return TokenType.THIS;
       case "other":
         return TokenType.OTHER;
+      case "global":
+        return TokenType.GLOBAL;
       case "break":
         return TokenType.BREAK;
       case "continue":
