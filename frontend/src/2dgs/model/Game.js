@@ -2,10 +2,12 @@ import GameAnimation from "./GameAnimation";
 import GameFunction from "./GameFunction";
 import GameObject from "./GameObject";
 import GameEntity from "./GameEntity";
+import * as appFunctions from "../appFunctions";
 
 class Game {
   constructor(game) {
     this.game = game;
+    this.names = this.createNames(game);
     this.images = this.createImages(game.graphics);
     this.animations = this.createAnimations(game.animations);
     this.functions = this.createFunctions(game.functions);
@@ -15,6 +17,8 @@ class Game {
     this.height = game.scenes.scenes_0.height;
     this.keysPressed = {};
     this.ownVars = {};
+    this.timers = new Array(10).fill(-1);
+    this.toDraw = [];
     this.canvas = null;
     this.ctx = null;
     this.requestID = null;
@@ -66,12 +70,26 @@ class Game {
         );
       }
     });
+    for (let i = 0; i < this.timers.length; i++) {
+      if (this.timers[i] > 0) {
+        this.timers[i]--;
+      }
+      if (this.timers[i] === 0) {
+        this.entities.forEach((entity) => entity.addEvent("Timer_" + i));
+        this.timers[i] = -1;
+      }
+    }
     this.entities.forEach((entity) => entity.update(timestep));
   };
 
   draw = () => {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.entities.forEach((entity) => entity.draw(this.ctx));
+    this.toDraw.forEach((drawing) => {
+      this.ctx.font = `${drawing.size}px sans-serif`;
+      this.ctx.fillText(drawing.text, drawing.x, drawing.y);
+    });
+    this.toDraw = [];
   };
 
   pressKey = (key) => {
@@ -103,6 +121,17 @@ class Game {
       x: mouseX,
       y: mouseY,
     };
+  };
+
+  createNames = (game) => {
+    return [
+      ...Object.keys(game.graphics).map((x) => game.graphics[x].name),
+      ...Object.keys(game.audio).map((x) => game.audio[x].name),
+      ...Object.keys(game.functions).map((x) => game.functions[x].name),
+      ...Object.keys(game.objects).map((x) => game.objects[x].name),
+      ...Object.keys(game.scenes).map((x) => game.scenes[x].name),
+      ...Object.keys(game.animations).map((x) => game.animations[x].name),
+    ];
   };
 
   createImages = (graphics) => {
@@ -156,17 +185,27 @@ class Game {
   createEntities = (scene) => {
     return Object.keys(scene.objects).map((entity) => {
       const object = this.objects[scene.objects[entity]];
-      return new GameEntity(entity, object, this.getAnimation(object), this);
+      return new GameEntity(
+        entity,
+        object,
+        this.getAnimationById(object.object.animation),
+        this
+      );
     });
   };
 
-  getAnimation(object) {
-    return this.animations.find(
-      (anim) => anim.animation.id === object.object.animation
-    );
-  }
+  getAnimationById = (id) => {
+    return this.animations.find((anim) => anim.animation.id === id);
+  };
+
+  getAnimationByName = (name) => {
+    return this.animations.find((anim) => anim.animation.name === name);
+  };
 
   isFunction = (name) => {
+    if (appFunctions[name]) {
+      return true;
+    }
     return (
       Object.keys(this.game.functions).findIndex(
         (f) => this.game.functions[f].name === name
@@ -174,9 +213,26 @@ class Game {
     );
   };
 
-  callFunction = (name, values) => {
-    const func = this.functions.find((f) => f.func.name === name);
-    return func.call(values);
+  callFunction = (name, values, thisObject) => {
+    if (appFunctions[name]) {
+      appFunctions[name](this, values);
+    } else {
+      const func = this.functions.find((f) => f.func.name === name);
+      return func.call(values, thisObject);
+    }
+  };
+
+  destroy = (entity) => {
+    const index = this.entities.findIndex((ent) => ent === entity);
+    this.entities.splice(index, 1);
+  };
+
+  setTimer = (timer, time) => {
+    this.timers[timer] = time;
+  };
+
+  addDrawing = (drawing) => {
+    this.toDraw.push(drawing);
   };
 }
 

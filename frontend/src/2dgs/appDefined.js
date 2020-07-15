@@ -1,6 +1,5 @@
-const appDefined = [
-  'next_scene',
-  'previous_scene'
-];
+import * as appFunctions from "./appFunctions";
+
+const appDefined = [...Object.keys(appFunctions)];
 
 export default appDefined;

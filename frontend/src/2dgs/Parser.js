@@ -4,9 +4,9 @@ import Stmt from "./Stmt";
 import Expr from "./Expr";
 
 class Parser {
-  constructor(code, game) {
+  constructor(code, game, args, names) {
     this.game = game;
-    const tokens = tokenize(code);
+    const tokens = tokenize(code, args, names);
     this.tokens = this.filterTokens(tokens);
     this.current = 0;
   }
@@ -292,6 +292,7 @@ class Parser {
       case TokenType.GLOBAL:
         return new Expr.Global();
       case TokenType.NUMBER:
+      case TokenType.STRING:
         return new Expr.Literal(token.value);
       case TokenType.IDENTIFIER:
         return this.identifier(token);

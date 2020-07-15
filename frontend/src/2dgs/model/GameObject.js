@@ -5,7 +5,7 @@ function GameObject(object, events, game) {
   this.events = events;
   this.game = game;
   Object.keys(events).forEach((event) => {
-    const parser = new Parser(events[event].code, game);
+    const parser = new Parser(events[event].code, game, null, game.names);
     events[event].statements = parser.parse();
   });
 }

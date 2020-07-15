@@ -175,6 +175,9 @@ class Interpreter {
   };
 
   evaluateIdentifier = (expr) => {
+    if (expr.identifier.secondaryType === TokenType.USER_DEFINED) {
+      return expr.identifier.value;
+    }
     const variable = expr.identifier.value;
     return this.variables[variable];
   };
@@ -215,7 +218,7 @@ class Interpreter {
 
   evaluateFunction = (expr) => {
     const values = expr.args.map((arg) => arg.evaluate(this));
-    return this.game.callFunction(expr.token.value, values);
+    return this.game.callFunction(expr.token.value, values, this.thisObject);
   };
 
   evaluateThis = (expr) => {

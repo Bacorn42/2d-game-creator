@@ -44,6 +44,10 @@ class GameEntity {
           this
         );
         interpreter.interpret();
+        if (event === "Destruct") {
+          this.game.destroy(this);
+          return;
+        }
       }
     }
   };
