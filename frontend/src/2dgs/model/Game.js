@@ -10,6 +10,7 @@ class Game {
     this.names = this.createNames(game);
     this.images = this.createImages(game.graphics);
     this.animations = this.createAnimations(game.animations);
+    this.sounds = this.createSounds(game.audio);
     this.functions = this.createFunctions(game.functions);
     this.objects = this.createObjects(game.objects, game.events);
     this.entities = this.createEntities(game.scenes.scenes_0);
@@ -152,6 +153,14 @@ class Game {
     });
   };
 
+  createSounds = (audio) => {
+    const gameAudio = {};
+    Object.keys(audio).forEach((sound) => {
+      gameAudio[audio[sound].name] = new Audio("snd/" + audio[sound].filename);
+    });
+    return gameAudio;
+  };
+
   createFunctions = (functions) => {
     return Object.keys(functions).map(
       (func) => new GameFunction(functions[func], this)
@@ -233,6 +242,10 @@ class Game {
 
   addDrawing = (drawing) => {
     this.toDraw.push(drawing);
+  };
+
+  playSound = (sound) => {
+    this.sounds[sound].play();
   };
 }
 

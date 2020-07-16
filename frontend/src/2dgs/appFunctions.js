@@ -27,3 +27,8 @@ export const gsSetAnimation = (game, values) => {
   const animation = game.getAnimationByName(animationName);
   entity.animation = animation;
 };
+
+export const gsPlaySound = (game, values) => {
+  const sound = values[0];
+  game.playSound(sound);
+};
