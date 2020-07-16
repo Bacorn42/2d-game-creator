@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 export function GameWindow({ game }) {
   const canvas = useRef(null);
   useEffect(() => {
-    game.start(canvas);
+    game.start(canvas.current);
     return () => game.stop();
   }, [game, canvas]);
 

@@ -30,7 +30,7 @@ class Game {
   }
 
   start = (canvas) => {
-    this.canvas = canvas.current;
+    this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
     this.requestId = requestAnimationFrame(this.mainLoop);
   };
@@ -53,7 +53,7 @@ class Game {
     while (this.delta >= this.TIMESTEP) {
       this.update(this.TIMESTEP);
       this.delta -= this.TIMESTEP;
-      this.updates++;
+      updates++;
       if (updates > this.MAX_UPDATES) {
         this.delta = 0;
       }
