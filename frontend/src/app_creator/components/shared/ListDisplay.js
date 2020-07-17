@@ -17,18 +17,26 @@ function ListDisplay({
     <div>
       <div>{name}</div>
       <div className="list-display-buttons">
-        <button onClick={onButtonPlus}>
-          <FontAwesomeIcon icon="plus" className="list-display-icon" />
-        </button>
-        <button onClick={onButtonMinus}>
-          <FontAwesomeIcon icon="minus" className="list-display-icon" />
-        </button>
-        <button onClick={onButtonUp}>
-          <FontAwesomeIcon icon="angle-up" className="list-display-icon" />
-        </button>
-        <button onClick={onButtonDown}>
-          <FontAwesomeIcon icon="angle-down" className="list-display-icon" />
-        </button>
+        {onButtonPlus && (
+          <button onClick={onButtonPlus}>
+            <FontAwesomeIcon icon="plus" className="list-display-icon" />
+          </button>
+        )}
+        {onButtonMinus && (
+          <button onClick={onButtonMinus}>
+            <FontAwesomeIcon icon="minus" className="list-display-icon" />
+          </button>
+        )}
+        {onButtonUp && (
+          <button onClick={onButtonUp}>
+            <FontAwesomeIcon icon="angle-up" className="list-display-icon" />
+          </button>
+        )}
+        {onButtonDown && (
+          <button onClick={onButtonDown}>
+            <FontAwesomeIcon icon="angle-down" className="list-display-icon" />
+          </button>
+        )}
       </div>
       <div className="list-display">
         {container.length === 0 ? (
@@ -56,10 +64,10 @@ ListDisplay.propTypes = {
   container: PropTypes.any.isRequired,
   getName: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  onButtonPlus: PropTypes.func.isRequired,
-  onButtonMinus: PropTypes.func.isRequired,
-  onButtonUp: PropTypes.func.isRequired,
-  onButtonDown: PropTypes.func.isRequired,
+  onButtonPlus: PropTypes.func,
+  onButtonMinus: PropTypes.func,
+  onButtonUp: PropTypes.func,
+  onButtonDown: PropTypes.func,
 };
 
 export default ListDisplay;

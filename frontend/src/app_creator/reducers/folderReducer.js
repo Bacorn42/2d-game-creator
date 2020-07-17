@@ -32,6 +32,8 @@ const folderReducer = function (state = folderReducerInitialState, action) {
       return deleteEvent(state, action);
     case "LOAD_GAME":
       return loadGame(state, action);
+    case "SET_SCENE_ORDER":
+      return setSceneOrder(state, action);
     default:
       return state;
   }
@@ -177,6 +179,8 @@ const createItem = function (state, action) {
         expanded: true,
       },
     },
+    sceneOrder:
+      type === "scenes" ? [...state.sceneOrder, newId] : state.sceneOrder,
   };
 };
 
@@ -204,6 +208,10 @@ const deleteItemUtil = function (state, action, toDelete, callback) {
         items: state.folders[parent].items.filter((x) => x !== action.id),
       },
     },
+    sceneOrder:
+      type === "scenes"
+        ? state.sceneOrder.filter((x) => x !== action.id)
+        : state.sceneOrder,
   };
   if (toDelete) {
     for (const item of toDelete) {
@@ -362,6 +370,14 @@ const loadGame = (state, action) => {
     events: {
       ...action.game.events,
     },
+    sceneOrder: action.game.sceneOrder,
+  };
+};
+
+const setSceneOrder = (state, action) => {
+  return {
+    ...state,
+    sceneOrder: action.sceneOrder,
   };
 };
 

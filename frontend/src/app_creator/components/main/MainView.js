@@ -6,6 +6,7 @@ import WindowFunctions from "../window/WindowFunctions";
 import WindowObjects from "../window/WindowObjects";
 import WindowScenes from "../window/WindowScenes";
 import WindowFolders from "../window/WindowFolders";
+import WindowSceneOrder from "../window/WindowSceneOrder";
 import { moveWindow, closeWindow } from "../../actions/windowActions";
 
 const WindowComponents = {
@@ -15,12 +16,13 @@ const WindowComponents = {
   objects: WindowObjects,
   scenes: WindowScenes,
   folders: WindowFolders,
+  sceneOrderWindow: WindowSceneOrder,
 };
 
 export function MainView({ items, windows_order, moveWindow }) {
   const getWindow = (window) => {
     const type = window.split("_")[0];
-    if (!items[type][window]) {
+    if (items[type] && !items[type][window]) {
       closeWindow(window);
       return null;
     }

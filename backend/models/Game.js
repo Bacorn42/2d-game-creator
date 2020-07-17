@@ -89,6 +89,7 @@ const GameSchema = new mongoose.Schema({
       code: String,
     },
   },
+  sceneOrder: [{ type: String }],
 });
 
 const Game = mongoose.model("game", GameSchema);

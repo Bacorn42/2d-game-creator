@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import getIcon from "../../utils/getIcon";
 import { closeWindow } from "../../actions/windowActions";
+import getWindowName from "../../utils/getWindowName";
 
 export function WindowBar({
   id,
@@ -59,9 +60,8 @@ export function WindowBar({
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const itemType = ownProps.id.split("_")[0];
   return {
-    name: state.folderReducer[itemType][ownProps.id].name,
+    name: getWindowName(state.folderReducer, ownProps.id),
     window: state.windowReducer.windows[ownProps.id],
   };
 };

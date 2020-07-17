@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { createItem } from "../../actions/folderActions";
+import { openWindow } from "../../actions/windowActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Toolbar.css";
 
-export function Toolbar({ game, createItem }) {
+export function Toolbar({ game, createItem, openWindow }) {
   const [saving, setSaving] = useState(false);
   const [saveColor, setSaveColor] = useState("black");
 
@@ -69,6 +70,12 @@ export function Toolbar({ game, createItem }) {
         className="toolbar-icon"
       />
       <FontAwesomeIcon
+        icon="list-ol"
+        onClick={() => openWindow("sceneOrderWindow")}
+        size="lg"
+        className="toolbar-icon toolbar-icon-separator"
+      />
+      <FontAwesomeIcon
         icon={saving ? "spinner" : "save"}
         onClick={saveGame}
         size="lg"
@@ -88,6 +95,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createItem: (id) => {
       dispatch(createItem(id));
+    },
+    openWindow: (id) => {
+      dispatch(openWindow(id));
     },
   };
 };

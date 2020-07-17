@@ -20,6 +20,7 @@ router.post("/", (req, res) => {
     folders: copyGameObject(game.folders),
     animations: copyGameObject(game.animations),
     events: copyGameObject(game.events),
+    sceneOrder: game.sceneOrder,
   });
 
   newGame

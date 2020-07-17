@@ -10,6 +10,7 @@ export const DELETE_ANIMATION = "DELETE_ANIMATION";
 export const CREATE_EVENT = "CREATE_EVENT";
 export const DELETE_EVENT = "DELETE_EVENT";
 export const LOAD_GAME = "LOAD_GAME";
+export const SET_SCENE_ORDER = "SET_SCENE_ORDER";
 
 export function moveItem(id, to) {
   return {
@@ -97,5 +98,12 @@ export function loadGame(game) {
   return {
     type: LOAD_GAME,
     game,
+  };
+}
+
+export function setSceneOrder(sceneOrder) {
+  return {
+    type: SET_SCENE_ORDER,
+    sceneOrder
   };
 }

@@ -28,7 +28,8 @@ export function Window({
   };
 
   const onClick = (e) => {
-    focusWindow(item.id);
+    const windowId = item?.id || id;
+    focusWindow(windowId);
   };
 
   return (
@@ -43,9 +44,17 @@ export function Window({
         changeMaximize={changeMaximize}
       />
       <div className="window-content">
-        Name:{" "}
-        <input type="text" value={item.name} onChange={onNameChange}></input>
-        <hr />
+        {item && (
+          <>
+            Name:{" "}
+            <input
+              type="text"
+              value={item.name}
+              onChange={onNameChange}
+            ></input>
+            <hr />
+          </>
+        )}
         {children}
       </div>
     </div>
@@ -55,7 +64,7 @@ export function Window({
 const mapStateToProps = (state, ownProps) => {
   const itemType = ownProps.id.split("_")[0];
   return {
-    item: state.folderReducer[itemType][ownProps.id],
+    item: state.folderReducer[itemType]?.[ownProps.id],
     window: state.windowReducer.windows[ownProps.id],
   };
 };

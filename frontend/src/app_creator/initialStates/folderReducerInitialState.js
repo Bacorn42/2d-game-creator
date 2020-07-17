@@ -70,6 +70,7 @@ const folderReducerInitialState = {
   events: {
     count: 0,
   },
+  sceneOrder: [],
 };
 
 export default folderReducerInitialState;
