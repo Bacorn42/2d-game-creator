@@ -270,6 +270,9 @@ const deleteAnimation = function (state, action) {
         ),
       },
     },
+    animations: {
+      ...state.animations,
+    },
   };
   delete newState.animations[action.id];
   return newState;
@@ -316,6 +319,9 @@ const deleteEvent = function (state, action) {
           (x) => x !== action.id
         ),
       },
+    },
+    events: {
+      ...state.events,
     },
   };
   delete newState.events[action.id];
