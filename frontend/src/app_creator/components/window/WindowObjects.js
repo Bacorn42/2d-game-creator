@@ -11,6 +11,7 @@ import {
 } from "../../actions/folderActions";
 import { eventTypes, eventKeys, eventTimers } from "../../utils/eventOptions";
 import getAnimationNames from "../../utils/getAnimationNames";
+import getObjectNames from "../../utils/getObjectNames";
 import "./WindowObjects.css";
 
 export function WindowObjects({
@@ -18,6 +19,7 @@ export function WindowObjects({
   item,
   events,
   animationNames,
+  objectNames,
   modifyItem,
   createEvent,
   deleteEvent,
@@ -26,6 +28,9 @@ export function WindowObjects({
   const [selectedEventType, setSelectedEventType] = useState(eventTypes[0]);
   const [selectedEventKey, setSelectedEventKey] = useState(eventKeys[0]);
   const [selectedEventTimer, setSelectedEventTimer] = useState(eventTimers[0]);
+  const [selectedEventCollision, setSelectedEventCollision] = useState(
+    objectNames[0]
+  );
 
   const selectEvent = (e) => {
     setSelectedEvent(e.target.value);
@@ -34,7 +39,8 @@ export function WindowObjects({
   const createEventHandler = () => {
     const eventKey = isKeyEvent() ? selectedEventKey : "";
     const eventTimer = isTimerEvent() ? selectedEventTimer : "";
-    createEvent(id, selectedEventType, eventKey, eventTimer);
+    const eventCollision = isCollisionEvent() ? selectedEventCollision : "";
+    createEvent(id, selectedEventType, eventKey, eventTimer, eventCollision);
   };
 
   const deleteEventHandler = () => {
@@ -97,12 +103,20 @@ export function WindowObjects({
     setSelectedEventTimer(e.target.value);
   };
 
+  const setEventCollision = (e) => {
+    setSelectedEventCollision(e.target.value);
+  };
+
   const isKeyEvent = () => {
     return selectedEventType.substr(0, 3) === "Key";
   };
 
   const isTimerEvent = () => {
     return selectedEventType === "Timer";
+  };
+
+  const isCollisionEvent = () => {
+    return selectedEventType === "Collision With";
   };
 
   const keyOptions = () => {
@@ -133,6 +147,20 @@ export function WindowObjects({
     }
   };
 
+  const collisionOptions = () => {
+    if (isCollisionEvent()) {
+      return (
+        <select onChange={setEventCollision}>
+          {objectNames.map((obj) => (
+            <option key={obj} value={obj}>
+              {obj}
+            </option>
+          ))}
+        </select>
+      );
+    }
+  };
+
   return (
     <Window id={id}>
       <div className="object-panel">
@@ -156,6 +184,7 @@ export function WindowObjects({
           </select>
           {keyOptions()}
           {timerOptions()}
+          {collisionOptions()}
           <ListDisplay
             name={"Events"}
             container={item.events}
@@ -179,6 +208,7 @@ const mapStateToProps = (state, ownProps) => {
     item: state.folderReducer[itemType][ownProps.id],
     events: state.folderReducer.events,
     animationNames: getAnimationNames(state.folderReducer),
+    objectNames: getObjectNames(state.folderReducer.objects),
   };
 };
 
@@ -187,8 +217,10 @@ const mapDispatchToProps = (dispatch) => {
     modifyItem: (item) => {
       dispatch(modifyItem(item));
     },
-    createEvent: (id, eventType, eventKey, eventTimer) => {
-      dispatch(createEvent(id, eventType, eventKey, eventTimer));
+    createEvent: (id, eventType, eventKey, eventTimer, eventCollision) => {
+      dispatch(
+        createEvent(id, eventType, eventKey, eventTimer, eventCollision)
+      );
     },
     deleteEvent: (id) => {
       dispatch(deleteEvent(id));

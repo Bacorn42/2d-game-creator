@@ -81,6 +81,7 @@ class Game {
         this.timers[i] = -1;
       }
     }
+    this.checkCollisions();
     this.entities.forEach((entity) => entity.update(timestep));
   };
 
@@ -92,6 +93,43 @@ class Game {
       this.ctx.fillText(drawing.text, drawing.x, drawing.y);
     });
     this.toDraw = [];
+  };
+
+  checkCollisions = () => {
+    for (let i = 0; i < this.entities.length; i++) {
+      for (let j = i + 1; j < this.entities.length; j++) {
+        const e1 = this.entities[i];
+        const e2 = this.entities[j];
+        const coords1 = {
+          x1: e1.getX(),
+          y1: e1.getY(),
+          x2: e1.getX() + e1.getWidth(),
+          y2: e1.getY() + e1.getHeight(),
+        };
+        const coords2 = {
+          x1: e2.getX(),
+          y1: e2.getY(),
+          x2: e2.getX() + e2.getWidth(),
+          y2: e2.getY() + e2.getHeight(),
+        };
+        if (this.entitiesCollide(coords1, coords2)) {
+          e1.addEvent("Collision_With_" + e2.object.object.name);
+          e2.addEvent("Collision_With_" + e1.object.object.name);
+        }
+      }
+    }
+  };
+
+  // Two rectangles do not overlap if either one is completely above the other
+  // or one if completely to the right of another
+  entitiesCollide = (coords1, coords2) => {
+    if (coords1.x1 >= coords2.x2 || coords2.x1 >= coords1.x2) {
+      return false;
+    }
+    if (coords1.y1 >= coords2.y2 || coords2.y1 >= coords1.y2) {
+      return false;
+    }
+    return true;
   };
 
   pressKey = (key) => {

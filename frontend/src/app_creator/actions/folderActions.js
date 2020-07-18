@@ -77,13 +77,20 @@ export function deleteAnimation(id) {
   };
 }
 
-export function createEvent(id, eventType, eventKey, eventTimer) {
+export function createEvent(
+  id,
+  eventType,
+  eventKey,
+  eventTimer,
+  eventCollision
+) {
   return {
     type: CREATE_EVENT,
     id,
     eventType,
     eventKey,
     eventTimer,
+    eventCollision,
   };
 }
 
@@ -104,6 +111,6 @@ export function loadGame(game) {
 export function setSceneOrder(sceneOrder) {
   return {
     type: SET_SCENE_ORDER,
-    sceneOrder
+    sceneOrder,
   };
 }

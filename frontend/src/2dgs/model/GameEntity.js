@@ -31,6 +31,14 @@ class GameEntity {
     return this.ownVars.y;
   };
 
+  getWidth = () => {
+    return this.animation.animation.tileWidth;
+  };
+
+  getHeight = () => {
+    return this.animation.animation.tileHeight;
+  };
+
   update = (timestep) => {
     this.updateSprite();
     this.eventQueue.push("Update");

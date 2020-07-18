@@ -295,6 +295,9 @@ const createEvent = function (state, action) {
   if (action.eventTimer) {
     newId += "_" + action.eventTimer;
   }
+  if (action.eventCollision) {
+    newId += "_" + action.eventCollision;
+  }
   if (state.events[newId]) {
     return { ...state };
   }

@@ -8,6 +8,7 @@ export const eventTypes = [
   "Mouse Clicked",
   "Mouse Released",
   "Timer",
+  "Collision With",
 ];
 
 export const eventKeys = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", ..."0123456789"];
