@@ -18,10 +18,7 @@ export function GameWindow({ game }) {
       onMouseUp={(e) => game.releaseMouse(e)}
       style={{
         backgroundColor: "#ccc",
-        position: "relative",
       }}
-      width={game.width}
-      height={game.height}
     />
   );
 }

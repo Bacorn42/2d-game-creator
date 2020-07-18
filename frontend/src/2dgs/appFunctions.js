@@ -32,3 +32,16 @@ export const gsPlaySound = (game, values) => {
   const sound = values[0];
   game.playSound(sound);
 };
+
+export const gsGotoScene = (game, values) => {
+  const scene = values[0];
+  game.gotoScene(scene);
+};
+
+export const gsNextScene = (game, values) => {
+  game.nextScene();
+};
+
+export const gsPreviousScene = (game, values) => {
+  game.previousScene();
+};

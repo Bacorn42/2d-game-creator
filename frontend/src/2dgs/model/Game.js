@@ -7,19 +7,21 @@ import * as appFunctions from "../appFunctions";
 class Game {
   constructor(game) {
     this.game = game;
+    this.currentScene = 0;
+
     this.names = this.createNames(game);
     this.images = this.createImages(game.graphics);
     this.animations = this.createAnimations(game.animations);
     this.sounds = this.createSounds(game.audio);
     this.functions = this.createFunctions(game.functions);
     this.objects = this.createObjects(game.objects, game.events);
-    this.entities = this.createEntities(game.scenes.scenes_0);
-    this.width = game.scenes.scenes_0.width;
-    this.height = game.scenes.scenes_0.height;
+    this.entities = null;
+
     this.keysPressed = {};
     this.ownVars = {};
     this.timers = new Array(10).fill(-1);
     this.toDraw = [];
+
     this.canvas = null;
     this.ctx = null;
     this.requestID = null;
@@ -33,6 +35,7 @@ class Game {
   start = (canvas) => {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
+    this.setScene();
     this.requestId = requestAnimationFrame(this.mainLoop);
   };
 
@@ -84,7 +87,7 @@ class Game {
   };
 
   draw = () => {
-    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.entities.forEach((entity) => entity.draw(this.ctx));
     this.toDraw.forEach((drawing) => {
       this.ctx.font = `${drawing.size}px sans-serif`;
@@ -246,6 +249,39 @@ class Game {
 
   playSound = (sound) => {
     this.sounds[sound].play();
+  };
+
+  getCurrentScene = () => {
+    const sceneOrder = this.game.sceneOrder;
+    return this.game.scenes[sceneOrder[this.currentScene]];
+  };
+
+  setScene = () => {
+    console.log(this.currentScene);
+    this.entities = this.createEntities(this.getCurrentScene());
+    this.canvas.width = this.getCurrentScene().width;
+    this.canvas.height = this.getCurrentScene().height;
+    this.timers = new Array(10).fill(-1);
+    this.toDraw = [];
+    this.lastTimestamp = 0;
+    this.delta = 0;
+  };
+
+  gotoScene = (scene) => {
+    this.currentScene = this.game.sceneOrder.findIndex(
+      (s) => this.game.scenes[s].name === scene
+    );
+    this.setScene();
+  };
+
+  nextScene = () => {
+    this.currentScene++;
+    this.setScene();
+  };
+
+  previousScene = () => {
+    this.currentScene--;
+    this.setScene();
   };
 }
 
