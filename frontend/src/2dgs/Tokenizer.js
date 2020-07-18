@@ -20,9 +20,9 @@ class Tokenizer {
       let substr = this.str.substr(this.start, this.current - this.start);
       if (type === TokenType.NUMBER) {
         substr = Number(substr);
-      } else if (type === TokenType.STRING) {
+      } /*else if (type === TokenType.STRING) {
         substr = substr.substr(1, substr.length - 2);
-      }
+      }*/
       const secondaryType = this.getSecondaryType(type, substr);
       this.tokens.push(new Token(type, substr, this.line, secondaryType));
     }

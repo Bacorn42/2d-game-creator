@@ -3,6 +3,7 @@ export const eventTypes = [
   "Update",
   "Destruct",
   "Key Pressed",
+  "Key Held",
   "Key Released",
   "Mouse Clicked",
   "Mouse Released",

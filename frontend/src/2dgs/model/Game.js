@@ -69,9 +69,7 @@ class Game {
   update = (timestep) => {
     Object.keys(this.keysPressed).forEach((key) => {
       if (this.keysPressed[key]) {
-        this.entities.forEach((entity) =>
-          entity.addEvent("Key_Pressed_" + key)
-        );
+        this.entities.forEach((entity) => entity.addEvent("Key_Held_" + key));
       }
     });
     for (let i = 0; i < this.timers.length; i++) {
@@ -98,6 +96,9 @@ class Game {
 
   pressKey = (key) => {
     key = key.toUpperCase();
+    if (!this.keysPressed[key]) {
+      this.entities.forEach((entity) => entity.addEvent("Key_Pressed_" + key));
+    }
     this.keysPressed[key] = true;
   };
 
@@ -257,7 +258,6 @@ class Game {
   };
 
   setScene = () => {
-    console.log(this.currentScene);
     this.entities = this.createEntities(this.getCurrentScene());
     this.canvas.width = this.getCurrentScene().width;
     this.canvas.height = this.getCurrentScene().height;
@@ -282,6 +282,20 @@ class Game {
   previousScene = () => {
     this.currentScene--;
     this.setScene();
+  };
+
+  createEntity = (x, y, entity) => {
+    const coords = x + "_" + y;
+    const object = Object.keys(this.objects).find(
+      (o) => this.objects[o].object.name === entity
+    );
+    const newEntity = new GameEntity(
+      coords,
+      this.objects[object],
+      this.getAnimationById(this.objects[object].object.animation),
+      this
+    );
+    this.entities.push(newEntity);
   };
 }
 

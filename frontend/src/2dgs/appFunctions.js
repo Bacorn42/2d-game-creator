@@ -45,3 +45,10 @@ export const gsNextScene = (game, values) => {
 export const gsPreviousScene = (game, values) => {
   game.previousScene();
 };
+
+export const gsCreateEntity = (game, values) => {
+  const x = values[0];
+  const y = values[1];
+  const entity = values[2];
+  game.createEntity(x, y, entity);
+};

@@ -292,8 +292,9 @@ class Parser {
       case TokenType.GLOBAL:
         return new Expr.Global();
       case TokenType.NUMBER:
-      case TokenType.STRING:
         return new Expr.Literal(token.value);
+      case TokenType.STRING:
+        return new Expr.Literal(token.value.substr(1, token.value.length - 2));
       case TokenType.IDENTIFIER:
         return this.identifier(token);
       case TokenType.LEFT_PAREN:
