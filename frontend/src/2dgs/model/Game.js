@@ -113,8 +113,8 @@ class Game {
           y2: e2.getY() + e2.getHeight(),
         };
         if (this.entitiesCollide(coords1, coords2)) {
-          e1.addEvent("Collision_With_" + e2.object.object.name);
-          e2.addEvent("Collision_With_" + e1.object.object.name);
+          e1.addEvent("Collision_With_" + e2.object.object.name, e2);
+          e2.addEvent("Collision_With_" + e1.object.object.name, e1);
         }
       }
     }

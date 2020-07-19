@@ -4,10 +4,11 @@ import BreakException from "./exceptions/BreakException";
 import ContinueException from "./exceptions/ContinueException";
 
 class Interpreter {
-  constructor(statements, game, thisObject, logger) {
+  constructor(statements, game, thisObject, otherObject, logger) {
     this.statements = statements;
     this.game = game;
     this.thisObject = thisObject;
+    this.otherObject = otherObject;
     this.logger = logger || console;
     this.variables = {};
   }
@@ -224,6 +225,10 @@ class Interpreter {
 
   evaluateThis = (expr) => {
     return this.thisObject;
+  };
+
+  evaluateOther = (expr) => {
+    return this.otherObject;
   };
 
   evaluateGlobal = (expr) => {

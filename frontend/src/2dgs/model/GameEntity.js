@@ -6,7 +6,8 @@ class GameEntity {
     this.animation = animation;
     this.game = game;
     this.id = coords;
-    this.eventQueue = ["Construct"];
+    this.eventQueue = [];
+    this.addEvent("Construct");
     this.ownVars = {
       x: Number(coords.split("_")[0]),
       y: Number(coords.split("_")[1]),
@@ -41,18 +42,19 @@ class GameEntity {
 
   update = (timestep) => {
     this.updateSprite();
-    this.eventQueue.push("Update");
+    this.addEvent("Update");
     const size = this.eventQueue.length;
     for (let i = 0; i < size; i++) {
-      const event = this.eventQueue.shift();
-      if (this.object.events[event]) {
+      const { eventName, otherObject } = this.eventQueue.shift();
+      if (this.object.events[eventName]) {
         const interpreter = new Interpreter(
-          this.object.events[event].statements,
+          this.object.events[eventName].statements,
           this.game,
-          this
+          this,
+          otherObject
         );
         interpreter.interpret();
-        if (event === "Destruct") {
+        if (eventName === "Destruct") {
           this.game.destroy(this);
           return;
         }
@@ -83,8 +85,8 @@ class GameEntity {
     );
   };
 
-  addEvent = (event) => {
-    this.eventQueue.push(event);
+  addEvent = (eventName, otherObject) => {
+    this.eventQueue.push({ eventName, otherObject });
   };
 
   clickMouse = (coords) => {

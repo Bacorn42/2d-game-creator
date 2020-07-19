@@ -290,6 +290,8 @@ class Parser {
         return new Expr.Literal(false);
       case TokenType.THIS:
         return new Expr.This();
+      case TokenType.OTHER:
+        return new Expr.Other();
       case TokenType.GLOBAL:
         return new Expr.Global();
       case TokenType.NUMBER:

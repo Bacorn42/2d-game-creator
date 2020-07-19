@@ -114,6 +114,12 @@ Expr.This = class This {
   };
 };
 
+Expr.Other = class Other {
+  evaluate = (evaluator) => {
+    return evaluator.evaluateOther(this);
+  };
+};
+
 Expr.Global = class Global {
   evaluate = (evaluator) => {
     return evaluator.evaluateGlobal(this);
