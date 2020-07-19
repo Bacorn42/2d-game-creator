@@ -212,6 +212,8 @@ class Tokenizer {
         return TokenType.OTHER;
       case "global":
         return TokenType.GLOBAL;
+      case "camera":
+        return TokenType.CAMERA;
       case "break":
         return TokenType.BREAK;
       case "continue":

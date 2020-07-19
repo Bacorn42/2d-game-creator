@@ -126,4 +126,10 @@ Expr.Global = class Global {
   };
 };
 
+Expr.Camera = class Camera {
+  evaluate = (evaluator) => {
+    return evaluator.evaluateCamera(this);
+  };
+};
+
 export default Expr;

@@ -70,7 +70,7 @@ class GameEntity {
     }
   };
 
-  draw = (ctx) => {
+  draw = (ctx, offsetX, offsetY) => {
     const animation = this.animation.animation;
     ctx.drawImage(
       this.animation.image,
@@ -78,8 +78,8 @@ class GameEntity {
       animation.top,
       animation.tileWidth,
       animation.tileHeight,
-      this.ownVars.x,
-      this.ownVars.y,
+      this.ownVars.x - offsetX,
+      this.ownVars.y - offsetY,
       animation.tileWidth,
       animation.tileHeight
     );

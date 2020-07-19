@@ -59,6 +59,7 @@ const TokenType = {
   THIS: "THIS",
   OTHER: "OTHER",
   GLOBAL: "GLOBAL",
+  CAMERA: "CAMERA",
   BREAK: "BREAK",
   CONTINUE: "CONTINUE",
   RETURN: "RETURN",

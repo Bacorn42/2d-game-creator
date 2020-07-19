@@ -234,6 +234,10 @@ class Interpreter {
   evaluateGlobal = (expr) => {
     return this.game;
   };
+
+  evaluateCamera = (expr) => {
+    return this.game.camera;
+  };
 }
 
 export default Interpreter;

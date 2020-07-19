@@ -3,6 +3,7 @@ import GameFunction from "./GameFunction";
 import GameObject from "./GameObject";
 import GameEntity from "./GameEntity";
 import * as appFunctions from "../appFunctions";
+import GameCamera from "./GameCamera";
 
 class Game {
   constructor(game) {
@@ -16,6 +17,7 @@ class Game {
     this.functions = this.createFunctions(game.functions);
     this.objects = this.createObjects(game.objects, game.events);
     this.entities = null;
+    this.camera = null;
 
     this.keysPressed = {};
     this.ownVars = {};
@@ -86,11 +88,13 @@ class Game {
   };
 
   draw = () => {
+    const offsetX = this.camera.getX();
+    const offsetY = this.camera.getY();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.entities.forEach((entity) => entity.draw(this.ctx));
+    this.entities.forEach((entity) => entity.draw(this.ctx, offsetX, offsetY));
     this.toDraw.forEach((drawing) => {
       this.ctx.font = `${drawing.size}px sans-serif`;
-      this.ctx.fillText(drawing.text, drawing.x, drawing.y);
+      this.ctx.fillText(drawing.text, drawing.x - offsetX, drawing.y - offsetY);
     });
     this.toDraw = [];
   };
@@ -296,9 +300,11 @@ class Game {
   };
 
   setScene = () => {
-    this.entities = this.createEntities(this.getCurrentScene());
-    this.canvas.width = this.getCurrentScene().width;
-    this.canvas.height = this.getCurrentScene().height;
+    const scene = this.getCurrentScene();
+    this.entities = this.createEntities(scene);
+    this.camera = new GameCamera(this, 0, 0, scene.width, scene.height);
+    this.canvas.width = scene.width;
+    this.canvas.height = scene.height;
     this.timers = new Array(10).fill(-1);
     this.toDraw = [];
     this.lastTimestamp = 0;
@@ -334,6 +340,14 @@ class Game {
       this
     );
     this.entities.push(newEntity);
+  };
+
+  setCameraWidth = (width) => {
+    this.canvas.width = width;
+  };
+
+  setCameraHeight = (height) => {
+    this.canvas.height = height;
   };
 }
 

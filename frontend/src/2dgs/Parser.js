@@ -294,6 +294,8 @@ class Parser {
         return new Expr.Other();
       case TokenType.GLOBAL:
         return new Expr.Global();
+      case TokenType.CAMERA:
+        return new Expr.Camera();
       case TokenType.NUMBER:
         return new Expr.Literal(token.value);
       case TokenType.STRING:
