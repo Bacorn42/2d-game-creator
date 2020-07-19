@@ -4,8 +4,9 @@ import Stmt from "./Stmt";
 import Expr from "./Expr";
 
 class Parser {
-  constructor(code, game, args, names) {
+  constructor(code, game, args, names, logger) {
     this.game = game;
+    this.logger = logger || console;
     const tokens = tokenize(code, args, names);
     this.tokens = this.filterTokens(tokens);
     this.current = 0;
@@ -40,8 +41,8 @@ class Parser {
       try {
         statements.push(this.statement());
       } catch (err) {
-        console.log("Parsing error: " + err);
-        console.log(err.stack);
+        this.logger.log("Parsing error: " + err);
+        this.logger.log(err.stack);
       }
     }
 

@@ -4,10 +4,11 @@ import BreakException from "./exceptions/BreakException";
 import ContinueException from "./exceptions/ContinueException";
 
 class Interpreter {
-  constructor(statements, game, thisObject) {
+  constructor(statements, game, thisObject, logger) {
     this.statements = statements;
     this.game = game;
     this.thisObject = thisObject;
+    this.logger = logger || console;
     this.variables = {};
   }
 
@@ -26,8 +27,8 @@ class Interpreter {
       if (exception instanceof ReturnException) {
         return exception.value;
       }
-      console.log("Interpreter error: " + exception);
-      console.log(exception.stack);
+      this.logger.log("Interpreter error: " + exception);
+      this.logger.log(exception.stack);
     }
   };
 
@@ -83,7 +84,7 @@ class Interpreter {
   };
 
   executePrint = (stmt) => {
-    console.log(stmt.expr.evaluate(this));
+    this.logger.log(stmt.expr.evaluate(this));
   };
 
   evaluateBinary = (expr) => {
