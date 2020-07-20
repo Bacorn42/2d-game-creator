@@ -92,7 +92,6 @@
 .ELSE,
 .TRUE,
 .FALSE,
-.VAR,
 .FOR,
 .WHILE,
 .NULL,

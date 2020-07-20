@@ -64,6 +64,10 @@ class Tokenizer {
         return TokenType.LEFT_BRACE;
       case "}":
         return TokenType.RIGHT_BRACE;
+      case "[":
+        return TokenType.LEFT_BRACKET;
+      case "]":
+        return TokenType.RIGHT_BRACKET;
       case ";":
         return TokenType.SEMICOLON;
       case ".":
@@ -74,6 +78,8 @@ class Tokenizer {
         return this.processPipe();
       case "&":
         return this.processAmpersand();
+      case "^":
+        return this.processCaret();
       case "'":
       case '"':
         return this.processString(c);
@@ -94,6 +100,8 @@ class Tokenizer {
         return TokenType.LESS_LESS_EQUAL;
       }
       return TokenType.LESS_LESS;
+    } else if (this.isNextChar("=")) {
+      return TokenType.LESS_EQUAL;
     }
     return TokenType.LESS;
   };
@@ -104,6 +112,8 @@ class Tokenizer {
         return TokenType.GREATER_GREATER_EQUAL;
       }
       return TokenType.GREATER_GREATER;
+    } else if (this.isNextChar("=")) {
+      return TokenType.GREATER_EQUAL;
     }
     return TokenType.GREATER;
   };
@@ -155,6 +165,13 @@ class Tokenizer {
     return TokenType.AMPERSAND;
   };
 
+  processCaret = () => {
+    if (this.isNextChar("=")) {
+      return TokenType.CARET_EQUAL;
+    }
+    return TokenType.CARET;
+  };
+
   processString = (quote) => {
     while (this.peek() !== quote && !this.isEnd()) {
       if (this.peek() === "\n") {
@@ -198,8 +215,6 @@ class Tokenizer {
         return TokenType.TRUE;
       case "false":
         return TokenType.FALSE;
-      case "var":
-        return TokenType.VAR;
       case "for":
         return TokenType.FOR;
       case "while":

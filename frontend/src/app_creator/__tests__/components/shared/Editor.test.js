@@ -40,10 +40,9 @@ test("Styles code", () => {
     actions: [folderActions.createItem("folders_functions")],
   });
   fireEvent.input(container.querySelector("textarea"), {
-    target: { value: "for(var i=0;i<10;i++){functions_0}" },
+    target: { value: "for(i=0;i<10;i++){functions_0}" },
   });
   expect(container.getElementsByClassName("FOR")).toHaveLength(1);
-  expect(container.getElementsByClassName("VAR")).toHaveLength(1);
   expect(container.getElementsByClassName("IDENTIFIER")).toHaveLength(4);
   expect(container.getElementsByClassName("USER_DEFINED")).toHaveLength(1);
   expect(container.getElementsByClassName("SEMICOLON")).toHaveLength(2);
