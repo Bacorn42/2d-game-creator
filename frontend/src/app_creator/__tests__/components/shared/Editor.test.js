@@ -46,5 +46,5 @@ test("Styles code", () => {
   expect(container.getElementsByClassName("VAR")).toHaveLength(1);
   expect(container.getElementsByClassName("IDENTIFIER")).toHaveLength(4);
   expect(container.getElementsByClassName("USER_DEFINED")).toHaveLength(1);
-  expect(container.getElementsByClassName("UNKNOWN")).toHaveLength(2);
+  expect(container.getElementsByClassName("SEMICOLON")).toHaveLength(2);
 });

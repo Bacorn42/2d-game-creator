@@ -13,6 +13,7 @@ import {
   faFileCode,
   faCube,
   faTv,
+  faListOl,
   faSave,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,6 +26,7 @@ library.add(
   faFileCode,
   faCube,
   faTv,
+  faListOl,
   faSave
 );
 
