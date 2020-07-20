@@ -62,6 +62,10 @@ class Parser {
         return this.whileStatement();
       case TokenType.RETURN:
         return this.returnStatement();
+      case TokenType.BREAK:
+        return this.breakStatement();
+      case TokenType.CONTINUE:
+        return this.continueStatement();
       case TokenType.PRINT:
         return this.printStatement();
       default:
@@ -135,6 +139,16 @@ class Parser {
     const expr = this.expression();
     this.expect(TokenType.SEMICOLON, "Expected ';'");
     return new Stmt.Return(expr);
+  };
+
+  breakStatement = () => {
+    this.expect(TokenType.SEMICOLON, "Expected ';'");
+    return new Stmt.Break();
+  };
+
+  continueStatement = () => {
+    this.expect(TokenType.SEMICOLON, "Expected ';'");
+    return new Stmt.Continue();
   };
 
   printStatement = () => {
@@ -310,7 +324,7 @@ class Parser {
   };
 
   identifier = (token) => {
-    if (this.game.isFunction(token.value)) {
+    if (this.game?.isFunction(token.value)) {
       return this.functionExpression(token);
     } else {
       return new Expr.Identifier(token);

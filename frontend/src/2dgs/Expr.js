@@ -7,9 +7,9 @@ Expr.Binary = class Binary {
     this.right = right;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateBinary(this);
-  };
+  }
 };
 
 Expr.Literal = class Literal {
@@ -17,9 +17,9 @@ Expr.Literal = class Literal {
     this.value = value;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateLiteral(this);
-  };
+  }
 };
 
 Expr.Group = class Group {
@@ -27,9 +27,9 @@ Expr.Group = class Group {
     this.expr = expr;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateGroup(this);
-  };
+  }
 };
 
 Expr.Logical = class Logical {
@@ -39,9 +39,9 @@ Expr.Logical = class Logical {
     this.right = right;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     evaluator.evaluateLogical(this);
-  };
+  }
 };
 
 Expr.Unary = class Unary {
@@ -50,9 +50,9 @@ Expr.Unary = class Unary {
     this.expr = expr;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateUnary(this);
-  };
+  }
 };
 
 Expr.Identifier = class Identifier {
@@ -60,13 +60,13 @@ Expr.Identifier = class Identifier {
     this.identifier = identifier;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateIdentifier(this);
-  };
+  }
 
-  getCallback = (evaluator) => {
+  getCallback(evaluator) {
     return evaluator.getIdentifierCallback(this);
-  };
+  }
 };
 
 Expr.Assign = class Assign {
@@ -76,9 +76,9 @@ Expr.Assign = class Assign {
     this.right = right;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateAssign(this);
-  };
+  }
 };
 
 Expr.Dot = class Dot {
@@ -88,13 +88,13 @@ Expr.Dot = class Dot {
     this.right = right;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateDot(this);
-  };
+  }
 
-  getCallback = (evaluator) => {
+  getCallback(evaluator) {
     return evaluator.getDotCallback(this);
-  };
+  }
 };
 
 Expr.Function = class Function {
@@ -103,33 +103,33 @@ Expr.Function = class Function {
     this.token = token;
   }
 
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateFunction(this);
-  };
+  }
 };
 
 Expr.This = class This {
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateThis(this);
-  };
+  }
 };
 
 Expr.Other = class Other {
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateOther(this);
-  };
+  }
 };
 
 Expr.Global = class Global {
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateGlobal(this);
-  };
+  }
 };
 
 Expr.Camera = class Camera {
-  evaluate = (evaluator) => {
+  evaluate(evaluator) {
     return evaluator.evaluateCamera(this);
-  };
+  }
 };
 
 export default Expr;

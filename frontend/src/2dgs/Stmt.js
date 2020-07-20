@@ -5,9 +5,9 @@ Stmt.Expression = class Expression {
     this.expr = expr;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executeExpression(this);
-  };
+  }
 };
 
 Stmt.Block = class Block {
@@ -15,9 +15,9 @@ Stmt.Block = class Block {
     this.stmts = stmts;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executeBlock(this);
-  };
+  }
 };
 
 Stmt.If = class If {
@@ -27,9 +27,9 @@ Stmt.If = class If {
     this.elseBranch = elseBranch;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executeIf(this);
-  };
+  }
 };
 
 Stmt.For = class For {
@@ -40,9 +40,9 @@ Stmt.For = class For {
     this.body = body;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executeFor(this);
-  };
+  }
 };
 
 Stmt.While = class While {
@@ -51,9 +51,9 @@ Stmt.While = class While {
     this.body = body;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executeWhile(this);
-  };
+  }
 };
 
 Stmt.Return = class Return {
@@ -61,21 +61,21 @@ Stmt.Return = class Return {
     this.expr = expr;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executeReturn(this);
-  };
+  }
 };
 
 Stmt.Break = class Break {
-  execute = (executor) => {
+  execute(executor) {
     executor.executeBreak(this);
-  };
+  }
 };
 
 Stmt.Continue = class Continue {
-  execute = (executor) => {
+  execute(executor) {
     executor.executeContinue(this);
-  };
+  }
 };
 
 Stmt.Print = class Print {
@@ -83,13 +83,13 @@ Stmt.Print = class Print {
     this.expr = expr;
   }
 
-  execute = (executor) => {
+  execute(executor) {
     executor.executePrint(this);
-  };
+  }
 };
 
 Stmt.Empty = class Empty {
-  execute = (executor) => {};
+  execute(executor) {}
 };
 
 export default Stmt;
