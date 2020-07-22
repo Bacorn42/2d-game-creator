@@ -176,7 +176,12 @@ class Parser {
         TokenType.PLUS_EQUAL,
         TokenType.MINUS_EQUAL,
         TokenType.STAR_EQUAL,
-        TokenType.SLASH_EQUAL
+        TokenType.SLASH_EQUAL,
+        TokenType.PIPE_EQUAL,
+        TokenType.CARET_EQUAL,
+        TokenType.AMPERSAND_EQUAL,
+        TokenType.LESS_LESS_EQUAL,
+        TokenType.GREATER_GREATER_EQUAL
       )
     ) {
       const operator = this.getPreviousToken();
@@ -204,12 +209,48 @@ class Parser {
   };
 
   and = () => {
-    let expr = this.equality();
+    let expr = this.bitwiseOr();
 
     while (this.isNextToken(TokenType.AND, TokenType.AMPERSAND_AMPERSAND)) {
       const operator = this.getPreviousToken();
-      const right = this.equality();
+      const right = this.bitwiseOr();
       expr = new Expr.Logical(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  bitwiseOr = () => {
+    let expr = this.bitwiseXor();
+
+    while (this.isNextToken(TokenType.PIPE)) {
+      const operator = this.getPreviousToken();
+      const right = this.bitwiseXor();
+      expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  bitwiseXor = () => {
+    let expr = this.bitwiseAnd();
+
+    while (this.isNextToken(TokenType.CARET)) {
+      const operator = this.getPreviousToken();
+      const right = this.bitwiseAnd();
+      expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  bitwiseAnd = () => {
+    let expr = this.equality();
+
+    while (this.isNextToken(TokenType.AMPERSAND)) {
+      const operator = this.getPreviousToken();
+      const right = this.equality();
+      expr = new Expr.Binary(expr, operator, right);
     }
 
     return expr;
@@ -228,7 +269,7 @@ class Parser {
   };
 
   comparison = () => {
-    let expr = this.addition();
+    let expr = this.bitshift();
 
     while (
       this.isNextToken(
@@ -238,6 +279,18 @@ class Parser {
         TokenType.GREATER_EQUAL
       )
     ) {
+      const operator = this.getPreviousToken();
+      const right = this.bitshift();
+      expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
+  };
+
+  bitshift = () => {
+    let expr = this.addition();
+
+    while (this.isNextToken(TokenType.LESS_LESS, TokenType.GREATER_GREATER)) {
       const operator = this.getPreviousToken();
       const right = this.addition();
       expr = new Expr.Binary(expr, operator, right);

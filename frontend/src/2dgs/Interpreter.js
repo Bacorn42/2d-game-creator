@@ -103,6 +103,12 @@ class Interpreter {
         return left / right;
       case TokenType.MODULO:
         return left % right;
+      case TokenType.PIPE:
+        return left | right;
+      case TokenType.CARET:
+        return left ^ right;
+      case TokenType.AMPERSAND:
+        return left & right;
       case TokenType.EQUAL_EQUAL:
         return left === right;
       case TokenType.BANG_EQUAL:
@@ -115,6 +121,10 @@ class Interpreter {
         return left > right;
       case TokenType.GREATER_EQUAL:
         return left >= right;
+      case TokenType.LESS_LESS:
+        return left << right;
+      case TokenType.GREATER_GREATER:
+        return left >> right;
       default:
         return null;
     }
@@ -208,6 +218,16 @@ class Interpreter {
         return this.applyAssignment(value * rightValue, callback);
       case TokenType.SLASH_EQUAL:
         return this.applyAssignment(value / rightValue, callback);
+      case TokenType.PIPE_EQUAL:
+        return this.applyAssignment(value | rightValue, callback);
+      case TokenType.CARET_EQUAL:
+        return this.applyAssignment(value ^ rightValue, callback);
+      case TokenType.AMPERSAND_EQUAL:
+        return this.applyAssignment(value & rightValue, callback);
+      case TokenType.LESS_LESS_EQUAL:
+        return this.applyAssignment(value << rightValue, callback);
+      case TokenType.GREATER_GREATER_EQUAL:
+        return this.applyAssignment(value >> rightValue, callback);
       default:
         return null;
     }
