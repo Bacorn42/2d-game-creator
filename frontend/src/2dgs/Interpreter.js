@@ -218,6 +218,8 @@ class Interpreter {
         return this.applyAssignment(value * rightValue, callback);
       case TokenType.SLASH_EQUAL:
         return this.applyAssignment(value / rightValue, callback);
+      case TokenType.MODULO_EQUAL:
+        return this.applyAssignment(value % rightValue, callback);
       case TokenType.PIPE_EQUAL:
         return this.applyAssignment(value | rightValue, callback);
       case TokenType.CARET_EQUAL:

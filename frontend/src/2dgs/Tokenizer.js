@@ -55,7 +55,7 @@ class Tokenizer {
       case "/":
         return this.processSlash();
       case "%":
-        return TokenType.MODULO;
+        return this.processModulo();
       case "(":
         return TokenType.LEFT_PAREN;
       case ")":
@@ -143,6 +143,13 @@ class Tokenizer {
       return TokenType.BLOCK_COMMENT;
     }
     return TokenType.SLASH;
+  };
+
+  processModulo = () => {
+    if (this.isNextChar("=")) {
+      return TokenType.MODULO_EQUAL;
+    }
+    return TokenType.MODULO;
   };
 
   processPipe = () => {

@@ -177,6 +177,7 @@ class Parser {
         TokenType.MINUS_EQUAL,
         TokenType.STAR_EQUAL,
         TokenType.SLASH_EQUAL,
+        TokenType.MODULO_EQUAL,
         TokenType.PIPE_EQUAL,
         TokenType.CARET_EQUAL,
         TokenType.AMPERSAND_EQUAL,
