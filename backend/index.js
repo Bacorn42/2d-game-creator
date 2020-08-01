@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const game = require("./routes/api/game");
+const register = require("./routes/api/register");
 
 const app = express();
 
@@ -16,6 +17,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/game", game);
+app.use("/api/register", register);
 
 const port = process.env.PORT || 5000;
 

@@ -6,6 +6,17 @@
   flex-flow: column;
 }
 
+.main-message {
+  border: 2px solid #030;
+  border-radius: 20px;
+  padding: 2px 4px;
+  background-color: #9e9;
+  margin-top: 20px;
+  align-self: center;
+  text-align: center;
+  width: 500px;
+}
+
 .main-container {
   display: flex;
   flex-flow: row;

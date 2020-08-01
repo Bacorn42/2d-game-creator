@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "./app_site/Login";
 import Register from "./app_site/Register";
 import "./Main.css";
 
 export function Main() {
+  const [message, setMessage] = useState("");
+
   return (
     <div className="main">
+      {message !== "" && <div className="main-message">{message}</div>}
       <div className="main-container">
         <div className="main-card">
           <Login />
         </div>
         <div className="main-card">
-          <Register />
+          <Register setMessage={setMessage} />
         </div>
       </div>
       <div className="main-browse">
