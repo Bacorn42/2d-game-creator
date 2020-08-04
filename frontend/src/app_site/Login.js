@@ -6,7 +6,21 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted!");
+    fetch("http://localhost:5000/api/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ username, password }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        console.log(json);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

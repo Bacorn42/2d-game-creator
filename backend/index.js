@@ -3,10 +3,29 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const game = require("./routes/api/game");
 const register = require("./routes/api/register");
+const login = require("./routes/api/login");
+const passport = require("passport");
+const session = require("express-session");
 
 const app = express();
 
-app.use(cors());
+require("./config/passport")(passport);
+
+app.use(
+  session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const db = require("./config/mongodb").URI;
@@ -18,6 +37,7 @@ mongoose
 
 app.use("/api/game", game);
 app.use("/api/register", register);
+app.use("/api/login", login);
 
 const port = process.env.PORT || 5000;
 
