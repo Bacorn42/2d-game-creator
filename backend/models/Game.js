@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const GameSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  description: String,
   graphics: {
     type: Map,
     of: {

@@ -8,9 +8,9 @@ router.get("/", (req, res) => {
     for (const game of games) {
       gamesArr.push({
         id: game._id,
-        title: "Game Title",
-        author: "Author",
-        description: "The is a game. You can play it. It does stuff. Yay!",
+        title: game.title,
+        author: game.author,
+        description: game.description,
       });
     }
     res.status(200).json(gamesArr);

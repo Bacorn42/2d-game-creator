@@ -24,7 +24,7 @@ export function AppPlayer() {
 
   return (
     <div className="player">
-      <div className="player-info">Game Title!</div>
+      <div className="player-info">{gameObj && gameObj.title}</div>
       <div className="player-game">
         {gameObj && <GameWindow game={gameObj} />}
       </div>

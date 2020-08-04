@@ -9,6 +9,9 @@ class Game {
   constructor(game) {
     this.game = game;
     this.currentScene = 0;
+    this.title = game.title;
+    this.author = game.author;
+    this.description = game.description;
 
     this.names = this.createNames(game);
     this.images = this.createImages(game.graphics);

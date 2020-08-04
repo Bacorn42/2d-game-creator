@@ -18,6 +18,7 @@ export function GameWindow({ game }) {
       onMouseUp={(e) => game.releaseMouse(e)}
       style={{
         backgroundColor: "#ccc",
+        display: "block",
       }}
     />
   );
