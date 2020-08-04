@@ -1,0 +1,16 @@
+.browse {
+  background-color: #44a044;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.browse-title {
+  padding: 20px 0;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.browse-game-container {
+  display: flex;
+  flex-direction: row;
+}

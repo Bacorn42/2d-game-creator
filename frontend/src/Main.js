@@ -12,7 +12,7 @@ export function Main() {
       {message !== "" && <div className="main-message">{message}</div>}
       <div className="main-container">
         <div className="main-card">
-          <Login />
+          <Login setMessage={setMessage} />
         </div>
         <div className="main-card">
           <Register setMessage={setMessage} />

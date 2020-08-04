@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
-function Register() {
+function Login({ setMessage }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,10 +18,11 @@ function Register() {
       body: JSON.stringify({ username, password }),
     })
       .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        console.log(json);
+        if (response.status === 200) {
+          history.push("/browse");
+        } else {
+          setMessage("Incorrect credentials!");
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -46,4 +50,8 @@ function Register() {
   );
 }
 
-export default Register;
+Login.propTypes = {
+  setMessage: PropTypes.func.isRequired,
+};
+
+export default Login;

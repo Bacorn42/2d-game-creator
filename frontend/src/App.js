@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Main from "./Main";
 import AppCreator from "./app_creator/AppCreator";
 import AppPlayer from "./app_player/AppPlayer";
+import Browse from "./app_site/Browse";
 import appCreatorStore from "./app_creator/store";
 
 export function App() {
@@ -12,6 +13,9 @@ export function App() {
       <Switch>
         <Route exact path="/">
           <Main />
+        </Route>
+        <Route path="/browse">
+          <Browse />
         </Route>
         <Route path="/creator">
           <Provider store={appCreatorStore}>

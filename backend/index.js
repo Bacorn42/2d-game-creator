@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const game = require("./routes/api/game");
+const games = require("./routes/api/games");
 const register = require("./routes/api/register");
 const login = require("./routes/api/login");
 const passport = require("passport");
@@ -36,6 +37,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/game", game);
+app.use("/api/games", games);
 app.use("/api/register", register);
 app.use("/api/login", login);
 

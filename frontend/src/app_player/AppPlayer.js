@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import GameWindow from "./components/GameWindow";
 import Game from "../2dgs/model/Game";
+import "./AppPlayer.css";
 
 export function AppPlayer() {
   const [gameObj, setGameObj] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/game", {
+    const url = new URL(window.location.href);
+    const param = url.searchParams.get("gameId");
+    fetch("http://localhost:5000/api/game/" + param, {
       method: "get",
     })
       .then((response) => {
@@ -18,7 +22,17 @@ export function AppPlayer() {
       });
   }, []);
 
-  return <div>{gameObj && <GameWindow game={gameObj} />}</div>;
+  return (
+    <div className="player">
+      <div className="player-info">Game Title!</div>
+      <div className="player-game">
+        {gameObj && <GameWindow game={gameObj} />}
+      </div>
+      <Link to="/browse" className="player-link">
+        <div className="player-back">Back to browsing!</div>
+      </Link>
+    </div>
+  );
 }
 
 export default AppPlayer;

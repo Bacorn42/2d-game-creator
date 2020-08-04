@@ -3,8 +3,8 @@ const router = express.Router();
 const Game = require("../../models/Game");
 const copyGameObject = require("../../utils/copyGameObject");
 
-router.get("/", (req, res) => {
-  Game.findOne()
+router.get("/:gameId", (req, res) => {
+  Game.findById(req.params.gameId)
     .then((game) => res.json(game))
     .catch((err) => console.log(err));
 });
