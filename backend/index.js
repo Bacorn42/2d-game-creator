@@ -5,6 +5,7 @@ const game = require("./routes/api/game");
 const games = require("./routes/api/games");
 const register = require("./routes/api/register");
 const login = require("./routes/api/login");
+const logout = require("./routes/api/logout");
 const passport = require("passport");
 const session = require("express-session");
 
@@ -40,6 +41,7 @@ app.use("/api/game", game);
 app.use("/api/games", games);
 app.use("/api/register", register);
 app.use("/api/login", login);
+app.use("/api/logout", logout);
 
 const port = process.env.PORT || 5000;
 

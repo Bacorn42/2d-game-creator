@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Navbar from "./Navbar";
 import GameCard from "./GameCard";
 import "./Browse.css";
 
@@ -19,6 +20,7 @@ function Browse() {
 
   return (
     <div className="browse">
+      <Navbar />
       <div className="browse-title">Find a game!</div>
       <div className="browse-game-container">
         {games.map((game) => (

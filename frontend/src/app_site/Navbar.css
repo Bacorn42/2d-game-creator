@@ -1,0 +1,26 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.navbar-option {
+  cursor: pointer;
+  margin: 4px 4px;
+}
+
+.navbar-link {
+  text-decoration: none;
+}
+
+.navbar-button {
+  border: 2px solid #030;
+  border-radius: 20px;
+  padding: 2px 4px;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000;
+  background-color: #262;
+  text-align: center;
+  margin-bottom: 8px;
+}
