@@ -3,7 +3,11 @@ const mongoose = require("mongoose");
 const GameSchema = new mongoose.Schema({
   title: String,
   author: String,
+  collaborators: [{ type: String }],
   description: String,
+  userId: String,
+  collaboratorIds: [{ type: String }],
+  openSource: Boolean,
   graphics: {
     type: Map,
     of: {

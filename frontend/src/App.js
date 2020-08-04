@@ -5,6 +5,7 @@ import Main from "./Main";
 import AppCreator from "./app_creator/AppCreator";
 import AppPlayer from "./app_player/AppPlayer";
 import Browse from "./app_site/Browse";
+import Profile from "./app_site/Profile";
 import appCreatorStore from "./app_creator/store";
 
 export function App() {
@@ -16,6 +17,9 @@ export function App() {
         </Route>
         <Route path="/browse">
           <Browse />
+        </Route>
+        <Route path="/profile">
+          <Profile />
         </Route>
         <Route path="/creator">
           <Provider store={appCreatorStore}>

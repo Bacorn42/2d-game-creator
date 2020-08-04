@@ -7,7 +7,11 @@ router.post("/", passport.authenticate("local"), (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  res.json(req.user);
+  if (req.user) {
+    res.status(200).json(req.user);
+  } else {
+    res.status(401).send();
+  }
 });
 
 module.exports = router;
