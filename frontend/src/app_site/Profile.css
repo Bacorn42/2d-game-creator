@@ -35,3 +35,18 @@
   color: #000;
   background-color: #262;
 }
+
+.profile-newgame-button {
+  border: 2px solid #030;
+  border-radius: 20px;
+  padding: 2px 4px;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000;
+  background-color: #262;
+  cursor: pointer;
+  width: 200px;
+  text-align: center;
+  align-self: center;
+  margin-bottom: 20px;
+}

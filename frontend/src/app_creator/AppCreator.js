@@ -52,19 +52,28 @@ library.add(
 export function AppCreator({ loadGame }) {
   const [loaded, setLoaded] = useState(false);
 
-  fetch("http://localhost:5000/api/game", {
+  fetch("http://localhost:5000/api/login", {
     method: "get",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((game) => {
-      loadGame(game);
-      setLoaded(true);
-    })
-    .catch((err) => {
-      setLoaded(true);
-    });
+    credentials: "include",
+  }).then((response) => {
+    if (response.status === 200) {
+      const url = new URL(window.location.href);
+      const param = url.searchParams.get("gameId");
+      fetch("http://localhost:5000/api/game/" + param, {
+        method: "get",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((game) => {
+          loadGame(game);
+          setLoaded(true);
+        })
+        .catch((err) => {
+          setLoaded(true);
+        });
+    }
+  });
 
   return (
     <div className="app">

@@ -15,12 +15,14 @@ export function Toolbar({ game, createItem, openWindow }) {
     setSaving(true);
     setSaveColor("black");
     if (!saving) {
+      const url = new URL(window.location.href);
+      const param = url.searchParams.get("gameId");
       fetch("http://localhost:5000/api/game", {
-        method: "post",
+        method: "put",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(game),
+        body: JSON.stringify({ game, id: param }),
       })
         .then((response) => {
           if (response.status === 200) {
