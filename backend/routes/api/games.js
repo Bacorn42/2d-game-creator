@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
         id: game._id,
         title: game.title,
         author: game.author,
+        collaborators: game.collaborators,
         description: game.description,
       });
     }
@@ -18,18 +19,22 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:userId", (req, res) => {
-  Game.find({ userId: req.params.userId }).then((games) => {
-    const gamesArr = [];
-    for (const game of games) {
-      gamesArr.push({
-        id: game._id,
-        title: game.title,
-        author: game.author,
-        description: game.description,
-      });
-    }
-    res.status(200).json(gamesArr);
-  });
+  const id = req.params.userId;
+  Game.find()
+    .or([{ userId: id }, { collaboratorIds: id }])
+    .then((games) => {
+      const gamesArr = [];
+      for (const game of games) {
+        gamesArr.push({
+          id: game._id,
+          title: game.title,
+          author: game.author,
+          collaborators: game.collaborators,
+          description: game.description,
+        });
+      }
+      res.status(200).json(gamesArr);
+    });
 });
 
 module.exports = router;

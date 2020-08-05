@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { createItem } from "../../actions/folderActions";
 import { openWindow } from "../../actions/windowActions";
@@ -8,6 +9,7 @@ import "./Toolbar.css";
 export function Toolbar({ game, createItem, openWindow }) {
   const [saving, setSaving] = useState(false);
   const [saveColor, setSaveColor] = useState("black");
+  const history = useHistory();
 
   const saveGame = () => {
     setSaving(true);
@@ -35,6 +37,10 @@ export function Toolbar({ game, createItem, openWindow }) {
           setTimeout(() => setSaveColor("black"), 3000);
         });
     }
+  };
+
+  const exit = () => {
+    history.push("/profile");
   };
 
   return (
@@ -75,12 +81,20 @@ export function Toolbar({ game, createItem, openWindow }) {
         size="lg"
         className="toolbar-icon toolbar-icon-separator"
       />
-      <FontAwesomeIcon
-        icon={saving ? "spinner" : "save"}
-        onClick={saveGame}
-        size="lg"
-        className={`toolbar-icon toolbar-icon-right toolbar-save-${saveColor}`}
-      />
+      <div className="toolbar-container-right">
+        <FontAwesomeIcon
+          icon={saving ? "spinner" : "save"}
+          onClick={saveGame}
+          size="lg"
+          className={`toolbar-icon toolbar-icon-right toolbar-save-${saveColor}`}
+        />
+        <FontAwesomeIcon
+          icon="window-close"
+          onClick={exit}
+          size="lg"
+          className="toolbar-icon toolbar-icon-right"
+        />
+      </div>
     </div>
   );
 }

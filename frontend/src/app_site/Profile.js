@@ -50,7 +50,7 @@ function Profile() {
       <div className="profile-name">{user.username}</div>
       <div className="profile-game-container">
         {games.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <GameCard key={game.id} game={game} edit={true} />
         ))}
       </div>
       <div className="profile-browse">

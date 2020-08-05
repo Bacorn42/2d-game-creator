@@ -20,8 +20,10 @@
   border-left: 2px solid #999;
 }
 
-.toolbar-icon-right {
-  margin-left: auto;
+.toolbar-container-right {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .toolbar-save-black {
